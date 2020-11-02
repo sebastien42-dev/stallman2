@@ -3,32 +3,35 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+<div class="container align-content-center">
+    <h1 class="text-center font-weight-bold m-3 text-primary table-striped">Fiche utilisateur {{ user.email }}</h1>
+    <br>
+    <div class="row">
+        <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
+            <div class="card-header">N° d'utilisateur</div>
+            <div class="card-body bg-light">
+                <p class="card-text text-dark text-center text-xl">{{ user.id }}</p>
+            </div>
+        </div>
+         <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
+            <div class="card-header">Mail</div>
+            <div class="card-body bg-light">
+                <p class="card-text text-dark text-center text-xl">{{ user.email }}</p>
+            </div>
+        </div>
+         <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
+            <div class="card-header">Rôle</div>
+            <div class="card-body bg-light">
+                <p class="card-text text-dark text-center text-xl">{{ user.roles ? user.roles|json_encode : '' }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a href="{{ path('user_index') }}" class="btn btn-secondary btn-sm mr-2">Retour à la liste d'utilisateur</a>
+        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-secondary btn-sm mr-2">Modifier ce profil</a>
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
+</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

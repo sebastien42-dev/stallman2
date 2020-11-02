@@ -40,10 +40,9 @@ class UserType extends AbstractType
             ])
             ->add('password', PasswordType::class,[
                 'attr' =>  
-                ['class' => 'form-control',
-                'placeholder' => 'la personne devra le changer dans un second temps'
+                ['class' => 'form-control'
             ],
-                'label' => "Mot de passe initial",
+                'label' => "Mot de passe",
                 'label_attr' => ['class' => 'text-white font-weight-bold mt-3']
                
             ])
