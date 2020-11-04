@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <title>Stallman2 - {% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('build/vendors~app.css') }}">
+
+        
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -29,6 +31,11 @@
   </div>
 </nav>
         {% block body %}{% endblock %}
+        
+        <script type="text/javascript" src="{{ asset('build/vendors~app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('build/runtime.js') }}"></script>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
