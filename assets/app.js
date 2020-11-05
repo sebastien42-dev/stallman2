@@ -7,12 +7,14 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import './styles/app.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'bootstrap/dist/js/bootstrap.js';
 require('bootstrap');
+require('startbootstrap-sb-admin-2/css/sb-admin-2.css');
+require('startbootstrap-sb-admin-2/js/sb-admin-2.js');
+require('startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.css');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 import $ from 'jquery';
