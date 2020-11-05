@@ -4,25 +4,25 @@
 
 {% block body %}
 <div class="container align-content-center">
-    <h1 class="text-center font-weight-bold m-3 text-primary table-striped">Fiche utilisateur {{ user.email }}</h1>
+    <h1 class="text-center font-weight-bold m-3 text-primary table-striped text-center">Fiche utilisateur {{ user.email }}</h1>
     <br>
     <div class="row">
-        <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
-            <div class="card-header">N° d'utilisateur</div>
-            <div class="card-body bg-light">
-                <p class="card-text text-dark text-center text-xl">{{ user.id }}</p>
+        <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-primary text-white">N° d'utilisateur</div>
+            <div class="card-body">
+                <p class="card-text text-dark text-xl">{{ user.id }}</p>
             </div>
         </div>
-         <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
-            <div class="card-header">Mail</div>
+         <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-primary text-white">Mail</div>
             <div class="card-body bg-light">
-                <p class="card-text text-dark text-center text-xl">{{ user.email }}</p>
+                <p class="card-text text-dark  text-xl">{{ user.email }}</p>
             </div>
         </div>
-         <div class="card text-white bg-primary mb-3 mt-3 mr-3" style="max-width: 18rem;">
-            <div class="card-header">Rôle</div>
+         <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-primary text-white">Rôle</div>
             <div class="card-body bg-light">
-                <p class="card-text text-dark text-center text-xl">{{ user.roles ? user.roles|json_encode : '' }}</p>
+                <p class="card-text text-dark text-xl">{{ user.roles ? user.roles|json_encode : '' }}</p>
             </div>
         </div>
     </div>
