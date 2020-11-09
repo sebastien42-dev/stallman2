@@ -1,19 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Accueil{% endblock %}
-
-{% block body %}
-<div class="container-fluid text-center">
-
-    <h1><span class="badge badge-primary">Bonjour Seb, nous sommes le {{ 'now'|date('d/m/Y') }} </span></h1>
-    
-
-      {% if is_granted('ROLE_ADMIN') %}
-        {% include "shared/shared_dashboard/_shared_dash_admin.html.twig" %}
-      {% elseif is_granted('ROLE_PROF') %}
-        {% include "shared/shared_dashboard/_shared_dash_formateur.html.twig" %}
-      {% endif %}
-       <div class="row m-4">
+ <div class="row m-4">
 
            <div class="col-6">
                 <div class="card border-secondary shadow-lg">
@@ -91,36 +76,3 @@
         </div>
     </div>
 </div>
-
-    {% block javascripts %}
-       <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
-        datasets: [{
-            label: 'montants cumulés des notes de frais',
-            data: [0,0,0,0,12,24,36,48,48,48,48,48,112,112,112,112,150,150,150,150,170,182,196,196,196,204,204,250,290,290],
-            backgroundColor: [
-                'rgba(0, 163, 0, 0.2)'
-            ],
-            borderColor: [
-                'rgba(0, 163, 0, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
-    {% endblock %}
-{% endblock %}
