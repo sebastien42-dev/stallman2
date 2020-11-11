@@ -1,11 +1,11 @@
  <div id="wrapper">
 <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href={{ path('home') }}>
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-graduation-cap"></i>
+          <i class="fas fa-graduation-cap text-info"></i>
         </div>
         <div class="sidebar-brand-text mx-3">Stallman2</div>
       </a>
@@ -16,7 +16,7 @@
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href={{ path('home') }}>
-          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <i class="fas fa-fw fa-chart-pie text-info"></i>
           <span>Tableau de bord</span></a>
       </li>
 
@@ -35,7 +35,6 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <!-- Heading -->
       <div class="sidebar-heading">
         interface utilisateur
       </div>
@@ -43,7 +42,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanning" aria-expanded="true" aria-controls="collapsePlanning">
-          <i class="fas fa-fw fa-calendar-week"></i>
+          <i class="fas fa-fw fa-calendar-week text-info"></i>
           <span>Planning</span>
         </a>
         <div id="collapsePlanning" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -59,7 +58,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTaf" aria-expanded="true" aria-controls="collapseTaf">
-          <i class="fas fa-fw fa-briefcase"></i>
+          <i class="fas fa-fw fa-briefcase text-info"></i>
           <span>Travail à faire</span>
         </a>
         <div id="collapseTaf" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -81,7 +80,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMail" aria-expanded="true" aria-controls="collapseMail">
-          <i class="fas fa-fw fa-envelope"></i>
+          <i class="fas fa-fw fa-envelope text-info"></i>
           <span>Messages</span>
         </a>
         <div id="collapseMail" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -99,6 +98,9 @@
           </div>
         </div>
       </li>
+      {% if is_granted('ROLE_ELEVE') %}
+        {% include "shared/shared_sidebar/_shared_interface_eleve.html.twig" %}
+      {% endif %}
 
      <hr class="sidebar-divider">
       <!-- Sidebar Toggler (Sidebar) -->
@@ -123,7 +125,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
-
+          <h2><span class="badge badge-dark">Bonjour {{ app.user.email }}, nous sommes le {{ 'now'|date('d/m/Y') }} </span></h2>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -167,11 +169,11 @@
             </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
-
+          
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Seb</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.email }}</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->

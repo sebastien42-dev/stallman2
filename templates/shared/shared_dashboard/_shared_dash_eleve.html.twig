@@ -1,71 +1,5 @@
- <div class="row m-4">
-
-           <div class="col-6">
-                <div class="card border-secondary shadow-lg">
-                    <div class="card-header text-uppercase text-left bg-secondary text-white">
-                        <span>note de frais</span>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myChart" width="400" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-6">
-
-                <div class="row m-2">
-                    <div class="col-6">
-                        <div class="card  border-secondary shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-secondary text-white">
-                                 <span>moyenne générale</span>
-                             </div>
-                            <div class="card-body ">
-                                 12.5 / 20
-                            </div>
-                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card border-left-secondary border-secondary shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-secondary text-white">
-                                <span>moyenne générale</span>
-                            </div>
-                            <div class="card-body">
-                                12.5 / 20
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row m-2">
-                    <div class="col-6">
-                        <div class="card border-left-secondary border-secondary shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-secondary text-white">
-                                 <span>moyenne générale</span>
-                             </div>
-                            <div class="card-body">
-                                 12.5 / 20
-                            </div>
-                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card border-left-secondary border-secondary shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-secondary text-white">
-                                <span>moyenne générale</span>
-                            </div>
-                            <div class="card-body">
-                                12.5 / 20
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-       </div>
-   
-    <div class="row">
+ 
+     <div class="row">
         <div class="col">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>! TAF : </strong> Vous avez une travail à faire qui arrive à expiration !.
@@ -75,4 +9,69 @@
             </div>
         </div>
     </div>
+        <div class="row m-4">
+           <div class="col-6">
+                <div class="card border-success shadow-lg">
+                    <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                    {# TODO mettre le mois en injection en lettre par le controller #}
+                        <span>Moyenne par matière pour {{'now'|date('Y') }}-{{'now'|date('Y')+1 }}</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="MoyenneMatiereChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-6">
+
+                <div class="row">
+                
+                    <div class="col-12">
+                        <div class="card border-success shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                                 <span>Prochain cours</span>
+                            </div>
+                            <div class="card-body p-1">
+                                 <table class="table table-borderless">
+                                     <td>le {{'now'|date('d/m/Y') }} </td>
+                                     <td>à 10h</td>
+                                     <td>Mathématique</td>
+                                     <td>Salle B01</td>
+                                 </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="row mt-3">
+
+                    <div class="col-6">
+                        <div class="card border-success shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                                 <span>Moyenne Générale</span>
+                            </div>
+                            <div class="card-body p-1">
+                                 <span>12 / 20</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="card border-success shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                                 <span>Nombre de travail à faire</span>
+                            </div>
+                            <div class="card-body p-1">
+                                 <span>7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
 </div>
