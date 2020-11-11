@@ -1,11 +1,11 @@
- <div id="wrapper">
+<div id="wrapper">
 <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href={{ path('home') }}>
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-graduation-cap text-info"></i>
+          <i class="fas fa-graduation-cap {{ text_color }}"></i>
         </div>
         <div class="sidebar-brand-text mx-3">Stallman2</div>
       </a>
@@ -16,7 +16,7 @@
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href={{ path('home') }}>
-          <i class="fas fa-fw fa-chart-pie text-info"></i>
+          <i class="fas fa-fw fa-chart-pie {{ text_color }}"></i>
           <span>Tableau de bord</span></a>
       </li>
 
@@ -42,7 +42,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanning" aria-expanded="true" aria-controls="collapsePlanning">
-          <i class="fas fa-fw fa-calendar-week text-info"></i>
+          <i class="fas fa-fw fa-calendar-week {{ text_color }}"></i>
           <span>Planning</span>
         </a>
         <div id="collapsePlanning" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -58,7 +58,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTaf" aria-expanded="true" aria-controls="collapseTaf">
-          <i class="fas fa-fw fa-briefcase text-info"></i>
+          <i class="fas fa-fw fa-briefcase {{ text_color }}"></i>
           <span>Travail à faire</span>
         </a>
         <div id="collapseTaf" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -80,7 +80,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMail" aria-expanded="true" aria-controls="collapseMail">
-          <i class="fas fa-fw fa-envelope text-info"></i>
+          <i class="fas fa-fw fa-envelope {{ text_color }}"></i>
           <span>Messages</span>
         </a>
         <div id="collapseMail" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -125,7 +125,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <h3><span class="badge badge-dark">Bonjour <span class="text-info">{{ app.user.email }}</span>, nous sommes le {{ 'now'|date('d/m/Y') }} </span></h3>
+          <h3><span class="badge badge-dark">Bonjour <span class="{{ text_color }}">{{ app.user.email }}</span>, nous sommes le {{ 'now'|date('d/m/Y') }} </span></h3>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -135,7 +135,7 @@
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw text-info"></i>
+                <i class="fas fa-envelope fa-fw text-white"></i>
                 <!-- Counter - Messages -->
                 <span class="badge badge-danger badge-counter">3</span>
               </a>

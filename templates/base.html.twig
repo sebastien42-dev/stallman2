@@ -10,7 +10,16 @@
       {% block stylesheets %}{% endblock %}
     </head>
     <body>
-
+      {% if is_granted('ROLE_ADMIN') %}
+        {% set text_color = 'text-danger' %}
+      {% elseif is_granted('ROLE_PROF') %}
+        {% set text_color = 'text-primary' %}
+      {% elseif is_granted('ROLE_ELEVE') %}
+        {% set text_color = 'text-success' %}
+      {% elseif is_granted('ROLE_COMPTA') %}
+        {% set text_color = 'text-warning' %}
+      {% endif %}
+      
       {% include "shared/shared_sidebar/_shared_sidebar.html.twig" %}
           {% block body %}{% endblock %}
       {% include "shared/shared_sidebar/_shared_sidebar_footer.html.twig" %}
