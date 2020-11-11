@@ -33,7 +33,8 @@ class UserType extends AbstractType
                 'choices' => [
                     'Administrateur' => 'ROLE_ADMIN',
                     'Professeur' => 'ROLE_PROF',
-                    'Elève' => 'ROLE_ELEVE'
+                    'Elève' => 'ROLE_ELEVE',
+                    'Comptabilité' => 'ROLE_COMPTA'
                 ],
                 'multiple' => true,
                 'required' => true,
