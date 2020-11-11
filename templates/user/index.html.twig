@@ -4,9 +4,9 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="text-center font-weight-bold m-3 text-primary table-striped">Listes de Utilisateurs</h1>
+    <h2 class="text-center m-3"><span class="badge badge-info font-weight-bold text-white">Listes de Utilisateurs</span></h2>
     <a href="{{ path('user_new') }}" class="btn btn-outline-danger mb-3 mt-3">Créer un utilisateur</a>
-    <table class="table table-bordered">
+    <table class="table table-bordered shadow">
         <thead class="thead-dark text-center">
             <tr>
                 <th>N° d'utilisateur</th>
@@ -22,8 +22,8 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td class="text-center">
-                    <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-secondary m-1">Voir la fiche du utilisateur</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-secondary m-1">modifier le utilisateur</a>
+                    <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-info m-1">Voir la fiche du utilisateur</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-info m-1">modifier le utilisateur</a>
                 </td>
             </tr>
         {% else %}
