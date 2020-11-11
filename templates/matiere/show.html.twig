@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matiere{% endblock %}
+
+{% block body %}
+<div class="container align-content-center">
+<h2 class="text-center m-3"><span class="badge badge-info font-weight-bold text-white">Fiche matière '{{ matiere.libelleMatiere }}'</span></h2>
+    <br>
+    <div class="row">
+        <div class="card mb-3 mt-3 mr-3 border border-info font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-info text-white">N° de la matière</div>
+            <div class="card-body">
+                <p class="card-text text-dark text-xl">{{ matiere.id }}</p>
+            </div>
+        </div>
+         <div class="card mb-3 mt-3 mr-3 border border-info font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-info text-white">libellé</div>
+            <div class="card-body bg-light">
+                <p class="card-text text-dark  text-xl">{{ matiere.libelleMatiere }}</p>
+            </div>
+        </div>
+         <div class="card mb-3 mt-3 mr-3 border border-info font-weight-bold text-center" style="max-width: 18rem;">
+            <div class="card-header bg-info text-white">Coefficient</div>
+            <div class="card-body bg-light">
+                <p class="card-text text-dark text-xl">{{ matiere.coefficient }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a href="{{ path('matiere_index') }}" class="btn btn-secondary btn-sm mr-2">Retour à la liste des matières</a>
+        <a href="{{ path('matiere_edit', {'id': matiere.id}) }}" class="btn btn-secondary btn-sm mr-2">Modifier cette matière</a>
+        {{ include('matiere/_delete_form.html.twig') }}
+    </div>
+</div>
+
+
+
+
+{% endblock %}

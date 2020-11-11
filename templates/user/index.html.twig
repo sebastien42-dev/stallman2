@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}utilisateurs{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -23,7 +23,7 @@
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td class="text-center">
                     <a href="{{ path('user_show', {'id': user.id}) }}" class="btn btn-info m-1">Voir la fiche du utilisateur</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-info m-1">modifier le utilisateur</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-info m-1">Modifier le utilisateur</a>
                 </td>
             </tr>
         {% else %}

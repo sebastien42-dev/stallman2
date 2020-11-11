@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Matiere{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-info">Créer une matière</span></h2>
+        <div class="card bg-info m-3 p-4">
+        {{ include('matiere/_form.html.twig') }}
+        </div>
+    <a href="{{ path('matiere_index') }}" class=" m-3 btn btn-outline-info">Retour à la liste des matières</a>
+</div>
+{% endblock %}

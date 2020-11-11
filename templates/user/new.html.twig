@@ -4,11 +4,11 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="text-center font-weight-bold m-3 text-primary table-striped">Créer un utilisateur</h1>
-    <div class="card bg-primary m-3 p-4">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-info">Créer un utilisateur</span></h2>
+    <div class="card bg-info m-3 p-4">
     {{ include('user/_form.html.twig') }}
     </div>
 
-    <a href="{{ path('user_index') }}" class="btn btn-secondary">Retour à la liste d'utilisateur</a>
+    <a href="{{ path('user_index') }}" class=" m-3 btn btn-outline-info">Retour à la liste d'utilisateur</a>
 </div>
 {% endblock %}
