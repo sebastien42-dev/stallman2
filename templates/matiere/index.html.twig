@@ -3,7 +3,7 @@
 {% block title %}Matieres{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container-fluid">
     <h2 class="text-center m-3"><span class="badge badge-info font-weight-bold text-white">Listes des matières</span></h2>
     <a href="{{ path('matiere_new') }}" class="btn btn-outline-danger mb-3 mt-3">Créer une matière</a>
 
@@ -13,7 +13,7 @@
                 <th>n°</th>
                 <th>Libellé matière</th>
                 <th>Coefficient</th>
-                <th colspan="2">actions</th>
+                <th width="20%">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,11 +22,11 @@
                 <td>{{ matiere.id }}</td>
                 <td>{{ matiere.libelleMatiere }}</td>
                 <td>{{ matiere.coefficient }}</td>
-                <td class="text-right">
-                    <a href="{{ path('matiere_show', {'id': matiere.id}) }}" class="btn btn-info btn-sm mr-1">Voir</a>
+                <td>
+                    <div class="row"><a href="{{ path('matiere_show', {'id': matiere.id}) }}" class="btn btn-info btn-sm mr-1">Voir</a>
                     <a href="{{ path('matiere_edit', {'id': matiere.id}) }}" class="btn btn-info btn-sm mr-1">Modifier</a>
+                    {{ include('matiere/_delete_form_icone.html.twig') }}</div>
                 </td>
-                <td>{{ include('matiere/_delete_form.html.twig') }}</td>
             </tr>
         {% else %}
             <tr>

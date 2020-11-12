@@ -11,6 +11,8 @@
         {% include "shared/shared_dashboard/_shared_dash_formateur.html.twig" %}
     {% elseif is_granted('ROLE_ELEVE') %}
         {% include "shared/shared_dashboard/_shared_dash_eleve.html.twig" %}
+    {% elseif is_granted('ROLE_COMPTA') %}
+        {% include "shared/shared_dashboard/_shared_dash_compta.html.twig" %}
     {% endif %}
 
 </div>
@@ -23,6 +25,8 @@
             {% include "shared/shared_dashboard/chart/_chart_formateur.html.twig" %}
         {% elseif is_granted('ROLE_ELEVE') %}
             {% include "shared/shared_dashboard/chart/_chart_eleve.html.twig" %}
+        {% elseif is_granted('ROLE_COMPTA') %}
+            {% include "shared/shared_dashboard/chart/_chart_compta.html.twig" %}
         {% endif %}
 
     {% endblock %}

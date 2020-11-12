@@ -5,13 +5,12 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFrais" aria-expanded="true" aria-controls="collapseMembre">
-          <i class="fas fa-fw fa-money-bill-wave {{ text_color }}"></i>
-          <span>Notes de frais</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFactureForm" aria-expanded="true" aria-controls="collapseFactureForm">
+          <i class="fas fa-fw fa-file-invoice {{ text_color }}"></i>
+          <span>Facture</span>
         </a>
-        <div id="collapseFrais" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseFactureForm" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">gestions des notes de frais</h6>
             <a class="collapse-item" href={{ path('user_index') }}>Liste</a>
             <a class="collapse-item" href={{ path('user_new') }}>Nouvelle</a>
         </div>
@@ -25,7 +24,6 @@
         </a>
         <div id="collapseNote" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Gestion des notes</h6>
             <a class="collapse-item" href={{ path('user_index') }}>Liste</a>
             <a class="collapse-item" href={{ path('user_new') }}>Insérer une note</a>
           </div>

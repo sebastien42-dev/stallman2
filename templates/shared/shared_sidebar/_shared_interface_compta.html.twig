@@ -1,0 +1,16 @@
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">
+        Interface comptabilite
+      </div>
+
+      <!-- menu de la compta -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacture" aria-expanded="true" aria-controls="collapseFacture">
+          <i class="fas fa-fw fa-calculator {{ text_color }}"></i>
+          <span>Gestions des factures</span>
+        </a>
+        <div id="collapseFacture" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href={{ path('user_index') }}>Liste</a>
+        </div>
+      </li>

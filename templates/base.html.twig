@@ -12,12 +12,16 @@
     <body>
       {% if is_granted('ROLE_ADMIN') %}
         {% set text_color = 'text-danger' %}
+        {% set color = 'danger' %}
       {% elseif is_granted('ROLE_PROF') %}
         {% set text_color = 'text-primary' %}
+        {% set color = 'primary' %}
       {% elseif is_granted('ROLE_ELEVE') %}
         {% set text_color = 'text-success' %}
+        {% set color = 'success' %}
       {% elseif is_granted('ROLE_COMPTA') %}
         {% set text_color = 'text-warning' %}
+        {% set color = 'warning' %}
       {% endif %}
       
       {% include "shared/shared_sidebar/_shared_sidebar.html.twig" %}

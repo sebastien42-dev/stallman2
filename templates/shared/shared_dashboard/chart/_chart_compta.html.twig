@@ -1,0 +1,40 @@
+<script>
+var ctx = document.getElementById('SituationFacture').getContext('2d');
+var myChart2 = new Chart(ctx, {
+     type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [32,12,50,30],
+            backgroundColor: [
+                'rgba(252, 156, 0, 0.2)',
+                'rgba(34, 252, 0, 0.2)',
+                'rgba(0, 252, 202, 0.2)',
+                'rgba(206, 0, 252, 0.2)'
+            ],
+            borderColor: [
+                'rgba(252, 156, 0, 1)',
+                'rgba(34, 252, 0, 1)',
+                'rgba(0, 252, 202, 1)',
+                'rgba(206, 0, 252, 1)'
+            ],
+            borderWidth: 1
+        }],
+        labels:[
+            'Saisies',
+            'Enregistrées',
+            'Validées',
+            'Payées',
+        ]
+    },
+    options: {
+       responsive: true,
+	    legend: {
+			position: 'top',
+		},
+		animation: {
+			animateScale: true,
+			animateRotate: true
+		}
+    }
+});
+</script>
