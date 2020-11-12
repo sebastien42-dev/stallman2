@@ -47,7 +47,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      {# <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanning" aria-expanded="true" aria-controls="collapsePlanning">
           <i class="fas fa-fw fa-calendar-week {{ text_color }}"></i>
           <span>Planning</span>
@@ -82,7 +82,15 @@
             {% endif %}
           </div>
         </div>
-      </li>
+      </li> #}
+
+      {% if is_granted('ROLE_ADMIN') %}
+        {% include "shared/shared_sidebar/_shared_interface_user.html.twig" %}
+      {% elseif is_granted('ROLE_ELEVE') %}
+        {% include "shared/shared_sidebar/_shared_interface_user.html.twig" %}
+      {% elseif is_granted('ROLE_PROF') %}
+        {% include "shared/shared_sidebar/_shared_interface_user.html.twig" %}
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMail" aria-expanded="true" aria-controls="collapseMail">

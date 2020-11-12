@@ -1,0 +1,36 @@
+     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanning" aria-expanded="true" aria-controls="collapsePlanning">
+          <i class="fas fa-fw fa-calendar-week {{ text_color }}"></i>
+          <span>Planning</span>
+        </a>
+        <div id="collapsePlanning" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="login.html">Voir EDT</a>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a class="collapse-item" href="register.html">Modifier EDT</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTaf" aria-expanded="true" aria-controls="collapseTaf">
+          <i class="fas fa-fw fa-briefcase {{ text_color }}"></i>
+          <span>Travail à faire</span>
+        </a>
+        <div id="collapseTaf" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Consulter</h6>
+            <a class="collapse-item" href="#">Voir TAF</a>
+            {% if is_granted('ROLE_ADMIN') %}
+              <h6 class="collapse-header">Adminsitration</h6>
+              <a class="collapse-item" href="#">Modifier TAF</a>
+              <a class="collapse-item" href="#">Créer TAF</a>
+            {% elseif is_granted('ROLE_PROF') %}
+              <h6 class="collapse-header">Adminsitration</h6>
+              <a class="collapse-item" href="#">Modifier TAF</a>
+              <a class="collapse-item" href="#">Créer TAF</a>
+            {% endif %}
+          </div>
+        </div>
+      </li>
