@@ -9,10 +9,10 @@
             </div>
         </div>
     </div>
-        <div class="row m-3">
-           <div class="col-6">
-                <div class="card border-success shadow-lg">
-                    <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+        <div class="row mt-5">
+           <div class="col-lg-6 col-sm-12 mb-2">
+                <div class="card border-{{ color }} shadow-lg">
+                    <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
                     {# TODO mettre le mois en injection en lettre par le controller #}
                         <span>Moyenne par matière pour {{'now'|date('Y') }}-{{'now'|date('Y')+1 }}</span>
                     </div>
@@ -23,13 +23,13 @@
             </div>
 
 
-            <div class="col-6">
+            <div class="col-lg-6 col-sm-12">
 
                 <div class="row">
                 
                     <div class="col-12">
-                        <div class="card border-success shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                        <div class="card border-{{ color }} shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
                                  <span>cours pour le {{'now'|date('d/m/Y') }}</span>
                             </div>
                             <div class="card-body p-1">
@@ -65,11 +65,11 @@
 
                 </div>
                 
-                <div class="row mt-3">
+                <div class="row mt-2">
 
                     <div class="col-6">
-                        <div class="card border-success shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                        <div class="card border-{{ color }} shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
                                  <span>Moyenne Générale</span>
                             </div>
                             <div class="card-body p-1">
@@ -79,8 +79,8 @@
                     </div>
 
                     <div class="col-6">
-                        <div class="card border-success shadow-lg">
-                            <div class="card-header text-uppercase text-left bg-success text-white font-weight-bold">
+                        <div class="card border-{{ color }} shadow-lg">
+                            <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
                                  <span>Nombre de travail à faire</span>
                             </div>
                             <div class="card-body p-1">
