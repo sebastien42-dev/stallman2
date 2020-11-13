@@ -15,6 +15,10 @@ require('bootstrap');
 require('startbootstrap-sb-admin-2/css/sb-admin-2.css');
 require('startbootstrap-sb-admin-2/js/sb-admin-2.js');
 require('startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.css');
+require('startbootstrap-sb-admin-2/vendor/datatables/dataTables.bootstrap4.css');
+require('startbootstrap-sb-admin-2/vendor/datatables/dataTables.bootstrap4.js');
+require('startbootstrap-sb-admin-2/vendor/datatables/jquery.dataTables.js');
+require('startbootstrap-sb-admin-2/vendor/jquery/jquery.js');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 import $ from 'jquery';

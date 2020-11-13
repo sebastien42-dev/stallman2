@@ -3,6 +3,6 @@
     {{ form_widget(form) }}
 <br>
     <div class="text-center m-3">
-        <button class="btn btn-danger text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
+        <button class="btn btn-{{ color }} text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form) }}

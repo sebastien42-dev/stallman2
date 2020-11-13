@@ -17,19 +17,20 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class,[
-                'attr' => 
-                    ['class'=> 'form-control',
-                    'placeholder' => 'dupont.camille@quelquechose.fr'
-                ],
+                'attr' => [
+                        'class'=> 'form-control border border-dark mb-2'
+                    ],
                 'label' => "Mail de l'utilisateur",
-                'label_attr' => ['class' => 'text-white font-weight-bold']
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                    ]
             ])
             ->add('roles', ChoiceType::class, [
                 'attr'  =>  
-                    ['class' => 'form-control'
+                    ['class' => 'form-control border border-dark mb-2'
                 ],
                 'label' => "Rôle de l'utilisateur (il peut y en avoir plusieurs)",
-                'label_attr' => ['class' => 'text-white font-weight-bold mt-3'],
+                'label_attr' => ['class' => 'text-dark font-weight-bold mb-2'],
                 'choices' => [
                     'Administrateur' => 'ROLE_ADMIN',
                     'Professeur' => 'ROLE_PROF',
@@ -41,10 +42,10 @@ class UserType extends AbstractType
             ])
             ->add('password', PasswordType::class,[
                 'attr' =>  
-                ['class' => 'form-control'
+                ['class' => 'form-control border border-dark'
             ],
                 'label' => "Mot de passe",
-                'label_attr' => ['class' => 'text-white font-weight-bold mt-3']
+                'label_attr' => ['class' => 'text-dark font-weight-bold mb-2']
                
             ])
         ;

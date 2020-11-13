@@ -16,21 +16,21 @@ class MatiereType extends AbstractType
         $builder
             ->add('libelle_matiere', TextType::class,[
                 'attr' => [
-                    'class' =>'form-control'
+                    'class' =>'form-control mb-2 boder border-dark'
                 ],
                 'label' => 'Nom de la matière',
                 'label_attr' => [
-                    'class' => 'text-white font-weight-bold'
+                    'class' => 'text-dark font-weight-bold'
                 ]
             ])
             //TODO verifier une saisie positive et un défaut à 1
             ->add('coefficient',IntegerType::class,[
                 'attr' => [
-                    'class' =>'form-control'
+                    'class' =>'form-control boder border-dark'
                 ],
                 'label' => 'Coefficient de la matière',
                 'label_attr' => [
-                    'class' => 'text-white font-weight-bold'
+                    'class' => 'text-dark font-weight-bold'
                 ]
             ])
         ;
