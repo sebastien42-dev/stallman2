@@ -14,6 +14,7 @@
                 <th width="10%">N°</th>
                 <th>Libellé matière</th>
                 <th>Coefficient</th>
+                <th>formateur(s)</th>
                 <th width="7%">actions</th>
             </tr>
         </thead>
@@ -23,6 +24,11 @@
                 <td>{{ matiere.id }}</td>
                 <td>{{ matiere.libelleMatiere }}</td>
                 <td>{{ matiere.coefficient }}</td>
+                <td>
+                {% for formateur in matiere.users %}
+                    {{ formateur.nom }}  {{ formateur.prenom }} - 
+                {% endfor %}
+                </td>
                 <td>
                     <div class="row">
                         {# <a title="voir" href="{{ path('matiere_show', {'id': matiere.id}) }}" class="btn-circle btn-info btn-sm mr-1"><i class="fas fa-eye text-white"></i></a> #}

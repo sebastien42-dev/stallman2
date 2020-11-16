@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Matiere;
 use App\Form\MatiereType;
+use App\Repository\FonctionRepository;
+use App\Repository\UserRepository;
 use App\Repository\MatiereRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/admin/matiere")
@@ -26,26 +28,43 @@ class MatiereController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="matiere_new", methods={"GET","POST"})
+     * @Route("/new", name="matiere_new")
      */
-    public function new(Request $request): Response
+    public function new(Request $request,FonctionRepository $fonctionRepo,UserRepository $userRepo): Response
     {
-        $matiere = new Matiere();
-        $form = $this->createForm(MatiereType::class, $matiere);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($matiere);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('matiere_index');
-        }
-
+       
+        $formateurs = $userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR);
+    
         return $this->render('matiere/new.html.twig', [
-            'matiere' => $matiere,
-            'form' => $form->createView(),
+            'formateurs' => $formateurs
         ]);
+    }
+
+    /**
+     * @Route("/newsave", name="matiere_new_save", methods={"GET","POST"})
+     */
+    public function newSave(Request $request,UserRepository $userRepo): Response
+    {
+        
+        $tab_formateur = $request->request->get("formateur_matiere");
+        $libelle_matiere = $request->request->get("libelle_matiere");
+        $coef = $request->request->get("coefficient");
+
+        $matiere = new Matiere;
+        $matiere->setLibelleMatiere($libelle_matiere);
+        $matiere->setCoefficient($coef);
+       
+        foreach($tab_formateur as $formateur) {
+            
+            $user = $userRepo->findOneById($formateur);
+            $matiere->addUser($user);
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($matiere);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('matiere_index');
+    
     }
 
     /**

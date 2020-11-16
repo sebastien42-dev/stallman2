@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,6 +35,52 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=350)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $societe;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $rib;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateCreation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $fonction;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Matiere::class, inversedBy="users")
+     */
+    private $matiere;
+
+    public function __construct()
+    {
+        $this->matiere = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -110,5 +158,113 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getSociete(): ?string
+    {
+        return $this->societe;
+    }
+
+    public function setSociete(?string $societe): self
+    {
+        $this->societe = $societe;
+
+        return $this;
+    }
+
+    public function getRib(): ?string
+    {
+        return $this->rib;
+    }
+
+    public function setRib(?string $rib): self
+    {
+        $this->rib = $rib;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(?\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getFonction(): ?Fonction
+    {
+        return $this->fonction;
+    }
+
+    public function setFonction(?Fonction $fonction): self
+    {
+        $this->fonction = $fonction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Matiere[]
+     */
+    public function getMatiere(): Collection
+    {
+        return $this->matiere;
+    }
+
+    public function addMatiere(Matiere $matiere): self
+    {
+        if (!$this->matiere->contains($matiere)) {
+            $this->matiere[] = $matiere;
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(Matiere $matiere): self
+    {
+        $this->matiere->removeElement($matiere);
+
+        return $this;
     }
 }

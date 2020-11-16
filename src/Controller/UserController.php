@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/admin/", name="user_index", methods={"GET"})
      */
     public function index(UserRepository $userRepository): Response
     {
@@ -28,17 +29,19 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
+        $date = new DateTime();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $passwordEncoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
+            $user->setDateCreation($date);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -53,7 +56,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/admin/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -63,7 +66,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @Route("/admin/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user,UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -85,7 +88,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("/admin/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {
