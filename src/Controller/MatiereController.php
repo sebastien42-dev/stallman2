@@ -48,7 +48,13 @@ class MatiereController extends AbstractController
         
         $tab_formateur = $request->request->get("formateur_matiere");
         $libelle_matiere = $request->request->get("libelle_matiere");
-        $coef = $request->request->get("coefficient");
+        
+        if($request->request->get("coefficient") < 1 || $request->request->get("coefficient") > 9 ) {
+            $coef = 1;
+        }else{
+            $coef = $request->request->get("coefficient");
+        }
+        
 
         $matiere = new Matiere;
         $matiere->setLibelleMatiere($libelle_matiere);
