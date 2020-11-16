@@ -4,32 +4,63 @@
 
 {% block body %}
 <div class="container align-content-center">
-    <h1 class="text-center font-weight-bold m-3 text-primary table-striped text-center">Fiche utilisateur {{ user.email }}</h1>
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Fiche utilisateur</span></h2>
     <br>
     <div class="row">
-        <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
-            <div class="card-header bg-primary text-white">N° d'utilisateur</div>
+    <div class="col-9">
+        <div class="card  border border-{{ color }} shadow">
+            <div class="card-header bg-dark text-white font-weight-bold">
+                {{ user.nom }} {{ user.PRENOM }}
+            </div>
             <div class="card-body">
-                <p class="card-text text-dark text-xl">{{ user.id }}</p>
-            </div>
-        </div>
-         <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
-            <div class="card-header bg-primary text-white">Mail</div>
-            <div class="card-body bg-light">
-                <p class="card-text text-dark  text-xl">{{ user.email }}</p>
-            </div>
-        </div>
-         <div class="card mb-3 mt-3 mr-3 border border-primary font-weight-bold text-center" style="max-width: 18rem;">
-            <div class="card-header bg-primary text-white">Rôle</div>
-            <div class="card-body bg-light">
-                <p class="card-text text-dark text-xl">{{ user.roles ? user.roles|json_encode : '' }}</p>
+                <table class="table-borderless table-sm">
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ user.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prénom</th>
+                        <td>{{ user.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Adresse</th>
+                        <td>{{ user.adresse }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fonction</th>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de création</th>
+                        <td>{{ user.dateCreation|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Droits sur la plateforme</th>
+                        <td>{{ user.roles|json_encode }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
-    <div class="row">
-        <a href="{{ path('user_index') }}" class="btn btn-secondary btn-sm mr-2">Retour à la liste d'utilisateur</a>
-        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-secondary btn-sm mr-2">Modifier ce profil</a>
-        {{ include('user/_delete_form.html.twig') }}
+
+    <div class="col-3 ">
+    <ul style="list-style:none;" class="mb-2">
+        <li>
+            <a title="retour à la liste" style="text-decoration:none;" href="{{ path('user_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>
+        </li>
+        <li>
+            <a title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm mb-2"><i class="fas fa-edit text-white"></i></a>
+        </li>
+        <li>
+            {{ include('user/_delete_form_icone.html.twig') }}
+        </li>
+    </ul>
+        
+        
     </div>
 </div>
 

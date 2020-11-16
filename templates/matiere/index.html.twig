@@ -11,18 +11,16 @@
     <table class="table table-bordered table-hover shadow">
         <thead class="text-center table-sm thead-dark">
             <tr>
-                <th width="10%">N°</th>
                 <th>Libellé matière</th>
                 <th>Coefficient</th>
-                <th>formateur(s)</th>
-                <th width="7%">actions</th>
+                <th>Formateur(s)</th>
+                <th width="7%">Actions</th>
             </tr>
         </thead>
         <tbody class="table-sm">
         {% for matiere in matieres %}
             <tr class='text-center'>
-                <td>{{ matiere.id }}</td>
-                <td>{{ matiere.libelleMatiere }}</td>
+                <td title="{{ matiere.id }}">{{ matiere.libelleMatiere }}</td>
                 <td>{{ matiere.coefficient }}</td>
                 <td>
                 {% for formateur in matiere.users %}

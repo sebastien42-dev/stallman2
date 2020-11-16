@@ -11,8 +11,8 @@
     </head>
     <body>
       {% if is_granted('ROLE_ADMIN') %}
-        {% set text_color = 'text-danger' %}
-        {% set color = 'danger' %}
+        {% set text_color = 'text-info' %}
+        {% set color = 'info' %}
       {% elseif is_granted('ROLE_PROF') %}
         {% set text_color = 'text-primary' %}
         {% set color = 'primary' %}
