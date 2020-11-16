@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\UserRepository;
+use App\Repository\FonctionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
@@ -18,9 +20,14 @@ class SecurityController extends AbstractController
      /**
      * @Route("/", name="app_home")
      */
-    public function appHome (): Response
+    public function appHome (UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
     {
-        return $this->render('home/index.html.twig');
+        return $this->render('home/index.html.twig', [
+            'nbEleve' => count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE)),
+            'nbFormateur' => count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR)),
+            'nbComptable' => count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE)),
+            'nbAdmin' => count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN)),
+        ]);
     }
 
 

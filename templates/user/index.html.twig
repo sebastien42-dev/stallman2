@@ -8,7 +8,7 @@
 
     <a style="text-decoration:none;" title="ajouter un utilisateur" href="{{ path('user_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-user-plus text-white"></i></a>
 
-    <table class="table table-bordered table-hover shadow text-center">
+   {# <table class="table table-bordered table-hover shadow text-center">
         <thead class="table-sm thead-dark">
             <tr>
                 <th width="10%">Nom</th>
@@ -37,8 +37,204 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
-   
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="tous-tab" data-toggle="tab" href="#tous" role="tab" aria-controls="tous" aria-selected="true">Tous</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="eleve-tab" data-toggle="tab" href="#eleve" role="tab" aria-controls="eleve" aria-selected="false">Elèves</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="prof-tab" data-toggle="tab" href="#formateur" role="tab" aria-controls="formateur" aria-selected="false">Formateurs</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="count-tab" data-toggle="tab" href="#count" role="tab" aria-controls="count" aria-selected="false">Comptables</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Administrateurs</a>
+    </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+
+           {# tous #}
+        <div class="tab-pane fade show active mt-4 font-weight-bold" id="tous" role="tabpanel" aria-labelledby="tous-tab">
+            <table class="table table-bordered table-hover shadow text-center">
+                <thead class="table-sm thead-dark">
+                    <tr>
+                        <th width="10%">Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th width="10%">actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-sm">
+                {% for user in users %}
+                    <tr>
+                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                        <td class="text-center">
+                            <div class="row">
+                                <a style="text-decoration:none;" title="Voir la fiche" href="{{ path('user_show', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-4"><i class="fas fa-eye text-white"></i></a>
+                                <a style="text-decoration:none;" title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-edit text-white"></i></a>
+                                {{ include('user/_delete_form_icone.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5"><i>Pas d'utilisateur enregistré</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# tous #}
+
+        {# eleves #}
+        <div class="tab-pane fade mt-4 font-weight-bold" id="eleve" role="tabpanel" aria-labelledby="eleve-tab">
+            <table class="table table-bordered table-hover shadow text-center">
+                <thead class="table-sm thead-dark">
+                    <tr>
+                        <th width="10%">Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th width="10%">actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-sm">
+                {% for user in eleves %}
+                    <tr>
+                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                        <td class="text-center">
+                            <div class="row">
+                                <a style="text-decoration:none;" title="Voir la fiche" href="{{ path('user_show', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-4"><i class="fas fa-eye text-white"></i></a>
+                                <a style="text-decoration:none;" title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-edit text-white"></i></a>
+                                {{ include('user/_delete_form_icone.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5"><i>Pas d'utilisateur enregistré</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# eleves #}
+
+
+        {# formateurs #}
+        <div class="tab-pane fade mt-4 font-weight-bold" id="formateur" role="tabpanel" aria-labelledby="prof-tab">
+            <table class="table table-bordered table-hover shadow text-center">
+                <thead class="table-sm thead-dark">
+                    <tr>
+                        <th width="10%">Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th width="10%">actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-sm">
+                {% for user in formateurs %}
+                    <tr>
+                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                        <td class="text-center">
+                            <div class="row">
+                                <a style="text-decoration:none;" title="Voir la fiche" href="{{ path('user_show', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-4"><i class="fas fa-eye text-white"></i></a>
+                                <a style="text-decoration:none;" title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-edit text-white"></i></a>
+                                {{ include('user/_delete_form_icone.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5"><i>Pas d'utilisateur enregistré</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# formateurs #}
+
+        {# comptable #}
+        <div class="tab-pane fade mt-4 font-weight-bold" id="count" role="tabpanel" aria-labelledby="count-tab">
+            <table class="table table-bordered table-hover shadow text-center">
+                <thead class="table-sm thead-dark">
+                    <tr>
+                        <th width="10%">Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th width="10%">actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-sm">
+                {% for user in comptables %}
+                    <tr>
+                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                        <td class="text-center">
+                            <div class="row">
+                                <a style="text-decoration:none;" title="Voir la fiche" href="{{ path('user_show', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-4"><i class="fas fa-eye text-white"></i></a>
+                                <a style="text-decoration:none;" title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-edit text-white"></i></a>
+                                {{ include('user/_delete_form_icone.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5"><i>Pas d'utilisateur enregistré</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# comptable #}
+
+        {# admin #}
+        <div class="tab-pane fade mt-4 font-weight-bold" id="admin" role="tabpanel" aria-labelledby="admin-ta">
+            <table class="table table-bordered table-hover shadow text-center">
+                <thead class="table-sm thead-dark">
+                    <tr>
+                        <th width="10%">Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th width="10%">actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-sm">
+                {% for user in admins %}
+                    <tr>
+                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.fonction.libelleFonction }}</td>
+                        <td class="text-center">
+                            <div class="row">
+                                <a style="text-decoration:none;" title="Voir la fiche" href="{{ path('user_show', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-4"><i class="fas fa-eye text-white"></i></a>
+                                <a style="text-decoration:none;" title="modifier" href="{{ path('user_edit', {'id': user.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-edit text-white"></i></a>
+                                {{ include('user/_delete_form_icone.html.twig') }}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5"><i>Pas d'utilisateur enregistré</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# admin #}
+
     </div>
+   
+</div>
 {% endblock %}

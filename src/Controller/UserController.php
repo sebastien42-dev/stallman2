@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\FonctionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -21,10 +22,19 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/", name="user_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository,FonctionRepository $fonctionRepo): Response
     {
+        $eleves = $userRepository->findByFunction($fonctionRepo::FONCTION_ELEVE);
+        $formateurs = $userRepository->findByFunction($fonctionRepo::FONCTION_FORMATEUR);
+        $comptables = $userRepository->findByFunction($fonctionRepo::FONCTION_COMPTABLE);
+        $admins = $userRepository->findByFunction($fonctionRepo::FONCTION_ADMIN);
+
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'eleves' => $eleves,
+            'formateurs' => $formateurs,
+            'comptables' => $comptables,
+            'admins' => $admins
         ]);
     }
 
