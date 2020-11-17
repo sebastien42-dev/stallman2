@@ -1,0 +1,24 @@
+<script>
+$(document).ready(function () {
+            $('table.display').DataTable({
+                destroy: true,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": " _MENU_ par page",
+                    "zeroRecords": "Aucune entrée trouvée",
+                    "info": "Page_PAGE_ sur _PAGES_",
+                    "infoEmpty": "0 trouvé sur _MAX_ au total",
+                    "infoFiltered": "trouvé sur _MAX_ au total)",
+                    "search": "Recherche",
+                    "paginate": {
+                        "first": "Premier",
+                        "last": "Dernier",
+                        "next": "Suivant",
+                        "previous": "Précédent"
+                    }
+                },
+                stateSave: true
+            })
+        });
+
+</script>

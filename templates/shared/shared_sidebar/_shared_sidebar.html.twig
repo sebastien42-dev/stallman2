@@ -132,12 +132,12 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-dark topbar mb-4 static-top shadow-lg" style="height:3.5vw;">
+        <nav class="navbar navbar-expand navbar-light bg-dark topbar mb-4 static-top shadow-lg">
 
           <!-- Sidebar Toggle (Topbar) -->
-          {# <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+          <button id="sidebarToggleTop" class="btn btn-link btn-{{color}} d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
-          </button> #}
+          </button>
           <h5><span class="{{ text_color }} font-weight-bold">{{ app.user.nom }} {{ app.user.prenom }}</span> {{ 'now'|date('d/m/Y') }}</h5>
 
           <!-- Topbar Navbar -->

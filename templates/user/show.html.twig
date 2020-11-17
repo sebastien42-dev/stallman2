@@ -34,6 +34,7 @@
                         <th>Fonction</th>
                         <td>{{ user.fonction.libelleFonction }}</td>
                     </tr>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <tr>
                         <th>Date de création</th>
                         <td>{{ user.dateCreation|date('d/m/Y') }}</td>
@@ -42,6 +43,7 @@
                         <th>Droits sur la plateforme</th>
                         <td>{{ user.roles|json_encode }}</td>
                     </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

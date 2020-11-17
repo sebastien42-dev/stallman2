@@ -8,7 +8,7 @@
 
     <a style="text-decoration:none;" title="ajouter une matière" href="{{ path('matiere_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-folder-plus text-white"></i></a>
 
-    <table class="table table-bordered table-hover shadow">
+    <table class="table table-bordered table-striped shadow display">
         <thead class="text-center table-sm thead-dark">
             <tr>
                 <th>Libellé matière</th>
@@ -43,4 +43,7 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
 {% endblock %}
