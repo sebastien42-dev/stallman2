@@ -48,4 +48,50 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+
+var ctx2 = document.getElementById('chartUser').getContext('2d');
+var chartUser = new Chart(ctx2, {
+     type: 'doughnut',
+    data: {
+        labels: {{ labelCatgorie|raw }},
+        datasets: [{
+            label: 'montants cumulés des notes de frais formateur 1',
+            data: {{ nbUser|raw }},
+            backgroundColor: [
+                'rgba(0, 252, 46, 0.5)',
+                'rgba(0, 21, 252, 0.5)',
+                'rgba(252, 92, 0, 0.5)',
+                'rgba(0, 189, 252, 0.5)'
+            ],
+            borderColor:[
+                'rgba(0, 252, 46, 1)',
+                'rgba(0, 21, 252, 1)',
+                'rgba(252, 92, 0, 1)',
+                'rgba(0, 189, 252, 1)'
+            ]
+        },
+        ]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display:false
+                },
+                ticks : {
+                    display:false
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    display:false
+                },
+                ticks : {
+                    display:false
+                } 
+            }]
+        }
+    }
+});
 </script>

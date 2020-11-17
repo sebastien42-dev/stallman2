@@ -71,7 +71,16 @@
                 </thead>
                 <tbody class="table-sm">
                 {% for user in users %}
-                    <tr>
+                {% if user.fonction.libelleFonction == "administrateur" %}
+                    {% set bg = 'table-info' %}
+                {% elseif user.fonction.libelleFonction == "formateur" %}
+                    {% set bg = 'table-primary' %}
+                {% elseif user.fonction.libelleFonction == "élève" %}
+                    {% set bg = 'table-success' %}
+                {% elseif user.fonction.libelleFonction == "comptable" %}
+                    {% set bg = 'table-warning' %}
+                {% endif %}
+                    <tr class="{{ bg }}">
                         <td title="{{ user.id }}">{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
                         <td>{{ user.fonction.libelleFonction }}</td>

@@ -15,9 +15,14 @@ use Doctrine\Persistence\ManagerRegistry;
 class FonctionRepository extends ServiceEntityRepository
 {
     const FONCTION_ADMIN = 1;
+    const STR_FONCTION_ADMIN = 'administrateur';
     const FONCTION_FORMATEUR = 2;
+    const STR_FONCTION_FORMATEUR = 'formateur';
     const FONCTION_ELEVE = 3;
+    const STR_FONCTION_ELEVE = 'élève';
     const FONCTION_COMPTABLE = 4;
+    const STR_FONCTION_COMPTABLE = 'comptable';
+
 
     public function __construct(ManagerRegistry $registry)
     {

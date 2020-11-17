@@ -22,11 +22,18 @@ class SecurityController extends AbstractController
      */
     public function appHome (UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
     {
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
+        
         return $this->render('home/index.html.twig', [
-            'nbEleve' => count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE)),
-            'nbFormateur' => count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR)),
-            'nbComptable' => count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE)),
-            'nbAdmin' => count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN)),
+            'nbUser' => json_encode($tab_nb_user),
+            'labelCatgorie' => json_encode($tab_nom_categorie)
         ]);
     }
 
