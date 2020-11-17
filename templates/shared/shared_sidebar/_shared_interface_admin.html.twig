@@ -29,3 +29,17 @@
           </div>
         </div>
       </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSalle" aria-expanded="true" aria-controls="collapseSalle">
+          <i class="fas fa-fw fa-university {{ text_color }}"></i>
+          <span>Salle de cours</span>
+        </a>
+        <div id="collapseSalle" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href={{ path('salle_index') }}>Liste</a>
+            <a class="collapse-item" href={{ path('salle_new') }}>Créer une salle</a>
+          </div>
+        </div>
+      </li>

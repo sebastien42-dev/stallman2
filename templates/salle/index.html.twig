@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salle index{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des salles de cours</span></h2>
+
+    <a style="text-decoration:none;" title="ajouter une salle" href="{{ path('salle_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-plus-square text-white"></i></a>
+
+    <table class="table table-bordered table-hover shadow">
+        <thead class="text-center table-sm thead-dark">
+            <tr>
+                <th>Nom de la salle</th>
+                <th width="10%">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+        {% for salle in salles %}
+            <tr>
+                <td title="{{ salle.id }}">{{ salle.libelleSalle }}</td>
+                <td>
+                <div class="row">
+                    <a title="modifier" href="{{ path('salle_edit', {'id': salle.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-edit text-white"></i></a>
+                    {{ include('salle/_delete_form_icone.html.twig') }}
+                </div>   
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3"><i>Pas de salle enregistrée</i></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
