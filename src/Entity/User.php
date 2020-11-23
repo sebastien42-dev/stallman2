@@ -82,6 +82,11 @@ class User implements UserInterface
      */
     private $classes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Civilite::class, inversedBy="users")
+     */
+    private $civ;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
@@ -297,6 +302,18 @@ class User implements UserInterface
         if ($this->classes->removeElement($class)) {
             $class->removeUser($this);
         }
+
+        return $this;
+    }
+
+    public function getCiv(): ?Civilite
+    {
+        return $this->civ;
+    }
+
+    public function setCiv(?Civilite $civ): self
+    {
+        $this->civ = $civ;
 
         return $this;
     }
