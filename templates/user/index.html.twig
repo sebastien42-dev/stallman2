@@ -45,7 +45,7 @@
                 {% for user in users %}
                 
                     <tr>
-                        <td title="{{ user.id }}">{{ user.nom }}</td>
+                        <td title="{{ user.id }}">{{ user.civ.libelleCivilite|default(' ') }} {{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">

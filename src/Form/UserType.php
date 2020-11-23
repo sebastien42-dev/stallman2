@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Civilite;
 use App\Entity\Fonction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('civ', EntityType::class, [
+                'class' => Civilite::class,
+                'attr' => [
+                    'class'=> 'form-control border border-dark mb-2'
+                ],
+                'label' => "Civilité",
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                ],
+                'choice_label' => 'libelleCivilite', 
+            ])
             ->add('nom',NULL,[
                 'attr' => [
                         'class'=> 'form-control border border-dark mb-2'
@@ -45,7 +57,8 @@ class UserType extends AbstractType
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ],
-                'choice_label' => 'libelle_fonction', ])
+                'choice_label' => 'libelle_fonction', 
+            ])
             ->add('adresse',NULL,[
                 'attr' => [
                         'class'=> 'form-control border border-dark mb-2'
