@@ -83,7 +83,7 @@ class User implements UserInterface
     private $classes;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Civilite::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Civilite::class, inversedBy="users",cascade={"persist"})
      */
     private $civ;
 

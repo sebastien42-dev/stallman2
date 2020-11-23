@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Entity\Civilite;
 use App\Entity\Fonction;
+use App\Entity\Classe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -58,6 +59,19 @@ class UserType extends AbstractType
                     'class' => 'text-dark font-weight-bold'
                 ],
                 'choice_label' => 'libelle_fonction', 
+            ])
+            ->add('classes', EntityType::class, [
+                'class' => Classe::class,
+                'attr' => [
+                    'class'=> 'form-control border border-dark mb-2'
+                ],
+                'label' => "Fonction de la classe",
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                ],
+                'choice_label' => 'libelle_classe',
+                'multiple' => true,
+                'by_reference' => false
             ])
             ->add('adresse',NULL,[
                 'attr' => [
