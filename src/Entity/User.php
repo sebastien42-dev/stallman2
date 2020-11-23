@@ -77,9 +77,15 @@ class User implements UserInterface
      */
     private $matiere;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Classe::class, mappedBy="users")
+     */
+    private $classes;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
+        $this->classes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +270,33 @@ class User implements UserInterface
     public function removeMatiere(Matiere $matiere): self
     {
         $this->matiere->removeElement($matiere);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Classe[]
+     */
+    public function getClasses(): Collection
+    {
+        return $this->classes;
+    }
+
+    public function addClass(Classe $class): self
+    {
+        if (!$this->classes->contains($class)) {
+            $this->classes[] = $class;
+            $class->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClass(Classe $class): self
+    {
+        if ($this->classes->removeElement($class)) {
+            $class->removeUser($this);
+        }
 
         return $this;
     }

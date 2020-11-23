@@ -34,9 +34,15 @@ class Matiere
      */
     private $users;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Classe::class, mappedBy="matieres")
+     */
+    private $classes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->classes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,6 +96,33 @@ class Matiere
     {
         if ($this->users->removeElement($user)) {
             $user->removeMatiere($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Classe[]
+     */
+    public function getClasses(): Collection
+    {
+        return $this->classes;
+    }
+
+    public function addClass(Classe $class): self
+    {
+        if (!$this->classes->contains($class)) {
+            $this->classes[] = $class;
+            $class->addMatiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClass(Classe $class): self
+    {
+        if ($this->classes->removeElement($class)) {
+            $class->removeMatiere($this);
         }
 
         return $this;
