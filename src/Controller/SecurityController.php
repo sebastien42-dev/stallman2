@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('home');
+             return $this->redirectToRoute('app_home');
          }
 
         // get the login error if there is one
@@ -60,8 +60,9 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        
-        return $this->render('security/login.html.twig');
+        session_destroy();
+        return $this->redirectToRoute('app_login');
+       // return $this->render('security/login.html.twig');
         //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
