@@ -9,7 +9,8 @@
     <table class="table table-bordered table-hover shadow display text-center">
         <thead class="table-sm thead-dark">
             <tr>
-                <th>Nom de la classe</th>
+                <th width="30%">Nom de la classe</th>
+                <th >liste des matières</th>
                 <th width="10%">Actions</th>
             </tr>
         </thead>
@@ -17,6 +18,11 @@
         {% for classe in classes %}
             <tr>
                 <td title="{{ classe.id }}">{{ classe.libelleClasse }}</td>
+                <td>
+                    {% for matiere in classe.matieres %}
+                        {{ matiere.libelleMatiere }} - 
+                    {% endfor %}
+                </td>
                 <td>
                     <div class="row">
                         {# <a style="text-decoration:none;" title="modifier" href="{{ path('classe_show', {'id': classe.id}) }}" class="btn-circle btn-info btn-sm ml-2 mr-2"><i class="fas fa-eye text-white"></i></a> #}
