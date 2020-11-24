@@ -5,24 +5,9 @@
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Créer une matière</span></h2>
-        <div >
-        <form method="POST" action ="{{ path('matiere_new_save') }}">
-        <label for="libelle_matiere" class="text-dark font-weight-bold">Libellé matière</label>
-        <input type="text" name="libelle_matiere" class="form-control border border-dark mb-2">
-        <label for="coefficient" class="text-dark font-weight-bold">Coefficient</label>
-        <input type="text" name="coefficient" class="form-control border border-dark mb-2">
-        <label for="formateur_matiere" class="text-dark font-weight-bold">Formateur(s)</label>
-        <ul style="list-style:none;">
-            {% for formateur in formateurs %}
-            <li><input type="checkbox" name="formateur_matiere[]" value="{{formateur.id}}"> {{formateur.nom}} {{formateur.prenom}}</li>
-            {% endfor %}
-        </ul>
-        </select>
-        <div class="text-center m-3">
-        <button type="submit" class="btn btn-{{ color }} font-weight-bold">Enregistrer</button>
-    </div>
-        {# {{ include('matiere/_form.html.twig') }} #}
-        </div>
+      
+        {{ include('matiere/_form.html.twig') }}
+        
     <a title="retour à la liste" style="text-decoration:none;" href="{{ path('matiere_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
 </div>
 {% endblock %}

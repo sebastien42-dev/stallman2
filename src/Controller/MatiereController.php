@@ -30,48 +30,28 @@ class MatiereController extends AbstractController
     /**
      * @Route("/new", name="matiere_new")
      */
-    public function new(Request $request,FonctionRepository $fonctionRepo,UserRepository $userRepo): Response
+    public function new(Request $request): Response
     {
        
-        $formateurs = $userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR);
-    
+        $matiere = new Matiere();
+        $form = $this->createForm(MatiereType::class, $matiere);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($matiere);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('matiere_index');
+        }
+
         return $this->render('matiere/new.html.twig', [
-            'formateurs' => $formateurs
+            'matiere' => $matiere,
+            'form' => $form->createView(),
         ]);
+        
     }
 
-    /**
-     * @Route("/newsave", name="matiere_new_save", methods={"GET","POST"})
-     */
-    public function newSave(Request $request,UserRepository $userRepo): Response
-    {
-        
-        $tab_formateur = $request->request->get("formateur_matiere");
-        $libelle_matiere = $request->request->get("libelle_matiere");
-        
-        if($request->request->get("coefficient") < 1 || $request->request->get("coefficient") > 9 ) {
-            $coef = 1;
-        }else{
-            $coef = $request->request->get("coefficient");
-        }
-        
-
-        $matiere = new Matiere;
-        $matiere->setLibelleMatiere($libelle_matiere);
-        $matiere->setCoefficient($coef);
-       
-        foreach($tab_formateur as $formateur) {
-            
-            $user = $userRepo->findOneById($formateur);
-            $matiere->addUser($user);
-        }
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($matiere);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('matiere_index');
-    
-    }
 
     /**
      * @Route("/{id}", name="matiere_show", methods={"GET"})

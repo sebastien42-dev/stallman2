@@ -73,7 +73,7 @@ class User implements UserInterface
     private $fonction;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Matiere::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Matiere::class, inversedBy="users",cascade={"persist"})
      */
     private $matiere;
 
