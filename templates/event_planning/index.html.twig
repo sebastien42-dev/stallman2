@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventPlanning index{% endblock %}
+
+{% block body %}
+    <h1>EventPlanning index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_planning in event_plannings %}
+            <tr>
+                <td>{{ event_planning.id }}</td>
+                <td>{{ event_planning.title }}</td>
+                <td>{{ event_planning.start ? event_planning.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_planning.end ? event_planning.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('event_planning_show', {'id': event_planning.id}) }}">show</a>
+                    <a href="{{ path('event_planning_edit', {'id': event_planning.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('event_planning_new') }}">Create new</a>
+{% endblock %}
