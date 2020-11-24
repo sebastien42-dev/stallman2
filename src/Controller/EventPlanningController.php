@@ -59,6 +59,7 @@ class EventPlanningController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        //TODO setter par défaut la date de fin a la date du début, ne pouvoir que changer l'heure
         $eventPlanning = new EventPlanning();
         $form = $this->createForm(EventPlanningType::class, $eventPlanning);
         $form->handleRequest($request);

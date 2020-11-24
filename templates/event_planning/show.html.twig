@@ -3,32 +3,64 @@
 {% block title %}EventPlanning{% endblock %}
 
 {% block body %}
-    <h1>EventPlanning</h1>
+<div class="container align-content-center">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Fiche cours</span></h2>
+    <br>
+    <div class="row">
+    <div class="col-9">
+        <div class="card  border border-{{ color }} shadow">
+            <div class="card-header bg-dark text-white font-weight-bold">
+                {{ event_planning.title ? event_planning.title : 'Cours {{ event_planning.matieres.libelleMatiere }}' }}
+            </div>
+            <div class="card-body">
+                <table class="table-borderless table-sm">
+                    <tr>
+                        <th>Titre</th>
+                        <td>{{ event_planning.title ? event_planning.title : 'aucun' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ event_planning.start|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Heure de début</th>
+                        <td>{{ event_planning.start|date('H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Heure de fin</th>
+                        <td>{{ event_planning.end|date('H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Classe</th>
+                        <td>{{ event_planning.classes.libelleClasse }}</td>
+                    </tr>
+                    <tr>
+                        <th>Matière</th>
+                        <td>{{ event_planning.salles.libelleSalle }}</td>
+                    </tr>
+                    <tr>
+                        <th>Formateur</th>
+                        <td>{{ event_planning.formateur.nom }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event_planning.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ event_planning.title }}</td>
-            </tr>
-            <tr>
-                <th>Start</th>
-                <td>{{ event_planning.start ? event_planning.start|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>End</th>
-                <td>{{ event_planning.end ? event_planning.end|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('event_planning_index') }}">back to list</a>
-
-    <a href="{{ path('event_planning_edit', {'id': event_planning.id}) }}">edit</a>
-
-    {{ include('event_planning/_delete_form.html.twig') }}
+    <div class="col-3 ">
+    <ul style="list-style:none;" class="mb-2">
+        <li>
+            <a title="retour à la liste" style="text-decoration:none;" href="{{ path('event_planning_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>
+        </li>
+        <li>
+            <a title="modifier" href="{{ path('event_planning_edit', {'id': event_planning.id}) }}" class="btn-circle btn-info btn-sm mb-2"><i class="fas fa-edit text-white"></i></a>
+        </li>
+        <li>
+            {{ include('event_planning/_delete_form_icone.html.twig') }}
+        </li>
+    </ul>
+        
+        
+    </div>
+</div>
 {% endblock %}
