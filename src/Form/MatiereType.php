@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -32,6 +33,33 @@ class MatiereType extends AbstractType
                     'class' =>'form-control boder border-dark mb-2'
                 ],
                 'label' => 'Coefficient de la matière',
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                ]
+            ])
+            ->add('eventBackgroundColor',ColorType::class,[
+                'attr' => [
+                    'class' =>'form-control boder border-dark mb-2'
+                ],
+                'label' => 'Couleur de fond pour l\'EDT',
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                ]
+            ])
+            ->add('eventBorderColor',ColorType::class,[
+                'attr' => [
+                    'class' =>'form-control boder border-dark mb-2'
+                ],
+                'label' => 'Couleur de la bordure pour l\'EDT',
+                'label_attr' => [
+                    'class' => 'text-dark font-weight-bold'
+                ]
+            ])
+            ->add('eventTextColor',ColorType::class,[
+                'attr' => [
+                    'class' =>'form-control boder border-dark mb-2'
+                ],
+                'label' => 'Couleur du texte pour l\'EDT',
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ]
