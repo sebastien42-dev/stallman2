@@ -39,6 +39,21 @@ class Matiere
      */
     private $classes;
 
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
+     */
+    private $eventBackgroundColor;
+
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
+     */
+    private $eventBorderColor;
+
+    /**
+     * @ORM\Column(type="string", length=7, nullable=true)
+     */
+    private $eventTextColor;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -124,6 +139,42 @@ class Matiere
         if ($this->classes->removeElement($class)) {
             $class->removeMatiere($this);
         }
+
+        return $this;
+    }
+
+    public function getEventBackgroundColor(): ?string
+    {
+        return $this->eventBackgroundColor;
+    }
+
+    public function setEventBackgroundColor(?string $eventBackgroundColor): self
+    {
+        $this->eventBackgroundColor = $eventBackgroundColor;
+
+        return $this;
+    }
+
+    public function getEventBorderColor(): ?string
+    {
+        return $this->eventBorderColor;
+    }
+
+    public function setEventBorderColor(?string $eventBorderColor): self
+    {
+        $this->eventBorderColor = $eventBorderColor;
+
+        return $this;
+    }
+
+    public function getEventTextColor(): ?string
+    {
+        return $this->eventTextColor;
+    }
+
+    public function setEventTextColor(?string $eventTextColor): self
+    {
+        $this->eventTextColor = $eventTextColor;
 
         return $this;
     }
