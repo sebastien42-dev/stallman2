@@ -34,10 +34,16 @@ class Classe
      */
     private $matieres;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EventPlanning::class, mappedBy="classes")
+     */
+    private $eventPlannings;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->matieres = new ArrayCollection();
+        $this->eventPlannings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +107,36 @@ class Classe
     public function removeMatiere(Matiere $matiere): self
     {
         $this->matieres->removeElement($matiere);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EventPlanning[]
+     */
+    public function getEventPlannings(): Collection
+    {
+        return $this->eventPlannings;
+    }
+
+    public function addEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if (!$this->eventPlannings->contains($eventPlanning)) {
+            $this->eventPlannings[] = $eventPlanning;
+            $eventPlanning->setClasses($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if ($this->eventPlannings->removeElement($eventPlanning)) {
+            // set the owning side to null (unless already changed)
+            if ($eventPlanning->getClasses() === $this) {
+                $eventPlanning->setClasses(null);
+            }
+        }
 
         return $this;
     }

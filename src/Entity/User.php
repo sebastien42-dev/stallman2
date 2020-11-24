@@ -87,10 +87,16 @@ class User implements UserInterface
      */
     private $civ;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EventPlanning::class, mappedBy="formateur")
+     */
+    private $eventPlannings;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
         $this->classes = new ArrayCollection();
+        $this->eventPlannings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -314,6 +320,36 @@ class User implements UserInterface
     public function setCiv(?Civilite $civ): self
     {
         $this->civ = $civ;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EventPlanning[]
+     */
+    public function getEventPlannings(): Collection
+    {
+        return $this->eventPlannings;
+    }
+
+    public function addEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if (!$this->eventPlannings->contains($eventPlanning)) {
+            $this->eventPlannings[] = $eventPlanning;
+            $eventPlanning->setFormateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if ($this->eventPlannings->removeElement($eventPlanning)) {
+            // set the owning side to null (unless already changed)
+            if ($eventPlanning->getFormateur() === $this) {
+                $eventPlanning->setFormateur(null);
+            }
+        }
 
         return $this;
     }

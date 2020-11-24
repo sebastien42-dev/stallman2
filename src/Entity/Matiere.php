@@ -54,10 +54,16 @@ class Matiere
      */
     private $eventTextColor;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EventPlanning::class, mappedBy="matieres")
+     */
+    private $eventPlannings;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->classes = new ArrayCollection();
+        $this->eventPlannings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +181,36 @@ class Matiere
     public function setEventTextColor(?string $eventTextColor): self
     {
         $this->eventTextColor = $eventTextColor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EventPlanning[]
+     */
+    public function getEventPlannings(): Collection
+    {
+        return $this->eventPlannings;
+    }
+
+    public function addEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if (!$this->eventPlannings->contains($eventPlanning)) {
+            $this->eventPlannings[] = $eventPlanning;
+            $eventPlanning->setMatieres($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventPlanning(EventPlanning $eventPlanning): self
+    {
+        if ($this->eventPlannings->removeElement($eventPlanning)) {
+            // set the owning side to null (unless already changed)
+            if ($eventPlanning->getMatieres() === $this) {
+                $eventPlanning->setMatieres(null);
+            }
+        }
 
         return $this;
     }
