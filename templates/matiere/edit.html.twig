@@ -1,17 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}modifcation{% endblock %}
+{% block title %}Modifier matière{% endblock %}
 
 {% block body %}
 <div class="container">
-<h2 class="text-center m-3"><span class="badge badge-info font-weight-bold text-white">Modifier la matière {{ matiere.libelleMatiere }}</span></h2>
-    <div class="card bg-primary m-3 p-4">
-    {{ include('matiere/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
-</div>
-<div class="row">
-    <a href="{{ path('matiere_index') }}" class="btn btn-secondary btn-sm mr-3">Retour à la liste des matières</a>
-    {{ include('matiere/_delete_form.html.twig') }}
+
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Modifier la matière {{ matiere.libelleMatiere }}</span></h2>
+
+    <div class="card bg-gradient-{{ color }} m-3 p-4">
+        {{ include('matiere/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
     </div>
-</div>
+
+    <div class="row">
+        <a title="retour à la liste" style="text-decoration:none;" href="{{ path('matiere_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
+        {# {{ include('matiere/_delete_form.html.twig') }} #}
+        </div>
+    </div>
    
 {% endblock %}
