@@ -5,9 +5,10 @@
         </a>
         <div id="collapsePlanning" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="login.html">Voir EDT</a>
+            <a class="collapse-item" href={{ path('event_planning_calendar') }}>Voir EDT</a>
             {% if is_granted('ROLE_ADMIN') %}
-            <a class="collapse-item" href="register.html">Modifier EDT</a>
+            <a class="collapse-item" href={{ path('event_planning_index') }}>Voir la liste</a>
+            <a class="collapse-item" href={{ path('event_planning_new') }}>Ajouter un cours</a>
             {% endif %}
           </div>
         </div>

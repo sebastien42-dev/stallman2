@@ -1,0 +1,68 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Emploi du temps</span></h2>
+
+    <div class="calendrier" style="width:70%;margin:auto;font-size:15px;"></div>
+
+    <a title="retour à la liste" style="text-decoration:none;" href="{{ path('event_planning_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function () {
+    let calendarEl = document.getElementById('calendrier');
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView : 'timeGridWeek'
+    });
+
+    // On affiche le calendrier
+    calendar.render();
+})
+    
+    </script>
+
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Emploi du temps</span></h2>
+
+<div class="container">
+    <div id="calendrier" style="width:70%;margin:auto;font-size:15px;"></div>
+</div>
+
+</div>
+    
+{% endblock %}
+{% block javascripts %}
+<script>
+
+  $(document).ready(function () {
+    let calendarEl = document.getElementById('calendrier');
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView : 'timeGridWeek',
+        locale :'fr',
+        timezone :'Europe/Paris',
+        themeSystem: 'bootstrap',
+        headerToolbar: {
+            start: 'prev,next today',
+            center:'title',
+            end:'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events : {{data|raw}}
+    });
+
+
+    // On affiche le calendrier
+    calendar.render();
+})
+</script>
+{% endblock %}

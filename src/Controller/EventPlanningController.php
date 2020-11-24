@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\EventPlanning;
 use App\Form\EventPlanningType;
+use App\Repository\SalleRepository;
+use App\Repository\ClasseRepository;
+use App\Repository\MatiereRepository;
 use App\Repository\EventPlanningRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/event/planning")
@@ -26,7 +29,33 @@ class EventPlanningController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="event_planning_new", methods={"GET","POST"})
+     * @Route("/calendar", name="event_planning_calendar", methods={"GET"})
+     */
+    public function calendar(EventPlanningRepository $eventPlanningRepository,SalleRepository $salleRepo,ClasseRepository $classeRepo,MatiereRepository $matiereRepo): Response
+    {
+        $events = $eventPlanningRepository->findAll();
+        $tab_events =[];
+        foreach($events as $event) {
+            $salle = $salleRepo->findOneById($event->getSalles());
+            $matiere =$matiereRepo->findOneById($event->getMatieres());
+            $classe = $classeRepo->findOneById($event->getClasses());
+            $descr = 'salle : '.$salle->getLibelleSalle().' - classe : '.$classe->getLibelleClasse();
+            $tab_events[]=[
+                'id' => $event->getId(),
+                'title' => $event->getTitle().' '.$descr,
+                'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                'borderColor' => $matiere->getEventBorderColor(),
+                'backgroundColor' => $matiere->getEventBackgroundColor(),
+                'textColor' => $matiere->getEventTextColor(),
+            ];
+        }
+        $data = json_encode($tab_events);
+        return $this->render('event_planning/calendar.html.twig',compact('data'));
+    }
+
+    /**
+     * @Route("/admin/new", name="event_planning_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -59,7 +88,7 @@ class EventPlanningController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="event_planning_edit", methods={"GET","POST"})
+     * @Route("/admin/{id}/edit", name="event_planning_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, EventPlanning $eventPlanning): Response
     {
@@ -79,7 +108,7 @@ class EventPlanningController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="event_planning_delete", methods={"DELETE"})
+     * @Route("/admin/{id}", name="event_planning_delete", methods={"DELETE"})
      */
     public function delete(Request $request, EventPlanning $eventPlanning): Response
     {
