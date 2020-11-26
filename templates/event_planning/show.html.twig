@@ -31,11 +31,15 @@
                         <td>{{ event_planning.end|date('H:i') }}</td>
                     </tr>
                     <tr>
+                        <th>Matière</th>
+                        <td>{{ event_planning.matieres.libelleMatiere }}</td>
+                    </tr>
+                    <tr>
                         <th>Classe</th>
                         <td>{{ event_planning.classes.libelleClasse }}</td>
                     </tr>
                     <tr>
-                        <th>Matière</th>
+                        <th>Salle</th>
                         <td>{{ event_planning.salles.libelleSalle }}</td>
                     </tr>
                     <tr>
