@@ -34,13 +34,20 @@
                         <th>Matière</th>
                         <td>{{ event_planning.matieres.libelleMatiere }}</td>
                     </tr>
+                    {% if event_planning.isDistance == 1 %}
+                        <tr>
+                            <th>Classe</th>
+                            <td><i><mark>Cours à distance</mark></i></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                        <th>Salle</th>
+                        <td>{{ event_planning.salles.libelleSalle }}</td>
+                    </tr>
+                    {% endif %}
                     <tr>
                         <th>Classe</th>
                         <td>{{ event_planning.classes.libelleClasse }}</td>
-                    </tr>
-                    <tr>
-                        <th>Salle</th>
-                        <td>{{ event_planning.salles.libelleSalle }}</td>
                     </tr>
                     <tr>
                         <th>Formateur</th>

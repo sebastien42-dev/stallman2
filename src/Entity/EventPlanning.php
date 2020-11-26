@@ -52,6 +52,11 @@ class EventPlanning
      */
     private $formateur;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDistance;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class EventPlanning
     public function setFormateur(?User $formateur): self
     {
         $this->formateur = $formateur;
+
+        return $this;
+    }
+
+    public function getIsDistance(): ?bool
+    {
+        return $this->isDistance;
+    }
+
+    public function setIsDistance(bool $isDistance): self
+    {
+        $this->isDistance = $isDistance;
 
         return $this;
     }

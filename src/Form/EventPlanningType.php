@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class EventPlanningType extends AbstractType
@@ -50,8 +51,13 @@ class EventPlanningType extends AbstractType
                 ],
                 'date_widget' => 'single_text',
                 'hours'=>range(8,19)
-                ]
-                )
+            ])
+            ->add('isDistance', CheckboxType::class,[
+                    'label' => 'cours à distance -  ',
+                    'label_attr' => [
+                        'class' => 'text-dark font-weight-bold'
+                    ],
+            ])
             ->add('salles', EntityType::class, [
                 'class' => Salle::class,
                 'attr' => [
