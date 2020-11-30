@@ -25,7 +25,7 @@ class EventPlanningType extends AbstractType
                 'attr' => [
                     'class' =>'form-control mb-2 boder border-dark'
                 ],
-                'label' => 'Titre (facultatif, par d&faut le nom de la salle, du formateur et la classe)',
+                'label' => 'Titre (facultatif, par défaut le nom de la salle, du formateur et la classe)',
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ]
