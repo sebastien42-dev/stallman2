@@ -53,7 +53,7 @@ class EventPlanningType extends AbstractType
                 'hours'=>range(8,19)
             ])
             ->add('isDistance', CheckboxType::class,[
-                    'label' => 'cours à distance -  ',
+                    'label' => 'cours à distance ->  ',
                     'label_attr' => [
                         'class' => 'text-dark font-weight-bold'
                     ],

@@ -1,4 +1,32 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">{{ form_row(form.title) }}</div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-6">{{ form_row(form.start) }}</div>
+        <div class="col-6">{{ form_row(form.end) }}</div>
+    </div>
+    <div class="row">
+        <div class="col text-center">{{ form_row(form.isDistance) }}</div>
+        <div class="col">{{ form_row(form.salles) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">{{ form_row(form.classes) }}</div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col">{{ form_row(form.matieres) }}</div>
+        <div class="col">{{ form_row(form.formateur) }}</div>
+    </div>
+    {{ form_rest(form) }}
+    {# {{ form_widget(form) }} #}
+   <div class="text-center m-3">
+        <button class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+</div>
 {{ form_end(form) }}
+

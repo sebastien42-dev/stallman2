@@ -3,9 +3,11 @@
 {% block title %}New EventPlanning{% endblock %}
 
 {% block body %}
-    <h1>Create new EventPlanning</h1>
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Créer un cours pour l'EDT</span></h2>
 
     {{ include('event_planning/_form.html.twig') }}
 
-    <a href="{{ path('event_planning_index') }}">back to list</a>
+    <a title="retour à la liste" style="text-decoration:none;" href="{{ path('event_planning_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
+</div>
 {% endblock %}
