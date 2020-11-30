@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}liste notes{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des notes</span></h2>
+
+    <a style="text-decoration:none;" title="ajouter une note" href="{{ path('note_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-folder-plus text-white"></i></a>
+
+    <table class="table table-bordered table-striped shadow display">
+        <thead class="text-center table-sm thead-dark">
+            <tr>
+                <th>Intitule de l'élément noté</th>
+                <th>Date de la note</th>
+                <th>Commentaire</th>
+                <th>Note</th>
+                <th>Coefficient</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for note in notes %}
+            <tr>
+                <td title="{{ note.id }}">{{ note.libelleNote }}</td>
+                <td>{{ note.dateNote ? note.dateNote|date('d/m/Y') : '' }}</td>
+                <td>{{ note.commentaire }}</td>
+                <td>{{ note.note }}</td>
+                <td>{{ note.coefficient }}</td>
+                <td>
+                    <div class="row">
+                        {# <a title="voir" href="{{ path('note_show', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-1"><i class="fas fa-eye text-white"></i></a> #}
+                        <a title="modifier" href="{{ path('note_edit', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-edit text-white"></i></a>
+                        {{ include('note/_delete_form_icone.html.twig') }}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Pas de note enregistrée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('note_new') }}">Create new</a>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
+{% endblock %}
