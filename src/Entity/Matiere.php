@@ -59,11 +59,17 @@ class Matiere
      */
     private $eventPlannings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="matieres")
+     */
+    private $notes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->classes = new ArrayCollection();
         $this->eventPlannings = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,6 +215,36 @@ class Matiere
             // set the owning side to null (unless already changed)
             if ($eventPlanning->getMatieres() === $this) {
                 $eventPlanning->setMatieres(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setMatieres($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getMatieres() === $this) {
+                $note->setMatieres(null);
             }
         }
 

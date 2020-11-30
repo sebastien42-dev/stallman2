@@ -92,11 +92,17 @@ class User implements UserInterface
      */
     private $eventPlannings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="eleves")
+     */
+    private $notes;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
         $this->classes = new ArrayCollection();
         $this->eventPlannings = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -348,6 +354,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($eventPlanning->getFormateur() === $this) {
                 $eventPlanning->setFormateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setEleves($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getEleves() === $this) {
+                $note->setEleves(null);
             }
         }
 
