@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
 use App\Repository\FonctionRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,21 +21,31 @@ class SecurityController extends AbstractController
      /**
      * @Route("/", name="app_home")
      */
-    public function appHome (UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
+    public function appHome (UserRepository $userRepo,FonctionRepository $fonctionRepo,NoteRepository $noteRepo): Response
     {
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
+        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
+        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
+        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
+        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
+        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
+        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
+        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
+        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
+
+        // $total_note=0;
+        // $notes = $noteRepo->findByEleves($this->getUser()->getId());
+        // foreach ($notes as $note) {
+        //     $total_note += $note->getNote();
+        // }
+        // $moyenne = $total_note/count($notes);
         
-        return $this->render('home/index.html.twig', [
-            'nbUser' => json_encode($tab_nb_user),
-            'labelCatgorie' => json_encode($tab_nom_categorie)
-        ]);
+        // return $this->render('home/index.html.twig', [
+        //     'nbUser' => json_encode($tab_nb_user),
+        //     'labelCatgorie' => json_encode($tab_nom_categorie),
+        //     'moyenne' => $moyenne
+        // ]);
+
+        return $this->redirectToRoute('home');
     }
 
 

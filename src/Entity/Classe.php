@@ -25,7 +25,7 @@ class Classe
     private $libelleClasse;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="classes")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="classes",fetch="EAGER")
      */
     private $users;
 

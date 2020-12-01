@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}erreur note{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="card bg-danger text-center">
+        <h2 class="text-white font-weight-bold p-2">ERREUR DE CLASSE OU DE MATIERE</h2>
+    </div>
+    <br>
+    <span class="text-danger font-weight-bold p-2">Il n'y a pas de classe ou de matière affiliée à votre profil</span>
+    <br>
+    <div class="text-center">
+        <a href="{{ path('home')}}" class="btn btn-secondary text-white font-weight-bold">Retour au dashboard</a>
+    </div>
+</div>
+{% endblock %}

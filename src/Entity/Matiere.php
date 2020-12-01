@@ -30,7 +30,7 @@ class Matiere
     private $coefficient;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="matiere")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="matiere",fetch="EAGER")
      */
     private $users;
 

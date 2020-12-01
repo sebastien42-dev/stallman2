@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle note{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Présélection pour la nouvelle note</span></h2>
+        
+        <form action="{{ path('valide_prev_note') }}">
+            <div class="row ">
+                <label for="selected_classe" class="text-dark font-weight-bold">Choisir une classe</label>
+                <select name="selected_classe" id="selected_classe" class="form-control boder border-dark" required>
+                    {% for classe in classes %}
+                        <option value="{{ classe.id }}">{{ classe.libelleCLasse }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="row">
+                <label for="selected_matiere" class="text-dark font-weight-bold mt-2">Choisir une matière</label required>
+                <select name="selected_matiere" id="selected_matiere" class="form-control boder border-dark">
+                    {% for matiere in matieres %}
+                        <option value="{{ matiere.id }}">{{ matiere.libelleMatiere }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row">
+                <label for="selected_date" class="text-dark font-weight-bold mt-2">Date de l'élément noté</label>
+                <input class="form-control boder border-dark" type="date" name="selected_date" required>
+            </div>
+            <div class="row">
+                <label for="selected_libelle" class="text-dark font-weight-bold mt-2">Libelle pour la note</label>
+                <input class="form-control boder border-dark" type="text" name="selected_libelle" placeholder="par ex : devoir ecrit sur la logique booléenne">
+            </div>
+            <div class="row">
+                <label for="selected_coefficient" class="text-dark font-weight-bold mt-2">coefficient</label>
+                <input class="form-control boder border-dark" type="integer" name="selected_coefficient" placeholder="par défaut 1">
+            </div>
+            <div class="text-center">
+            <button type="submit" class="btn btn-{{ color }} font-weight-bold text-white mt-5" >Valider la présélection</button>
+            </div>
+        </form>
+</div>
+{% endblock %}

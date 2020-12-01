@@ -73,7 +73,16 @@
                                  <span>Moyenne Générale</span>
                             </div>
                             <div class="card-body p-1">
-                                 <span>12 / 20</span>
+                            
+                                 <span><span class=
+                                 {% if  moyenne > 10 %}
+                                    "text-success font-weight-bold"
+                                {% elseif moyenne == 10 %}
+                                    "text-warning font-weight-bold"
+                                 {% else %}
+                                   "text-danger font-weight-bold"
+                                 {% endif %}
+                                 >{{ moyenne }}</span> / 20</span>
                             </div>
                         </div>
                     </div>
