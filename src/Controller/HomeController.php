@@ -39,21 +39,47 @@ class HomeController extends AbstractController
 
     public function indexEleve(NoteRepository $noteRepo): Response
     {
-        $total_note=0;
-        $coefficient =0;
-        $notes = $noteRepo->findByEleves($this->getUser()->getId());
-        foreach ($notes as $note) {
-            $total_note += $note->getNote()*$note->getCoefficient();
-            $coefficient += $note->getCoefficient();
-        }
-        if(count($notes) > 0) {
-            $moyenne = $total_note/$coefficient;
-        }else{
-            $moyenne = 0;
-        }
+
+
+
+        // $total_note=0;
+        // $coefficient =0;
+        // $notes = $noteRepo->findByEleves($this->getUser()->getId());
+        $moyenne = $this->calculeMoyennePonderee($noteRepo->findByEleves($this->getUser()->getId()));
+        // foreach ($notes as $note) {
+        //     $total_note += $note->getNote()*$note->getCoefficient();
+        //     $coefficient += $note->getCoefficient();
+        // }
+        // if(count($notes) > 0) {
+        //     $moyenne = round($total_note/$coefficient,2);
+        // }else{
+        //     $moyenne = 0;
+        // }
 
         return $this->render('home/index.html.twig', [
             'moyenne' => $moyenne
         ]);
+    }
+
+/**
+ * permet de calculer une myenne pondérée à partir du tableau d'enregistrements 
+ * todo demander le type de ce que j'ai mis en paramètre et voir pour mettre ca dans un metier de fonction static
+ * pour éviter de pourrir le controleur
+ * @param obj $objet_note
+ * @return float
+ */
+    public function calculeMoyennePonderee($tab_objet_note) 
+    {
+        $total_note=0;
+        $coefficient =0;
+        foreach ($tab_objet_note as $note) {
+            $total_note += $note->getNote()*$note->getCoefficient();
+            $coefficient += $note->getCoefficient();
+        }
+        if(count($tab_objet_note) > 0) {
+            return round($total_note/$coefficient,2);
+        }else{
+            return 0;
+        }
     }
 }
