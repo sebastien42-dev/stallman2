@@ -40,22 +40,8 @@ class HomeController extends AbstractController
     public function indexEleve(NoteRepository $noteRepo): Response
     {
 
-
-
-        // $total_note=0;
-        // $coefficient =0;
-        // $notes = $noteRepo->findByEleves($this->getUser()->getId());
         $moyenne = $this->calculeMoyennePonderee($noteRepo->findByEleves($this->getUser()->getId()));
-        // foreach ($notes as $note) {
-        //     $total_note += $note->getNote()*$note->getCoefficient();
-        //     $coefficient += $note->getCoefficient();
-        // }
-        // if(count($notes) > 0) {
-        //     $moyenne = round($total_note/$coefficient,2);
-        // }else{
-        //     $moyenne = 0;
-        // }
-
+        
         return $this->render('home/index.html.twig', [
             'moyenne' => $moyenne
         ]);
