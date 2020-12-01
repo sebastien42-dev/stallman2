@@ -45,7 +45,20 @@ class SecurityController extends AbstractController
         //     'moyenne' => $moyenne
         // ]);
 
-        return $this->redirectToRoute('home');
+        $roles = $this->getUser()->getRoles();
+        foreach($roles as $role) {
+            if($role != 'ROLE_USER') {
+                $role_user = $role;
+            }
+        }
+
+        if($role_user == 'ROLE_ELEVE') 
+        {
+            return $this->redirectToRoute('home_eleve');
+        }else{
+            return $this->redirectToRoute('home');
+        }
+
     }
 
 
