@@ -3,27 +3,11 @@ var ctx = document.getElementById('MoyenneMatiereChart').getContext('2d');
 var myChart = new Chart(ctx, {
      type: 'bar',
     data: {
-        labels: ["Mathématiques","Réseau","Système","Eco/Droit","Expression","Algorithmie","Développement"],
+        labels: {{ labelsMatieres|raw }},
         datasets: [{
-            data: [12,16,15,7,8,11,15],
-            backgroundColor: [
-                'rgba(0, 115, 255, 0.2)',
-                'rgba(0, 115, 255, 0.2)',
-                'rgba(0, 115, 255, 0.2)',
-                'rgba(255, 0, 0, 0.2)',
-                'rgba(255, 0, 0, 0.2)',
-                'rgba(0, 115, 255, 0.2)',
-                'rgba(0, 115, 255, 0.2)'
-            ],
-            borderColor: [
-                'rgba(0, 115, 255, 1)',
-                'rgba(0, 115, 255, 1)',
-                'rgba(0, 115, 255, 1)',
-                'rgba(255, 0, 0, 1)',
-                'rgba(255, 0, 0, 1)',
-                'rgba(0, 115, 255, 1)',
-                'rgba(0, 115, 255, 1)'
-            ],
+            data: {{ dataMoyenne|raw }},
+            backgroundColor: {{ bgColors|raw }},
+            borderColor: {{ borderColors|raw }},
             borderWidth: 1
         }],
     },

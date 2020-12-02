@@ -35,7 +35,7 @@ class Classe
     private $matieres;
 
     /**
-     * @ORM\OneToMany(targetEntity=EventPlanning::class, mappedBy="classes")
+     * @ORM\OneToMany(targetEntity=EventPlanning::class, mappedBy="classes",fetch="EAGER")
      */
     private $eventPlannings;
 

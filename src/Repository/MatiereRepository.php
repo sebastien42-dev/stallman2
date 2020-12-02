@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Matiere;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Matiere|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,6 +36,22 @@ class MatiereRepository extends ServiceEntityRepository
         ;
     }
     */
+    /**
+     *@return Matiere[] Returns an array of Matiere objects
+     */
+    
+    public function findMatieresByUser(User $user)
+    {
+        return $this->createQueryBuilder('m')
+            ->join('m.classes','classe')
+            ->join('classe.users','user')
+            ->andWhere('user = :val')
+            ->setParameter('val', $user)
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Matiere

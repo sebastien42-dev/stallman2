@@ -34,30 +34,17 @@
                             </div>
                             <div class="card-body p-1">
                                  <table class="table table-borderless table-striped">
-                                    <tr>
-                                        <td>Formateur_name </td>
-                                        <td>8h-10h</td>
-                                        <td>Eco/droit</td>
-                                        <td>Salle B01</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Formateur_name </td>
-                                        <td>10h-12h</td>
-                                        <td>Mathématiques</td>
-                                        <td>Salle B01</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Formateur_name </td>
-                                        <td>13h-15h</td>
-                                        <td>Réseau</td>
-                                        <td>Salle A10</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Formateur_name </td>
-                                        <td>15h-17h</td>
-                                        <td>Développement</td>
-                                        <td>Salle A10</td>
-                                    </tr>
+                                    
+                                    {% for event in events %}
+                                        {% if event.start | date('Y-m-d') == 'now' | date('Y-m-d') %}
+                                            <tr>
+                                                <td>{{ event.start | date('H') }}h à {{event.end | date('H') }}h</td>
+                                                <td>{{ event.matieres.libelleMatiere }}</td>
+                                                <td>Salle : {{ event.salles ? event.salles.libelleSalle : '' }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
                                  </table>
                             </div>
                         </div>
@@ -93,7 +80,7 @@
                                  <span>Nombre de travail à faire</span>
                             </div>
                             <div class="card-body p-1">
-                                 <span>7</span>
+                                7
                             </div>
                         </div>
                     </div>

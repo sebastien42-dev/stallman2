@@ -38,7 +38,7 @@ class EventPlanning
     private $salles;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Classe::class, inversedBy="eventPlannings")
+     * @ORM\ManyToOne(targetEntity=Classe::class, inversedBy="eventPlannings",fetch="EAGER")
      */
     private $classes;
 

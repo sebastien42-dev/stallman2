@@ -21,46 +21,10 @@ class SecurityController extends AbstractController
      /**
      * @Route("/", name="app_home")
      */
-    public function appHome (UserRepository $userRepo,FonctionRepository $fonctionRepo,NoteRepository $noteRepo): Response
+    public function appHome (): Response
     {
-        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
-        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
-        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
-        // $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
-        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
-        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
-        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
-        // $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
-
-        // $total_note=0;
-        // $notes = $noteRepo->findByEleves($this->getUser()->getId());
-        // foreach ($notes as $note) {
-        //     $total_note += $note->getNote();
-        // }
-        // $moyenne = $total_note/count($notes);
-        
-        // return $this->render('home/index.html.twig', [
-        //     'nbUser' => json_encode($tab_nb_user),
-        //     'labelCatgorie' => json_encode($tab_nom_categorie),
-        //     'moyenne' => $moyenne
-        // ]);
-
-        $roles = $this->getUser()->getRoles();
-        foreach($roles as $role) {
-            if($role != 'ROLE_USER') {
-                $role_user = $role;
-            }
-        }
-
-        if($role_user == 'ROLE_ELEVE') 
-        {
-            return $this->redirectToRoute('home_eleve');
-        }else{
-            return $this->redirectToRoute('home');
-        }
-
+        return $this->redirectToRoute('home');
     }
-
 
     /**
      * @Route("/login", name="app_login")

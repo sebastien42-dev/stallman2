@@ -35,7 +35,7 @@ class Matiere
     private $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Classe::class, mappedBy="matieres")
+     * @ORM\ManyToMany(targetEntity=Classe::class, mappedBy="matieres",fetch="EAGER")
      */
     private $classes;
 

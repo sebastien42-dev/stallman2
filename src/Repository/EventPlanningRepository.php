@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\EventPlanning;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method EventPlanning|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,22 +20,23 @@ class EventPlanningRepository extends ServiceEntityRepository
         parent::__construct($registry, EventPlanning::class);
     }
 
-    // /**
-    //  * @return EventPlanning[] Returns an array of EventPlanning objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return EventPlanning[] Returns an array of EventPlanning objects
+     */
+    
+    public function findEventsByUser(User $user)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->join('e.classes','classe')
+            ->join('classe.users','user')
+            ->andWhere('user = :val')
+            ->setParameter('val', $user)
             ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?EventPlanning

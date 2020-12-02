@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Note;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\User;
+use App\Entity\Matiere;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Note|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,7 +37,24 @@ class NoteRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    /**
+     *@return Note[] Returns an array of Note objects
+     */
+    
+    public function findNotesByUserAndMatiere(User $user,Matiere $matiere)
+    {
+        return $this->createQueryBuilder('n')
+            ->join('n.matieres','matiere')
+            ->join('n.eleves','user')
+            ->andWhere('user = :val')
+            ->andWhere('matiere = :val2')
+            ->setParameter('val', $user)
+            ->setParameter('val2', $matiere)
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     /*
     public function findOneBySomeField($value): ?Note
     {
