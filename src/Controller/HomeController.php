@@ -30,8 +30,10 @@ class HomeController extends AbstractController
 
         if($role_user == 'ROLE_ELEVE') {
             return $this->redirectToRoute('home_eleve');
-        } else {
+        } elseif($role_user == 'ROLE_ADMIN') {
             return $this->redirectToRoute('home_admin');
+        } elseif($role_user == 'ROLE_PROF') {
+            return $this->redirectToRoute('home_prof');
         }
     
     }
@@ -92,6 +94,43 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'nbUser' => json_encode($tab_nb_user),
             'labelCatgorie' => json_encode($tab_nom_categorie)
+        ]);
+    }
+
+    /**
+     * @Route("/homeprof", name="home_prof")
+     */
+
+    public function indexProf(NoteRepository $noteRepo,EventPlanningRepository $eventRepo,MatiereRepository $matiereRepo): Response
+    {
+       
+        $moyenne = $this->calculeMoyennePonderee($noteRepo->findByEleves($this->getUser()));
+        $matieres = $matiereRepo->findMatieresByUser($this->getUser());
+        $events = $eventRepo->findByFormateur($this->getUser());
+
+        foreach ($matieres as $matiere) {
+            $notesMatiere = $noteRepo->findNotesByUserAndMatiere($this->getUser(),$matiere);
+            $tabLabelsLibelle[] = $matiere->getLibelleMatiere();
+            $tabDataMoyenne[] = $this->calculeMoyennePonderee($notesMatiere);
+
+            if ($this->calculeMoyennePonderee($notesMatiere) <= 10) {
+                $bgColor = 'rgba(255, 0, 0, 0.2)';
+                $borderColor = 'rgba(255, 0, 0, 1)';
+            } else {
+                $bgColor = 'rgba(0, 115, 255, 0.2)';
+                $borderColor = 'rgba(0, 115, 255, 1)';
+            }
+
+            $tabBgColor[] = $bgColor;
+            $tabBorderColor[] = $borderColor;
+        }
+        return $this->render('home/index.html.twig', [
+            'moyenne' => $moyenne,
+            'events' => $events,
+            'labelsMatieres' => json_encode($tabLabelsLibelle),
+            'dataMoyenne' => json_encode($tabDataMoyenne),
+            'bgColors' => json_encode($tabBgColor),
+            'borderColors' => json_encode($tabBorderColor)
         ]);
     }
 
