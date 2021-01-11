@@ -28,6 +28,21 @@
     .card-message-content {
         
     }
+
+    .message-read {
+        color : rgba(0, 0, 0,0.2);
+        font-style : italic;
+    }
+
+    .card-message-link {
+        text-decoration:none;
+        color : black;
+    }
+
+    .card-message-link:hover {
+        text-decoration:none;
+        color : black;
+    }
 </style>
 
 {% endblock %}
@@ -40,32 +55,76 @@
     <div class="row">
         <div class="col-3">
         {% for message in messages %}
+        
+            {% if message.isRead %}
+                {% set read = 'message-read' %}
+                {% set read_icone = 'far fa-envelope-open text-white' %}
+                {% set color_read = 'secondary' %}
+            {% else %}
+                {% set read = '' %}
+                {% set read_icone = 'far fa-envelope text-white' %}
+                {% set color_read = 'success' %}
 
-            
-            <div class="card card-message ">
-                <div class="card-header bg-{{ color }} text-white font-weight-bold">
-                    {{ message.title }}
+            {% endif %}
+            <a onclick="display(this)" data-messageid="{{ message.id }}" href="#" class="card-message-link">
+                <div class="card card-message {{ read }}">
+                        <div class="card-header bg-{{ color_read }} text-white font-weight-bold">
+                            {{ message.title }}
+                            &emsp;<i class="{{ read_icone }}"></i>
+                            &emsp;<span id="read_inform"></span>
+                        </div>
+                    
+                    <div class="card-body border border-{{ color_read }}">
+                        <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
+                        <br/>
+                        <span id="message_user">{{ message.userFrom.nom }}</span> pour <span id="message_user">{{ message.userTo.nom }}</span>&ensp;
+                        {% if message.isImportant %}
+                            <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="card-body border border-{{ color }}">
-                    <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
-                    <br/>
-                    <span id="message_user">{{ message.userFrom.nom }}</span> pour <span id="message_user">{{ message.userTo.nom }}</span>&ensp;
-                    {% if message.isImportant %}
-                        <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
-                    {% endif %}
-                </div>
-            </div>
+            </a>
                     
         {% endfor %}
         </div>
                 <div class="col-9">
                     <div class="card card-message-content border border-{{ color }} p-2">
-                        <div id="js_content_message">
-                            <h3>Titre du message</h3>
-                            <span>contenu du message</span>
+                        <div >
+                            <h3 id="title_mail"></h3>
+                            <span id="content_mail"></span>
                         </div>
                     </div>
                 </div>
     </div>
+     
+     <p id="testretour"></p>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+    function display(message) {
+           $.ajax ( 
+		    {
+                url:"{{ path('ajaxDisplayMessage') }}",
+                data:{
+                    val : message.dataset.messageid
+                    },
+                dataType :'json',
+                method:'POST',
+                success : function(mail)
+                {
+                    html_title = mail.title;
+                    html_content = mail.content;
+                    $("#title_mail").html(html_title);
+                    $("#content_mail").html(html_content);
+                    
+			    }
+		}) 
+    }
+
+      
+</script>
+
 {% endblock %}

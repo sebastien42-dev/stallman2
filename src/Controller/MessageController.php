@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Message;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/message")
@@ -39,6 +43,7 @@ class MessageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // on sette la date du moment de l'envoie par défaut
             $message->setDateSend($date);
+            $message->setIsRead(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($message);
             $entityManager->flush();
@@ -50,6 +55,24 @@ class MessageController extends AbstractController
             'message' => $message,
             'form' => $form->createView(),
         ]);
+    }
+
+
+    /**
+     * retourne le contenu du message en ajax
+     * @Route("/ajaxDisplayMessage", name="ajaxDisplayMessage", methods={"POST"})
+     */
+    public function ajaxDisplayMessage(Request $request, MessageRepository $messageRepo) {
+
+        $message = $messageRepo->find($request->request->get("val"));
+        
+		$reponse = new Response(json_encode(
+            array(
+                'title' => $message->getTitle(),
+                'content' => $message->getContent()
+            )
+        ));
+        return $reponse;
     }
 
     /**

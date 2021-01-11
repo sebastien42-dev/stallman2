@@ -60,17 +60,6 @@ class MessageType extends AbstractType
                     'class' => 'text-dark font-weight-bold'
                 ]
             ])
-            // ->add('dateSend',DateTimeType::class,[
-            //     'attr' => [
-            //         'class' =>'form-control mb-5 boder border-dark'
-            //     ],
-            //     'label' => 'date',
-            //     'label_attr' => [
-            //         'class' => 'text-dark font-weight-bold'
-            //     ],
-            //     'date_widget' => 'single_text',
-            //     'hours'=>range(8,19)
-            // ])
             ->add('isImportant', CheckboxType::class,[
                 'label' => 'flag important ->  ',
                 'label_attr' => [
@@ -78,6 +67,7 @@ class MessageType extends AbstractType
                 ],
                 'required' => false
             ])
+            
             
         ;
     }

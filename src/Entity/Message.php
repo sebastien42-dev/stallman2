@@ -47,6 +47,11 @@ class Message
      */
     private $isImportant;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isRead;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class Message
     public function setIsImportant(bool $isImportant): self
     {
         $this->isImportant = $isImportant;
+
+        return $this;
+    }
+
+    public function getIsRead(): ?bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): self
+    {
+        $this->isRead = $isRead;
 
         return $this;
     }
