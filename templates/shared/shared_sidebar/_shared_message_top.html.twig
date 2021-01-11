@@ -16,7 +16,9 @@
               <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw text-white"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">{{ count }}</span>
+                {% if count > 0 %}
+                  <span class="badge badge-danger badge-counter">{{ count }}</span>
+                {% endif %}
               </a>
               <!-- Dropdown - Messages -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown"> 

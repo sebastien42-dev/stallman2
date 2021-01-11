@@ -54,6 +54,11 @@ class HomeController extends AbstractController
         $matieres = $matiereRepo->findMatieresByUser($this->getUser());
         $events = $eventRepo->findEventsByUser($this->getUser());
 
+        $tabLabelsLibelle = array();
+        $tabDataMoyenne = array();
+        $tabBgColor = array();
+        $tabBorderColor = array();
+
         foreach ($matieres as $matiere) {
             $notesMatiere = $noteRepo->findNotesByUserAndMatiere($this->getUser(),$matiere);
             $tabLabelsLibelle[] = $matiere->getLibelleMatiere();
@@ -112,7 +117,10 @@ class HomeController extends AbstractController
         $moyenne = $this->calculeMoyennePonderee($noteRepo->findByEleves($this->getUser()));
         $matieres = $matiereRepo->findMatieresByUser($this->getUser());
         $events = $eventRepo->findByFormateur($this->getUser());
-
+        $tabLabelsLibelle = array();
+        $tabDataMoyenne = array();
+        $tabBgColor = array();
+        $tabBorderColor = array();
         foreach ($matieres as $matiere) {
             $notesMatiere = $noteRepo->findNotesByUserAndMatiere($this->getUser(),$matiere);
             $tabLabelsLibelle[] = $matiere->getLibelleMatiere();
@@ -129,6 +137,7 @@ class HomeController extends AbstractController
             $tabBgColor[] = $bgColor;
             $tabBorderColor[] = $borderColor;
         }
+    
         return $this->render('home/index.html.twig', [
             'moyenne' => $moyenne,
             'events' => $events,
