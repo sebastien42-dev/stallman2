@@ -4,12 +4,20 @@
 {% block stylesheets %}
 
 <style>
+
+    .card-message {
+        margin-bottom : 5px !important;
+    }
     .card-message div.card-body {
-        padding-top : 1px !important;
+        padding : 5px !important;
     }
 
     .card-message div.card-header {
-        padding : 5px !important;
+        padding : 4px !important;
+    }
+
+    .card-message div.card-body {
+        font-size:0.75rem;
     }
 
     .card-message span#message_user {
@@ -26,20 +34,25 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des classes</span></h2>
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Liste des messages</span></h2>
 
+<a style="text-decoration:none;" title="nouveau message" href="{{ path('message_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="far fa-envelope text-white fa-1x"></i></a>
     <div class="row">
         <div class="col-3">
         {% for message in messages %}
 
             
-            <div class="card card-message">
+            <div class="card card-message ">
                 <div class="card-header bg-{{ color }} text-white font-weight-bold">
                     {{ message.title }}
                 </div>
-                <div class="card-body">
-                    <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span><br>
-                    <span id="message_user">{{ message.userFrom.nom }}</span> pour <span id="message_user">{{ message.userTo.nom }}</span>
+                <div class="card-body border border-{{ color }}">
+                    <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
+                    <br/>
+                    <span id="message_user">{{ message.userFrom.nom }}</span> pour <span id="message_user">{{ message.userTo.nom }}</span>&ensp;
+                    {% if message.isImportant %}
+                        <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
+                    {% endif %}
                 </div>
             </div>
                     
@@ -55,6 +68,4 @@
                 </div>
     </div>
 </div>
-
-    <a href="{{ path('message_new') }}">Create new</a>
 {% endblock %}
