@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message index{% endblock %}
+{% block stylesheets %}
+
+<style>
+    .card-message div.card-body {
+        padding-top : 1px !important;
+    }
+
+    .card-message div.card-header {
+        padding : 5px !important;
+    }
+
+    .card-message span#message_user {
+        font-weight:bold;
+        font-style:italic;
+    }
+
+    .card-message-content {
+        
+    }
+</style>
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des classes</span></h2>
+
+    <div class="row">
+        <div class="col-3">
+        {% for message in messages %}
+
+            
+            <div class="card card-message">
+                <div class="card-header bg-{{ color }} text-white font-weight-bold">
+                    {{ message.title }}
+                </div>
+                <div class="card-body">
+                    <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span><br>
+                    <span id="message_user">{{ message.userFrom.nom }}</span> pour <span id="message_user">{{ message.userTo.nom }}</span>
+                </div>
+            </div>
+                    
+        {% endfor %}
+        </div>
+                <div class="col-9">
+                    <div class="card card-message-content border border-{{ color }} p-2">
+                        <div id="js_content_message">
+                            <h3>Titre du message</h3>
+                            <span>contenu du message</span>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>
+
+    <a href="{{ path('message_new') }}">Create new</a>
+{% endblock %}

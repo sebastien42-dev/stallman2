@@ -100,8 +100,9 @@
         <div id="collapseMail" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Consulter</h6>
-            <a class="collapse-item" href="#">Liste</a>
-            <a class="collapse-item" href="#">Envoyer</a>
+            <a class="collapse-item" href={{ path('message_index') }}>Liste</a>
+            <a class="collapse-item" href={{ path('message_new') }}>Envoyer</a>
+
             {% if is_granted('ROLE_ADMIN') %}
               <h6 class="collapse-header">Adminsitration</h6>
               <a class="collapse-item" href="#">Envoyer en liste</a>
@@ -109,6 +110,7 @@
               <h6 class="collapse-header">Adminsitration</h6>
               <a class="collapse-item" href="#">Envoyer en liste</a>
             {% endif %}
+
           </div>
         </div>
       </li>
