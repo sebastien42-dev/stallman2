@@ -73,7 +73,8 @@ class MessageController extends AbstractController
 		$reponse = new Response(json_encode(
             array(
                 'title' => $message->getTitle(),
-                'content' => $message->getContent()
+                'content' => $message->getContent(),
+                'id' => $request->request->get("val")
             )
         ));
         return $reponse;
@@ -121,5 +122,21 @@ class MessageController extends AbstractController
         }
 
         return $this->redirectToRoute('message_index');
+    }
+
+    /**
+     * marque les message comme lu
+     * @Route("/{id}/markMailRead", name="mail_read",methods={"GET","POST"})
+     */
+    public function markMailRead(Message $message)
+    {
+        $message->setIsRead(1);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('message_index');
+
     }
 }

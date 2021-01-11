@@ -30,7 +30,7 @@ class MessageRepository extends ServiceEntityRepository
             ->andWhere('m.isRead = 0')
             ->andWhere('m.userTo = :user')
             ->setParameter('user', $user)
-            ->orderBy('m.id', 'DESC')
+            ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
