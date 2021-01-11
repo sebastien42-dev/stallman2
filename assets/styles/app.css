@@ -2,3 +2,44 @@ h6 {
     font-weight: bold;
 }
 
+/* ------------card pour la page index message---------------- */
+.card-message {
+    margin-bottom : 5px !important;
+}
+.card-message div.card-body {
+    padding : 5px !important;
+}
+
+.card-message div.card-header {
+    padding : 4px !important;
+}
+
+.card-message div.card-body {
+    font-size:0.75rem;
+}
+
+.card-message span#message_user {
+    font-weight:bold;
+    font-style:italic;
+}
+
+.card-message-content {
+    
+}
+
+.message-read {
+    color : rgba(0, 0, 0,0.2);
+    font-style : italic;
+}
+
+.card-message-link {
+    text-decoration:none;
+    color : black;
+}
+
+.card-message-link:hover {
+    text-decoration:none;
+    color : black;
+}
+
+/* ------------card pour la page index message---------------- */

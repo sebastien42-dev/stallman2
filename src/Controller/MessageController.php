@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Message;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -26,19 +27,22 @@ class MessageController extends AbstractController
     public function index(MessageRepository $messageRepository): Response
     {
         return $this->render('message/index.html.twig', [
-            'messages' => $messageRepository->findAll(),
+            'messages' => $messageRepository->findByUserTo($this->getUser()->getId()),
         ]);
     }
 
     /**
      * @Route("/new", name="message_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,UserRepository $userRepo): Response
     {
+        $user = $userRepo->find($this->getUser());
         $message = new Message();
         $date = new DateTime();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
+        
+        $message->setUserFrom($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // on sette la date du moment de l'envoie par défaut

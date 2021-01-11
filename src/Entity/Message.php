@@ -40,7 +40,7 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      */
-    private $UserTo;
+    private $userTo;
 
     /**
      * @ORM\Column(type="boolean")
@@ -107,12 +107,12 @@ class Message
 
     public function getUserTo(): ?User
     {
-        return $this->UserTo;
+        return $this->userTo;
     }
 
-    public function setUserTo(?User $UserTo): self
+    public function setUserTo(?User $userTo): self
     {
-        $this->UserTo = $UserTo;
+        $this->userTo = $userTo;
 
         return $this;
     }

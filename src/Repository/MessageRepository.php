@@ -19,6 +19,23 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+
+    /**
+     * @param tinyint $user id de l'utilisateur
+     * @return Message[] Returns an array of Message objects
+     */
+    public function getMessagesUnread($user) 
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.isRead = 0')
+            ->andWhere('m.userTo = :user')
+            ->setParameter('user', $user)
+            ->orderBy('m.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Message[] Returns an array of Message objects
     //  */

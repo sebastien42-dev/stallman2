@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,19 +18,7 @@ class MessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('userFrom',EntityType::class,[
-                'class' => User::class,
-                'attr' => [
-                    'class'=> 'form-control border border-dark mb-2'
-                ],
-                'label' => "de",
-                'label_attr' => [
-                    'class' => 'text-dark font-weight-bold'
-                ],
-                'choice_label' => 'nom'
-
-            ])
+        $builder   
             ->add('UserTo',EntityType::class,[
                 'class' => User::class,
                 'attr' => [
@@ -53,7 +42,8 @@ class MessageType extends AbstractType
             ])
             ->add('content', TextareaType::class,[
                 'attr' => [
-                    'class' =>'form-control mb-2 boder border-dark'
+                    'class' =>'form-control mb-2 boder border-dark',
+                    'rows' => 9
                 ],
                 'label' => 'Message',
                 'label_attr' => [
@@ -61,14 +51,12 @@ class MessageType extends AbstractType
                 ]
             ])
             ->add('isImportant', CheckboxType::class,[
-                'label' => 'flag important ->  ',
+                'label' => 'flag important',
                 'label_attr' => [
-                    'class' => 'text-dark font-weight-bold'
+                    'class' => 'text-dark font-weight-bold mr-4'
                 ],
                 'required' => false
             ])
-            
-            
         ;
     }
 

@@ -7,9 +7,11 @@ use App\Repository\UserRepository;
 use App\Repository\FonctionRepository;
 use App\Repository\EventPlanningRepository;
 use App\Repository\MatiereRepository;
+use App\Repository\MessageRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\BrowserKit\Request;
 
 class HomeController extends AbstractController
 {
@@ -17,7 +19,7 @@ class HomeController extends AbstractController
      * @Route("/home", name="home")
      */
 
-    public function index(): Response
+    public function index(MessageRepository $messageRepo): Response
     {
 
         $roles = $this->getUser()->getRoles();
@@ -27,6 +29,9 @@ class HomeController extends AbstractController
                 $role_user = $role;
             }
         }
+
+        $messages = $messageRepo->findByUserTo($this->getUser()->getId());
+
 
         if($role_user == 'ROLE_ELEVE') {
             return $this->redirectToRoute('home_eleve');
@@ -156,5 +161,22 @@ class HomeController extends AbstractController
         } else {
             return 0;
         }
+    }
+/**
+ * affiche les messages dans la popup du dashboard
+ * @Route("/displaymessagepopup", name="message_popup")
+ *
+ */
+    public function displayMessagePopUp(MessageRepository $messageRepo) 
+    {   
+        $messages = $messageRepo->getMessagesUnread($this->getUser()->getId());
+        
+        $countMessages = count($messages);
+
+        return $this->render('shared/shared_sidebar/_shared_message_top.html.twig', [
+            'messages' => $messages,
+            'count' => $countMessages
+        ]);
+
     }
 }
