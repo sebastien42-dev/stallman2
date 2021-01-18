@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\Message;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +18,34 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class MessageType extends AbstractType
 {
+    private $security;
+
+    function __construct(Security $security)
+    {
+        $this->setSecurity($security);
+    }
+    
+    /**
+     * Get the value of security
+     */ 
+    public function getSecurity()
+    {
+        return $this->security;
+    }
+
+    /**
+     * Set the value of security
+     *
+     * @return  self
+     */ 
+    public function setSecurity($security)
+    {
+        $this->security = $security;
+
+        return $this;
+    }
+    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder   
@@ -24,6 +54,12 @@ class MessageType extends AbstractType
                 'attr' => [
                     'class'=> 'form-control border border-dark mb-2'
                 ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->andWhere('u.id != :connecteduser')
+                        ->setParameter('connecteduser', $this->security->getUser()->getId())
+                        ->orderBy('u.nom', 'ASC');
+                },
                 'label' => "pour",
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
