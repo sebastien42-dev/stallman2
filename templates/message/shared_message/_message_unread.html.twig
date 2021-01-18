@@ -1,0 +1,38 @@
+
+        {% for message in messages %}
+            {% if message.isRead == false %}
+                {% if message.isRead %}
+                    {% set read = 'message-read' %}
+                    {% set read_icone = 'far fa-envelope-open text-white' %}
+                    {% set color_read = 'secondary' %}
+                {% else %}
+                    {% set read = '' %}
+                    {% set read_icone = 'far fa-envelope text-white' %}
+                    {% set color_read = 'success' %}
+
+                {% endif %}
+                    <a onclick="display(this)" data-messageid="{{ message.id }}" href="#" class="card-message-link">
+                        <div class="card card-message {{ read }}">
+                                <div class="card-header bg-{{ color_read }} text-white font-weight-bold">
+                                    {{ message.title }}
+                                    &emsp;<i class="{{ read_icone }}"></i>
+                                    &emsp;<span id="read_inform"></span>
+                                </div>
+                            
+                            <div class="card-body border border-{{ color_read }}">
+                                <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
+                                <br/>
+                                <span id="message_user">{{ message.userFrom.nom }}&ensp;{{ message.userFrom.prenom }}</span>&ensp;
+                                {% if message.isImportant %}
+                                    <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
+                                {% endif %}
+                    </a>
+                    {% if message.isRead == 0 %}     
+                        <a href="{{ path('mail_read',{id:message.id}) }}" title="marqué comme lu"><i class="fas fa-glasses fa-2x text-info ml-4"></i></a>
+                    {% endif %}
+                        </div>
+                    </div>
+            {% endif %}
+        {% endfor %}
+        
+        
