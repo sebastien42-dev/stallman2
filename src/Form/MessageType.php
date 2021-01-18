@@ -60,12 +60,11 @@ class MessageType extends AbstractType
                         ->setParameter('connecteduser', $this->security->getUser()->getId())
                         ->orderBy('u.nom', 'ASC');
                 },
-                'label' => "pour",
+                'label' => "Destinataire",
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ],
                 'choice_label' => 'nom'
-
             ])
             ->add('title', TextType::class,[
                 'attr' => [
@@ -87,9 +86,9 @@ class MessageType extends AbstractType
                 ]
             ])
             ->add('isImportant', CheckboxType::class,[
-                'label' => 'flag important',
+                'label' => ' ',
                 'label_attr' => [
-                    'class' => 'text-dark font-weight-bold mr-4'
+                    'class' => 'fas fa-flag text-danger mr-4'
                 ],
                 'required' => false
             ])
