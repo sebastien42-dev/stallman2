@@ -4,11 +4,11 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h2 class="text-center m-4"><span class="badge badge-{{ color }} font-weight-bold text-white">Liste des messages</span></h2>
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Liste des messages</span></h2>
     <a style="text-decoration:none;" title="nouveau message" href="{{ path('message_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="far fa-envelope text-white fa-1x"></i></a>
     <div class="row">
         {# nav des onglets de gestion des messages #}
-        <div class="col-3">
+        <div class="col-4">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-link active text-{{ color }}" id="nav-unread-tab" data-toggle="tab" href="#nav-unread" role="tab" aria-controls="nav-unread" aria-selected="true">Non lu</a>
