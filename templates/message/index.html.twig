@@ -4,9 +4,10 @@
 
 {% block body %}
 <div class="container-fluid">
-    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Liste des messages</span></h2>
+    <h2 class="text-center m-4"><span class="badge badge-{{ color }} font-weight-bold text-white">Liste des messages</span></h2>
     <a style="text-decoration:none;" title="nouveau message" href="{{ path('message_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="far fa-envelope text-white fa-1x"></i></a>
     <div class="row">
+        {# nav des onglets de gestion des messages #}
         <div class="col-3">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -31,7 +32,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
+
+        {# affichage des messages par ajax #}
+        <div class="col-8">
             <div class="card card-message-content border border-{{ color }} p-2">
                 <div >
                     <h3 id="title_mail" class="font-weight-bold text-{{ color }}"></h3>
@@ -42,6 +45,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
 {% endblock %}
