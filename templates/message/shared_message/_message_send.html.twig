@@ -1,6 +1,6 @@
 
-        {% for message in messages %}
-            {% if message.isImportant %}
+        {% for message in messagesSend %}
+            {% if message.userFrom.id == app.user.id %}
                 {% if message.isRead %}
                     {% set read = 'message-read' %}
                     {% set read_icone = 'far fa-envelope-open text-white' %}
@@ -22,16 +22,14 @@
                             <div class="card-body border border-{{ color_read }}">
                                 <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
                                 <br/>
-                                <span id="message_user">{{ message.userFrom.nom }}&ensp;{{ message.userFrom.prenom }}</span>&ensp;
+                                <span id="message_user">Pour {{ message.userTo.nom }}&ensp;{{ message.userTo.prenom }}</span>&ensp;
                                 {% if message.isImportant %}
                                     <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
                                 {% endif %}
                     </a>
-                    {% if message.isRead == 0 %}     
-                        <a href="{{ path('mail_read',{id:message.id}) }}" title="marqué comme lu"><i class="fas fa-glasses fa-2x text-info ml-4"></i></a>
-                    {% endif %}
                         </div>
                     </div>
-            
             {% endif %}
         {% endfor %}
+        
+        

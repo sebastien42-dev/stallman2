@@ -28,6 +28,7 @@ class MessageController extends AbstractController
     {
         return $this->render('message/index.html.twig', [
             'messages' => $messageRepository->findByUserTo($this->getUser()->getId()),
+            'messagesSend' => $messageRepository->findByUserFrom($this->getUser()->getId()),
         ]);
     }
 
