@@ -44,7 +44,6 @@ class MessageType extends AbstractType
 
         return $this;
     }
-    
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -64,7 +63,7 @@ class MessageType extends AbstractType
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ],
-                'choice_label' => 'nom'
+                'choice_label' => 'fullName',
             ])
             ->add('title', TextType::class,[
                 'attr' => [

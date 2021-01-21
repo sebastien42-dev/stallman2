@@ -121,6 +121,8 @@ class User implements UserInterface
         return $this->email;
     }
 
+    
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -212,6 +214,13 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getFullname(): ?string
+    {
+        return $this->nom.' '.$this->prenom;
+    }
+
+
 
     public function getAdresse(): ?string
     {
