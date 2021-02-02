@@ -45,7 +45,7 @@ class Bill
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=billState::class, inversedBy="bills")
+     * @ORM\ManyToOne(targetEntity=BillState::class, inversedBy="bills")
      */
     private $billState;
 
