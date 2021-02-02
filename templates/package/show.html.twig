@@ -3,28 +3,44 @@
 {% block title %}Package{% endblock %}
 
 {% block body %}
-    <h1>Package</h1>
+<div class="container align-content-center">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Fiche forfait</span></h2>
+    <br>
+    <div class="row">
+    <div class="col-9">
+        <div class="card  border border-{{ color }} shadow">
+            <div class="card-header bg-dark text-white font-weight-bold">
+                <span>Forfait : </span>{{ package.packageName }}
+            </div>
+            <div class="card-body">
+                <table class="table-borderless table-sm">
+                    <tr>
+                        <th>Libellé</th>
+                        <td>{{ package.packageName }}</td>
+                    </tr>
+                    <tr>
+                        <th>Montant HT unitaire</th>
+                        <td>{{ package.value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ package.id }}</td>
-            </tr>
-            <tr>
-                <th>PackageName</th>
-                <td>{{ package.packageName }}</td>
-            </tr>
-            <tr>
-                <th>Value</th>
-                <td>{{ package.value }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('package_index') }}">back to list</a>
-
-    <a href="{{ path('package_edit', {'id': package.id}) }}">edit</a>
-
-    {{ include('package/_delete_form.html.twig') }}
+    <div class="col-3 ">
+    <ul style="list-style:none;" class="mb-2">
+        <li>
+            <a title="retour à la liste" style="text-decoration:none;" href="{{ path('package_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>
+        </li>
+        <li>
+            <a title="modifier" href="{{ path('package_edit', {'id': package.id}) }}" class="btn-circle btn-info btn-sm mb-2"><i class="fas fa-edit text-white"></i></a>
+        </li>
+        <li>
+            {{ include('package/_delete_form_icone.html.twig') }}
+        </li>
+    </ul>
+        
+        
+    </div>
+</div>
 {% endblock %}
