@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+// TODO limiter cette page aux admin et compta 
 /**
  * @Route("/bill")
  */
@@ -66,7 +66,7 @@ class BillController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="bill_show", methods={"GET"})
+     * @Route("/{id}", name="bill_show", methods={"GET"},requirements={"id":"\d+"})
      */
     public function show(Bill $bill): Response
     {

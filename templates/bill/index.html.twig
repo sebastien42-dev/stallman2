@@ -39,7 +39,9 @@
                 <td>{{ bill.createdAt ? bill.createdAt|date('d/m/Y') : '' }}</td>
                 <td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
                 <td>{{ bill.globalBillValue }}</td>
-                <td><span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span></td>
+                <td>
+                    <span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span>
+                </td>
                 <td>
                     <div class="row">
                         <a title="voir" href="{{ path('bill_show', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-eye text-white"></i></a>

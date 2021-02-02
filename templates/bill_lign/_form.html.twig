@@ -1,4 +1,12 @@
 {{ form_start(form) }}
+<div class="text-center">
+    <h3>
+        <span class="badge badge-secondary">facture période : {{ bill.createdAt | date("m - Y") }}</span>
+    </h3>
+</div>
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <br>
+    <div class="text-center m-3">
+        <button class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form) }}

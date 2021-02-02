@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\BillLign;
 use App\Form\BillLignType;
+use App\Repository\BillRepository;
 use App\Repository\BillLignRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/bill/lign")
@@ -28,13 +29,16 @@ class BillLignController extends AbstractController
     /**
      * @Route("/new/{bill}", name="bill_lign_new", methods={"GET","POST"})
      */
-    public function new(Request $request,$bill): Response
+    public function new(Request $request,$bill,BillRepository $billRepo): Response
     {
+        $oBill = $billRepo->find($bill);
         $billLign = new BillLign();
         $form = $this->createForm(BillLignType::class, $billLign);
         $form->handleRequest($request);
-        dd($bill);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $billLign->setBill($oBill);
+            $billLign->setGlobalLignValue(1000);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($billLign);
             $entityManager->flush();
@@ -45,6 +49,7 @@ class BillLignController extends AbstractController
         return $this->render('bill_lign/new.html.twig', [
             'bill_lign' => $billLign,
             'form' => $form->createView(),
+            'bill' => $oBill
         ]);
     }
 

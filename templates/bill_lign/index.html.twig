@@ -3,25 +3,65 @@
 {% block title %}BillLign index{% endblock %}
 
 {% block body %}
-    <h1>BillLign index</h1>
-
-    <table class="table">
-        <thead>
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des lignes de forfaits saisies</span></h2>
+    <table class="table table-bordered table-hover shadow display text-center">
+        <thead class="table-sm thead-dark">
             <tr>
-                <th>Id</th>
-                <th>Quantity</th>
-                <th>GlobalLignValue</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
+                <th>Facture concernée</th>
+                <th>Période</th>
+                <th>Etat de la facture</th>
+                <th>Quantité</th>
+                <th>
+                    <span class="text-success">Forfait</span>
+                    &nbsp;/&nbsp;
+                    <span class="text-warning">Hors forfait</span>
+                </th>
+                <th>Prix unitaire ht</th>
+                <th>valeur total</th>
+                <th>Date concernée</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for bill_lign in bill_ligns %}
-            <tr>
-                <td>{{ bill_lign.id }}</td>
-                <td>{{ bill_lign.quantity }}</td>
+            
+            {% if bill_lign.bill.billState.id == 1 %}
+                {% set badgeColor = 'info' %}
+                {% set modeCreation = true %}
+            {% elseif bill_lign.bill.billState.id == 2 %}
+                {% set badgeColor = 'danger' %}
+            {% elseif bill_lign.bill.billState.id == 3 %}
+                {% set badgeColor = 'warning' %}
+            {% elseif bill_lign.bill.billState.id == 4 %}
+                {% set badgeColor = 'success' %}
+            {% endif %}
+
+            <tr class="text-center">
+                <td title="ib{{ bill_lign.Bill.id }}">
+                    {{ bill_lign.bill.billProviderNum is not defined  ? bill_lign.bill.billProviderNum : 'pas encore de numéro' }}
+                </td>
+                <td>
+                    {{ bill_lign.bill.createdAt | date('m-Y') }}
+                </td>
+                <td>
+                    <span class="badge badge-{{ badgeColor }}">{{ bill_lign.bill.billState.stateName }}</span>
+                </td>
+                <td title="ibl{{ bill_lign.id }}">{{ bill_lign.quantity }}</td>
+                <td>
+                    <span class="text-success font-weight-bold">
+                        {{ bill_lign.package.id is defined  ? bill_lign.package.packageName : '' }}
+                    </span>
+                    <span class="text-warning font-weight-bold">
+                        {{ bill_lign.outPackage.id is defined ? bill_lign.outpackage.outPackageName : '' }}
+                    </span>
+                </td>
+                <td>
+                    {{ bill_lign.package.id is defined ?  bill_lign.package.value : '' }}
+                    {{ bill_lign.outPackage.id is defined ? bill_lign.outPackage.value : '' }}
+                </td>
                 <td>{{ bill_lign.globalLignValue }}</td>
-                <td>{{ bill_lign.createdAt ? bill_lign.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ bill_lign.createdAt is defined  ? bill_lign.createdAt|date('d/m/Y') : '' }}</td>
                 <td>
                     <a href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}">show</a>
                     <a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a>
@@ -34,6 +74,7 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('bill_lign_new') }}">Create new</a>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
 {% endblock %}
