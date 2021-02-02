@@ -83,6 +83,7 @@ class BillStateController extends AbstractController
      */
     public function delete(Request $request, BillState $billState): Response
     {
+        //TODO faire un test pour ne pas pouvoir suppirmer si l'etat à été utilisé
         if ($this->isCsrfTokenValid('delete'.$billState->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($billState);
