@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OutPackageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class OutPackage
      * @ORM\ManyToOne(targetEntity=Proof::class, inversedBy="outPackages")
      */
     private $proof;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BillLign::class, mappedBy="outPackage")
+     */
+    private $billLigns;
+
+    public function __construct()
+    {
+        $this->billLigns = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,36 @@ class OutPackage
     public function setProof(?Proof $proof): self
     {
         $this->proof = $proof;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BillLign[]
+     */
+    public function getBillLigns(): Collection
+    {
+        return $this->billLigns;
+    }
+
+    public function addBillLign(BillLign $billLign): self
+    {
+        if (!$this->billLigns->contains($billLign)) {
+            $this->billLigns[] = $billLign;
+            $billLign->setOutPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillLign(BillLign $billLign): self
+    {
+        if ($this->billLigns->removeElement($billLign)) {
+            // set the owning side to null (unless already changed)
+            if ($billLign->getOutPackage() === $this) {
+                $billLign->setOutPackage(null);
+            }
+        }
 
         return $this;
     }

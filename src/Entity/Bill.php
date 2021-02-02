@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BillRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,16 @@ class Bill
      * @ORM\ManyToOne(targetEntity=billState::class, inversedBy="bills")
      */
     private $billState;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BillLign::class, mappedBy="bill")
+     */
+    private $billLigns;
+
+    public function __construct()
+    {
+        $this->billLigns = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +132,36 @@ class Bill
     public function setBillState(?billState $billState): self
     {
         $this->billState = $billState;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BillLign[]
+     */
+    public function getBillLigns(): Collection
+    {
+        return $this->billLigns;
+    }
+
+    public function addBillLign(BillLign $billLign): self
+    {
+        if (!$this->billLigns->contains($billLign)) {
+            $this->billLigns[] = $billLign;
+            $billLign->setBill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillLign(BillLign $billLign): self
+    {
+        if ($this->billLigns->removeElement($billLign)) {
+            // set the owning side to null (unless already changed)
+            if ($billLign->getBill() === $this) {
+                $billLign->setBill(null);
+            }
+        }
 
         return $this;
     }
