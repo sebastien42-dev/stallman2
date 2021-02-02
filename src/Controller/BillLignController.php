@@ -26,14 +26,14 @@ class BillLignController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="bill_lign_new", methods={"GET","POST"})
+     * @Route("/new/{bill}", name="bill_lign_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,$bill): Response
     {
         $billLign = new BillLign();
         $form = $this->createForm(BillLignType::class, $billLign);
         $form->handleRequest($request);
-
+        dd($bill);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($billLign);

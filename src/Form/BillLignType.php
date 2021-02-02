@@ -15,9 +15,9 @@ class BillLignType extends AbstractType
             ->add('quantity')
             ->add('globalLignValue')
             ->add('createdAt')
-            ->add('bill')
-            ->add('package')
-            ->add('outPackage')
+            //->add('bill')
+            //->add('package')
+            //->add('outPackage')
         ;
     }
 

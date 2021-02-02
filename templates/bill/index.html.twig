@@ -15,14 +15,17 @@
                 <th>Date de mise à jour</th>
                 <th>Montant global</th>
                 <th>Statut</th>
-                <th>Actions</th>
+                <th width="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for bill in bills %}
 
+        {% set modeCreation = false %}
+
         {% if bill.billState.id == 1 %}
             {% set badgeColor = 'info' %}
+            {% set modeCreation = true %}
         {% elseif bill.billState.id == 2 %}
             {% set badgeColor = 'danger' %}
         {% elseif bill.billState.id == 3 %}
@@ -30,17 +33,22 @@
         {% elseif bill.billState.id == 4 %}
             {% set badgeColor = 'success' %}
         {% endif %}
-
-            <tr>
+{# TODO rajouter un test sur profil pour les icones action, les formteurs peuvent uniquement voir et ajouter des lignes #}
+            <tr class="text-center">
                 <td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
                 <td>{{ bill.createdAt ? bill.createdAt|date('d/m/Y') : '' }}</td>
                 <td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
                 <td>{{ bill.globalBillValue }}</td>
                 <td><span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span></td>
                 <td>
-                    <a href="{{ path('bill_show', {'id': bill.id}) }}">show</a>
-                    <a href="{{ path('bill_edit', {'id': bill.id}) }}">edit</a>
-                </td>
+                    <div class="row">
+                        <a title="voir" href="{{ path('bill_show', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-eye text-white"></i></a>
+                        <a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+                        {% if modeCreation %}
+                            <a title="ajouter des forfaits" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn-circle btn-danger btn-sm mr-2 ml-2"><i class="fas fa-plus text-white"></i></a>
+                        {% endif %}
+                    </td>
+                </div>
             </tr>
         {% else %}
             <tr>
@@ -50,5 +58,7 @@
         </tbody>
     </table>
 </div>
-    <a href="{{ path('bill_new') }}">Create new</a>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
 {% endblock %}
