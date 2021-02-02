@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
@@ -19,6 +20,11 @@ class Note
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *              min=1,
+     *              max=255,
+     *              minMessage="vous devez saisir au moins {{ limit }} caractère",
+     *              maxMessage="Vous ne devez pas dépasser {{ limit }} caractères")
      */
     private $libelleNote;
 

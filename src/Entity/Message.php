@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -19,16 +20,23 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 500,
+     *      minMessage = "Vous devez saisir au moins {{ limit }} caractère",
+     *      maxMessage = "Vous ne pouvez pas saisir plus de {{ limit }} caractères")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * 
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\Type("string")
      */
     private $dateSend;
 
@@ -49,6 +57,7 @@ class Message
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type("bool")
      */
     private $isRead;
 
