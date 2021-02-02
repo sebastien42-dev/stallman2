@@ -3,36 +3,73 @@
 {% block title %}Bill{% endblock %}
 
 {% block body %}
-    <h1>Bill</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ bill.id }}</td>
-            </tr>
-            <tr>
-                <th>BillProviderNum</th>
-                <td>{{ bill.billProviderNum }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ bill.createdAt ? bill.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ bill.updatedAt ? bill.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>GlobalBillValue</th>
-                <td>{{ bill.globalBillValue }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% if bill.billState.id == 1 %}
+    {% set badgeColor = 'info' %}
+    {% set modeCreation = true %}
+{% elseif bill.billState.id == 2 %}
+    {% set badgeColor = 'danger' %}
+{% elseif bill.billState.id == 3 %}
+    {% set badgeColor = 'warning' %}
+{% elseif bill.billState.id == 4 %}
+    {% set badgeColor = 'success' %}
+{% endif %}
 
-    <a href="{{ path('bill_index') }}">back to list</a>
+<div class="container align-content-center">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Facture</span></h2>
+    <br>
+    <div class="row">
+        <div class="col-9">
+            <div class="card  border border-{{ color }} shadow">
+                <div class="card-header bg-dark text-white font-weight-bold">
+                    <span title="{{ bill.id }}">Numéro : </span>{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}
+                </div>
+                <div class="card-body">
+                    <table class="table-borderless table-sm">
+                        <tr>
+                            <th>Période</th>
+                            <td>{{ bill.createdAt ? bill.createdAt|date('m - Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date dernière modification</th>
+                            <td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Montant Total HT</th>
+                            <td>{{ bill.globalBillValue }}</td>
+                        </tr>
+                        <tr>
+                                <th>Etat facture</th>
+                                <td>
+                                    <span class="badge badge-{{ badgeColor }}">{{ bill.billState.stateName }}</span>
+                                </td>
+                            </tr>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <tr>
+                                <th>Personne concernée</th>
+                                <td>{{ bill.user.nom }} {{ bill.user.prenom }}</td>
+                            </tr>
+                        {% elseif is_granted('ROLE_COMPTA') %}
+                            <tr>
+                                <th>Personne concernée</th>
+                                <td>{{ bill.user.nom }} {{ bill.user.prenom }}</td>
+                            </tr>
+                        {% endif %}   
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <a href="{{ path('bill_edit', {'id': bill.id}) }}">edit</a>
-
-    {{ include('bill/_delete_form.html.twig') }}
+        <div class="col-3 ">
+            <ul style="list-style:none;" class="mb-2">
+                <li>
+                    <a title="retour à la liste des factures" style="text-decoration:none;" href="{{ path('bill_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>&nbsp;Factures
+                </li>
+                <li>
+                    <a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>&nbsp;Lignes Factures
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

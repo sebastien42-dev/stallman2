@@ -35,14 +35,17 @@ class BillLignController extends AbstractController
         $billLign = new BillLign();
         $form = $this->createForm(BillLignType::class, $billLign);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $billLign->setBill($oBill);
-            $billLign->setGlobalLignValue(1000);
+            $billLign->setGlobalLignValue($billLign->getQuantity()*$billLign->getPackage()->getValue());
+
+            $oBill->setGlobalBillValue($oBill->getGlobalBillValue()+($billLign->getQuantity()*$billLign->getPackage()->getValue()));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($billLign);
+            $entityManager->persist($oBill);
             $entityManager->flush();
-
             return $this->redirectToRoute('bill_lign_index');
         }
 
