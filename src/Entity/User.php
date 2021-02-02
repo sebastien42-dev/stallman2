@@ -102,6 +102,11 @@ class User implements UserInterface
      */
     private $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Bill::class, mappedBy="user")
+     */
+    private $bills;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
@@ -109,6 +114,7 @@ class User implements UserInterface
         $this->eventPlannings = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->bills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -429,6 +435,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($message->getUserFrom() === $this) {
                 $message->setUserFrom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bill[]
+     */
+    public function getBills(): Collection
+    {
+        return $this->bills;
+    }
+
+    public function addBill(Bill $bill): self
+    {
+        if (!$this->bills->contains($bill)) {
+            $this->bills[] = $bill;
+            $bill->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): self
+    {
+        if ($this->bills->removeElement($bill)) {
+            // set the owning side to null (unless already changed)
+            if ($bill->getUser() === $this) {
+                $bill->setUser(null);
             }
         }
 
