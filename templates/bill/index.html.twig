@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}listes des factures{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des factures</span></h2>
+
+    <a style="text-decoration:none;" title="ajouter une facture" href="{{ path('bill_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-plus-square text-white"></i></a>
+    <table class="table table-bordered table-hover shadow display">
+        <thead class="text-center table-sm thead-dark">
+            <tr>
+                <th>Numéro de facture</th>
+                <th>Date de création</th>
+                <th>Date de mise à jour</th>
+                <th>Montant global</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bill in bills %}
+
+        {% if bill.billState.id == 1 %}
+            {% set badgeColor = 'info' %}
+        {% elseif bill.billState.id == 2 %}
+            {% set badgeColor = 'danger' %}
+        {% elseif bill.billState.id == 3 %}
+            {% set badgeColor = 'warning' %}
+        {% elseif bill.billState.id == 4 %}
+            {% set badgeColor = 'success' %}
+        {% endif %}
+
+            <tr>
+                <td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
+                <td>{{ bill.createdAt ? bill.createdAt|date('d/m/Y') : '' }}</td>
+                <td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
+                <td>{{ bill.globalBillValue }}</td>
+                <td><span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span></td>
+                <td>
+                    <a href="{{ path('bill_show', {'id': bill.id}) }}">show</a>
+                    <a href="{{ path('bill_edit', {'id': bill.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">pas de facture trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <a href="{{ path('bill_new') }}">Create new</a>
+{% endblock %}

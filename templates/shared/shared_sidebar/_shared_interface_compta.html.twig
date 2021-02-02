@@ -11,7 +11,7 @@
         </a>
         <div id="collapseFacture" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href={{ path('user_index') }}>Liste</a>
+            <a class="collapse-item" href={{ path('bill_index') }}>Liste</a>
             {% if is_granted('ROLE_ADMIN') %}
               <a class="collapse-item" href={{ path('bill_state_index') }} title="getion des états de la factures">Gestion etat</a>
               <a class="collapse-item" href={{ path('package_index') }} title="getion des forfaits possibles">Forfaits</a>

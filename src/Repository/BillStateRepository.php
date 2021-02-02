@@ -14,6 +14,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BillStateRepository extends ServiceEntityRepository
 {
+    const STATE_CREATE = 1;
+    const STR_STATE_CREATE = 'Créee';
+    const STATE_WAIT = 2;
+    const STR_STATE_WAIT = 'En attente';
+    const STATE_VALIDATE = 3;
+    const STR_STATE_VALIDATE = 'Validée';
+    const STATE_PAID = 4;
+    const STR_STATE_PAID = 'Payée';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BillState::class);

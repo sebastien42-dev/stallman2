@@ -19,22 +19,20 @@ class BillRepository extends ServiceEntityRepository
         parent::__construct($registry, Bill::class);
     }
 
-    // /**
-    //  * @return Bill[] Returns an array of Bill objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Bill[] Returns an array of Bill objects
+     */
+    
+    public function findByCreatedAt($YearMonth)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('b.createdAt LIKE :val')
+            ->setParameter('val', $YearMonth.'%')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Bill

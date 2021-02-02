@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BillLign index{% endblock %}
+
+{% block body %}
+    <h1>BillLign index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantity</th>
+                <th>GlobalLignValue</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bill_lign in bill_ligns %}
+            <tr>
+                <td>{{ bill_lign.id }}</td>
+                <td>{{ bill_lign.quantity }}</td>
+                <td>{{ bill_lign.globalLignValue }}</td>
+                <td>{{ bill_lign.createdAt ? bill_lign.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}">show</a>
+                    <a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('bill_lign_new') }}">Create new</a>
+{% endblock %}
