@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}liste des états de fatcures{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des états des factures</span></h2>
+
+    <a style="text-decoration:none;" title="ajouter un état de facture" href="{{ path('bill_state_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-plus-square text-white"></i></a>
+
+    <table class="table table-bordered table-hover shadow display">
+        <thead class="text-center table-sm thead-dark">
+            <tr>
+                <th>Libellé états de facture</th>
+                <th width="10%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bill_state in bill_states %}
+            <tr>
+                <td title="{{ bill_state.id }}">{{ bill_state.stateName }}</td>
+                <td>
+                    <div class="row">
+                        <a title="modifier" href="{{ path('bill_state_edit', {'id': bill_state.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-edit text-white"></i></a>
+                        {{ include('bill_state/_delete_form_icone.html.twig') }}
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas d'état de facture trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
+{% endblock %}

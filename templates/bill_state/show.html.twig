@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BillState{% endblock %}
+
+{% block body %}
+    <h1>BillState</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bill_state.id }}</td>
+            </tr>
+            <tr>
+                <th>StateName</th>
+                <td>{{ bill_state.stateName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('bill_state_index') }}">back to list</a>
+
+    <a href="{{ path('bill_state_edit', {'id': bill_state.id}) }}">edit</a>
+
+    {{ include('bill_state/_delete_form.html.twig') }}
+{% endblock %}

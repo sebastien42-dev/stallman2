@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('bill_state_delete', {'id': bill_state.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet état de commande ?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ bill_state.id) }}">
+    <button class="btn-circle btn-danger btn-sm" title="supprimer la salle"><i class="fas fa-trash-alt text-white"></i></button>
+</form>
