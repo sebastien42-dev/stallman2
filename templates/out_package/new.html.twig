@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New OutPackage{% endblock %}
+
+{% block body %}
+    <h1>Create new OutPackage</h1>
+
+    {{ include('out_package/_form.html.twig') }}
+
+    <a href="{{ path('out_package_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OutPackage index{% endblock %}
+
+{% block body %}
+    <h1>OutPackage index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>OutPackageName</th>
+                <th>Value</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for out_package in out_packages %}
+            <tr>
+                <td>{{ out_package.id }}</td>
+                <td>{{ out_package.outPackageName }}</td>
+                <td>{{ out_package.value }}</td>
+                <td>
+                    <a href="{{ path('out_package_show', {'id': out_package.id}) }}">show</a>
+                    <a href="{{ path('out_package_edit', {'id': out_package.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('out_package_new') }}">Create new</a>
+{% endblock %}
