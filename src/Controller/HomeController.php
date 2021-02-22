@@ -35,13 +35,11 @@ class HomeController extends AbstractController
             }
         }
 
-      
         $bills = $billRepo->findByBillState($billStateRepo::STATE_CREATE);
 
         $currentDate = new DateTime();
        
-        $billStateWait = $billStateRepo->findOneById($billStateRepo::STATE_WAIT);
-        
+        $billStateWait = $billStateRepo->findOneById($billStateRepo::STATE_WAIT);        
 
         foreach ($bills as $bill) {
             if(date_format($bill->getCreatedAt(),'Y-m-d H:i:s') < date('Y-m-1 H:i:s')) {
@@ -52,9 +50,6 @@ class HomeController extends AbstractController
                 $entityManager->flush();
             }
         }
-        
-        // dd($bills);
-        
 
         $messages = $messageRepo->findByUserTo($this->getUser()->getId());
 

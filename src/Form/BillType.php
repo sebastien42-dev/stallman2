@@ -12,10 +12,27 @@ class BillType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('billProviderNum')
+            ->add('billProviderNum',NULL,[
+                'attr' => [
+                    'class'=> 'form-control border border-dark mb-2'
+                ],
+                'label' => "Numéro de la facture fournisseur",
+                'label_attr' => [
+                'class' => 'text-dark font-weight-bold'
+                ]
+            ])
             //->add('createdAt')
-            ->add('updatedAt')
-            ->add('globalBillValue')
+            //->add('updatedAt')
+            ->add('globalBillValue',NULL,[
+                'attr' => [
+                    'class'=> 'form-control border border-dark mb-2'
+                ],
+                'label' => "Montant Global de la facture",
+                'label_attr' => [
+                'class' => 'text-dark font-weight-bold'
+                ],
+                "disabled" => true
+            ])
             //->add('user')
             //->add('billState')
         ;
