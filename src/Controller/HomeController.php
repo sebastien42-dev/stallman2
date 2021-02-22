@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\BillState;
+use Doctrine\ORM\Query\Expr\Func;
+use App\Repository\BillRepository;
 use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
-use App\Repository\FonctionRepository;
-use App\Repository\EventPlanningRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\MessageRepository;
+use App\Repository\FonctionRepository;
+use App\Repository\BillStateRepository;
+use Symfony\Component\BrowserKit\Request;
+use App\Repository\EventPlanningRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
 
 class HomeController extends AbstractController
 {
@@ -19,7 +24,7 @@ class HomeController extends AbstractController
      * @Route("/home", name="home")
      */
 
-    public function index(MessageRepository $messageRepo): Response
+    public function index(MessageRepository $messageRepo,BillRepository $billRepo, BillStateRepository $billStateRepo): Response
     {
 
         $roles = $this->getUser()->getRoles();
@@ -29,6 +34,27 @@ class HomeController extends AbstractController
                 $role_user = $role;
             }
         }
+
+      
+        $bills = $billRepo->findByBillState($billStateRepo::STATE_CREATE);
+
+        $currentDate = new DateTime();
+       
+        $billStateWait = $billStateRepo->findOneById($billStateRepo::STATE_WAIT);
+        
+
+        foreach ($bills as $bill) {
+            if(date_format($bill->getCreatedAt(),'Y-m-d H:i:s') < date('Y-m-1 H:i:s')) {
+                $bill->setBillState($billStateWait);
+                $bill->setUpdatedAt($currentDate);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($bill);
+                $entityManager->flush();
+            }
+        }
+        
+        // dd($bills);
+        
 
         $messages = $messageRepo->findByUserTo($this->getUser()->getId());
 
@@ -163,6 +189,7 @@ class HomeController extends AbstractController
         foreach ($tab_objet_note as $note) {
             $total_note += $note->getNote() * $note->getCoefficient();
             $coefficient += $note->getCoefficient();
+            
         }
 
         if(count($tab_objet_note) > 0) {

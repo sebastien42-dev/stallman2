@@ -32,6 +32,25 @@ class BillRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+
+    /**
+     * @return Bill[] Returns an array of Bill objects
+     * @param mixed $yearMonth date à laquelle on cherche les factures format mm-aaaa
+     * @param int $idBillState l'index de l etat de la facturation recherché
+     */
+    
+    public function findByStateAndDate($yearMonth,$idBillState)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.createdAt LIKE :val')
+            ->andWhere('b.billState  = :idBillState')
+            ->setParameter('val', $yearMonth.'%')
+            ->setParameter('idBillState', $idBillState)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     
 
     /*
