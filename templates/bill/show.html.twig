@@ -22,7 +22,7 @@
         <div class="col-9">
             <div class="card  border border-{{ color }} shadow">
                 <div class="card-header bg-dark text-white font-weight-bold">
-                    <span title="{{ bill.id }}">Numéro : </span>{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}
+                    <span title="{{ bill.id }}">Numéro : </span>{{ bill.billProviderNum is defined ? bill.billProviderNum : 'pas encore de numéro' }}
                 </div>
                 <div class="card-body">
                     <table class="table-borderless table-sm">

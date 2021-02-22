@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\BillLign;
 use App\Entity\OutPackage;
 use App\Form\OutPackageType;
+use App\Repository\BillRepository;
 use App\Repository\OutPackageRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/out/package")
@@ -26,25 +28,39 @@ class OutPackageController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="out_package_new", methods={"GET","POST"})
+     * @Route("/new/{bill}", name="out_package_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,$bill,BillRepository $billRepo): Response
     {
+        $oBill = $billRepo->find($bill);
+        $billLign = new BillLign();
         $outPackage = new OutPackage();
         $form = $this->createForm(OutPackageType::class, $outPackage);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $billLign->setBill($oBill);
+
+            $billLign->setOutPackage($outPackage);
+
+            $billLign->setGlobalLignValue($billLign->getOutPackage()->getValue());
+
+            $oBill->setGlobalBillValue($oBill->getGlobalBillValue()+($billLign->getGlobalLignValue()));
+
             $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($oBill);
+            $entityManager->persist($billLign);
             $entityManager->persist($outPackage);
             $entityManager->flush();
 
-            return $this->redirectToRoute('out_package_index');
+            return $this->redirectToRoute('bill_index');
         }
 
         return $this->render('out_package/new.html.twig', [
             'out_package' => $outPackage,
             'form' => $form->createView(),
+            'bill' => $oBill
         ]);
     }
 

@@ -46,7 +46,7 @@ class BillLignController extends AbstractController
             $entityManager->persist($billLign);
             $entityManager->persist($oBill);
             $entityManager->flush();
-            return $this->redirectToRoute('bill_lign_index');
+            return $this->redirectToRoute('bill_index');
         }
 
         return $this->render('bill_lign/new.html.twig', [

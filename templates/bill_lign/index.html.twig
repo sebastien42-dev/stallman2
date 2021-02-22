@@ -40,7 +40,7 @@
             <tr class="text-center">
                 <td title="ib{{ bill_lign.Bill.id }}">
                     <a href="{{ path('bill_show', {'id': bill_lign.bill.id}) }}" class="text-{{ color }}">
-                        {{ bill_lign.bill.billProviderNum is not defined  ? bill_lign.bill.billProviderNum : 'pas encore de numéro' }}
+                        {{ bill_lign.bill.billProviderNum is defined ? bill_lign.bill.billProviderNum : 'pas encore de numéro' }}
                     </a>
                 </td>
                 <td>

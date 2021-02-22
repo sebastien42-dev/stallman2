@@ -1,66 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}listes des factures{% endblock %}
+{% block title %}listes des factures
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des factures</span></h2>
+	<div class="container-fluid">
+		<h2 class="text-center m-3">
+			<span class="badge badge-{{ color }} font-weight-bold text-white">Listes des factures</span>
+		</h2>
 
-    <a style="text-decoration:none;" title="ajouter une facture" href="{{ path('bill_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-plus-square text-white"></i></a>
-    <table class="table table-bordered table-hover shadow display">
-        <thead class="text-center table-sm thead-dark">
-            <tr>
-                <th>Numéro de facture</th>
-                <th>Date de création</th>
-                <th>Date de mise à jour</th>
-                <th>Montant global</th>
-                <th>Statut</th>
-                <th width="10%">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for bill in bills %}
+		<a style="text-decoration:none;" title="ajouter une facture" href="{{ path('bill_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3">
+			<i class="fas fa-plus-square text-white"></i>
+		</a>
+		<table class="table table-bordered table-hover shadow display">
+			<thead class="text-center table-sm thead-dark">
+				<tr>
+					<th>Numéro de facture</th>
+					<th>Date de création</th>
+					<th>Date de mise à jour</th>
+					<th>Montant global</th>
+					<th>Statut</th>
+					<th width="20%">Ajouter une ligne</th>
+					<th width="10%">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for bill in bills %}
 
-        {% set modeCreation = false %}
+					{% set modeCreation = false %}
 
-        {% if bill.billState.id == 1 %}
-            {% set badgeColor = 'info' %}
-            {% set modeCreation = true %}
-        {% elseif bill.billState.id == 2 %}
-            {% set badgeColor = 'danger' %}
-        {% elseif bill.billState.id == 3 %}
-            {% set badgeColor = 'warning' %}
-        {% elseif bill.billState.id == 4 %}
-            {% set badgeColor = 'success' %}
-        {% endif %}
-{# TODO rajouter un test sur profil pour les icones action, les formteurs peuvent uniquement voir et ajouter des lignes #}
-            <tr class="text-center">
-                <td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
-                <td>{{ bill.createdAt ? bill.createdAt|date('d/m/Y') : '' }}</td>
-                <td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
-                <td>{{ bill.globalBillValue }}</td>
-                <td>
-                    <span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span>
-                </td>
-                <td>
-                    <div class="row">
-                        <a title="voir" href="{{ path('bill_show', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-eye text-white"></i></a>
-                        <a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
-                        {% if modeCreation %}
-                            <a title="ajouter des forfaits" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn-circle btn-danger btn-sm mr-2 ml-2"><i class="fas fa-plus text-white"></i></a>
-                        {% endif %}
-                    </td>
-                </div>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">pas de facture trouvée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
-{% block javascripts %}
-    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
-{% endblock %}
+					{% if bill.billState.id == 1 %}
+						{% set badgeColor = 'info' %}
+						{% set modeCreation = true %}
+					{% elseif bill.billState.id == 2 %}
+						{% set badgeColor = 'danger' %}
+					{% elseif bill.billState.id == 3 %}
+						{% set badgeColor = 'warning' %}
+					{% elseif bill.billState.id == 4 %}
+						{% set badgeColor = 'success' %}
+					{% endif %}
+					{# TODO rajouter un test sur profil pour les icones action, les formteurs peuvent uniquement voir et ajouter des lignes #}
+					<tr class="text-center">
+						<td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
+						<td>{{ bill.createdAt ? bill.createdAt|date('d/m/Y') : '' }}</td>
+						<td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
+						<td>{{ bill.globalBillValue }}</td>
+						<td>
+							<span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span>
+						</td>
+						<td>
+							{% if modeCreation %}
+								<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
+									<span class="text-white font-weight-bold">forfait</span>
+								</a>
+								<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
+									<span class="text-white font-weight-bold">Hors forfait</span>
+								</a>
+							{% endif %}
+						</td>
+						<td>
+							<div class="row">
+								<a title="voir" href="{{ path('bill_show', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+									<i class="fas fa-eye text-white"></i>
+								</a>
+								<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+									<i class="fas fa-edit text-white"></i>
+								</a>
+								{# {% if modeCreation %}
+								                            <a title="ajouter des forfaits" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn-circle btn-danger btn-sm mr-2 ml-2"><i class="fas fa-plus text-white"></i></a>
+								                        {% endif %} #}
+							</td>
+						</td>
+					</tr>
+				</div>
+			</tbody>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="6">pas de facture trouvée</td>
+		</tr>
+	{% endfor %}
+</tbody></table></div>{% endblock %}{% block javascripts %}{% include "shared/shared_datatable/_datatable_main.html.twig" %}{% endblock %}
