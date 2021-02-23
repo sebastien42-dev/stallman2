@@ -71,7 +71,8 @@ class UserType extends AbstractType
                 ],
                 'choice_label' => 'libelle_classe',
                 'multiple' => true,
-                'by_reference' => false
+                'by_reference' => false,
+                'required' => false
             ])
             ->add('adresse',NULL,[
                 'attr' => [

@@ -40,7 +40,7 @@ class BillController extends AbstractController
      */
     public function new(Request $request,BillRepository $billRepo): Response
     {
-        if(count($billRepo->findByCreatedAt(date('Y-m'))) > 0) {
+        if(count($billRepo->findByCreatedAtAndUser(date('Y-m'),$this->getUser()->getId())) > 0) {
             return $this->render('error/error_bill_exist.html.twig');
         }
 

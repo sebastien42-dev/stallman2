@@ -60,6 +60,8 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('home_admin');
         } elseif($role_user == 'ROLE_PROF') {
             return $this->redirectToRoute('home_prof');
+        } elseif($role_user == 'ROLE_COMPTA') {
+            return $this->redirectToRoute('home_compta');
         }
     
     }
@@ -166,6 +168,28 @@ class HomeController extends AbstractController
             'dataMoyenne' => json_encode($tabDataMoyenne),
             'bgColors' => json_encode($tabBgColor),
             'borderColors' => json_encode($tabBorderColor)
+        ]);
+    }
+
+    /**
+     * @Route("/home/compta", name="home_compta")
+     */
+
+    public function indexCompta(UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
+    {
+
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
+        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
+        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
+         
+        return $this->render('home/index.html.twig', [
+            'nbUser' => json_encode($tab_nb_user),
+            'labelCatgorie' => json_encode($tab_nom_categorie)
         ]);
     }
 

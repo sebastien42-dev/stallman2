@@ -23,16 +23,16 @@ class BillType extends AbstractType
             ])
             //->add('createdAt')
             //->add('updatedAt')
-            ->add('globalBillValue',NULL,[
-                'attr' => [
-                    'class'=> 'form-control border border-dark mb-2'
-                ],
-                'label' => "Montant Global de la facture",
-                'label_attr' => [
-                'class' => 'text-dark font-weight-bold'
-                ],
-                "disabled" => true
-            ])
+            // ->add('globalBillValue',NULL,[
+            //     'attr' => [
+            //         'class'=> 'form-control border border-dark mb-2'
+            //     ],
+            //     'label' => "Montant Global de la facture",
+            //     'label_attr' => [
+            //     'class' => 'text-dark font-weight-bold'
+            //     ],
+            //     "disabled" => true
+            // ])
             //->add('user')
             //->add('billState')
         ;
