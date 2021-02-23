@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+
+    <div style="display:none;">
+        {{ form_row(form.UserTo) }}
+    </div>
+
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.isImportant) }}
+
+    <div class="text-center m-3">
+        <button class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Envoyer') }}</button>
+    </div>
+
+{{ form_end(form) }}

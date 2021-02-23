@@ -62,6 +62,40 @@ class MessageController extends AbstractController
         ]);
     }
 
+    /** retourne le formulaire de nouveau message pour un user précis
+     * @Route("/new/user/{user_id}", name="message_new_user", methods={"GET","POST"})
+     */
+    public function newByUser(Request $request,UserRepository $userRepo,$user_id): Response
+    {
+        $user = $userRepo->find($this->getUser());
+        $userTo = $userRepo->find($user_id);
+
+        $message = new Message();
+        $date = new DateTime();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+        
+        $message->setUserFrom($user);
+        $message->setUserTo($userTo);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // on sette la date du moment de l'envoie par défaut
+           
+            $message->setDateSend($date);
+            $message->setIsRead(0);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('message_index');
+        }
+
+        return $this->render('message/new_by_user.html.twig', [
+            'message' => $message,
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * retourne le contenu du message en ajax

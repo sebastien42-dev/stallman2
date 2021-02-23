@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture complète
+{% endblock %}
+
+{% block body %}
+
+	{% set modeCreation = false %}
+	{% set modeWait = false %}
+	{% set modeValidate = false %}
+	{% set modePaid = false %}
+
+	{% if bill.billState.id == 1 %}
+		{% set badgeColor = 'info' %}
+		{% set modeCreation = true %}
+	{% elseif bill.billState.id == 2 %}
+		{% set badgeColor = 'danger' %}
+		{% set modeWait = true %}
+	{% elseif bill.billState.id == 3 %}
+		{% set badgeColor = 'warning' %}
+		{% set modeValidate = true %}
+	{% elseif bill.billState.id == 4 %}
+		{% set badgeColor = 'success' %}
+		{% set modePaid = true %}
+	{% endif %}
+
+	<div class="container align-content-center">
+		<h2 class="text-center m-3">
+			<span class="font-weight-bold text-white badge badge-{{ color }}">Facture</span>
+		</h2>
+		<br>
+		<div class="row">
+			<div class="col-9">
+				<div class="card  border border-{{ color }} shadow">
+					<div class="card-header bg-dark text-white font-weight-bold">
+						<span title="{{ bill.id }}">Numéro :
+						</span>
+						{{ bill.billProviderNum is defined ? bill.billProviderNum : 'pas encore de numéro' }}
+					</div>
+					<div class="card-body">
+						<table class="table-borderless table-sm">
+							<tr>
+								<th>Période</th>
+								<td>{{ bill.createdAt ? bill.createdAt|date('m - Y') : '' }}</td>
+							</tr>
+							<tr>
+								<th>Date dernière modification</th>
+								<td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
+							</tr>
+							<tr>
+								<th>Montant Total HT</th>
+								<td>
+									<span class="font-weight-bold text-primary">{{ bill.globalBillValue }}
+										€</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Etat facture</th>
+								<td>
+									<span class="badge badge-{{ badgeColor }}">{{ bill.billState.stateName }}</span>
+								</td>
+							</tr>
+							{% if is_granted('ROLE_ADMIN') %}
+								<tr>
+									<th>Personne concernée</th>
+									<td>{{ bill.user.nom }}
+										{{ bill.user.prenom }}</td>
+								</tr>
+							{% elseif is_granted('ROLE_COMPTA') %}
+								<tr>
+									<th>Personne concernée</th>
+									<td>{{ bill.user.nom }}
+										{{ bill.user.prenom }}</td>
+								</tr>
+							{% endif %}
+						</table>
+						<br/>
+						<table class="table table-striped table-hover">
+							<thead>
+								<th>Date</th>
+								<th>
+									<span class="text-success">Forfait</span>
+									/
+									<span class="text-warning">Hors Forfait</span>
+								</th>
+								<th>Quantité</th>
+								<th>Montant unitaire</th>
+								<th>Montant total</th>
+							</thead>
+							<tbody>
+
+								{% for billLign in billLigns %}
+									<tr>
+										<td>{{ billLign.createdAt | date('d/m/Y') }}</td>
+
+										{% if billLign.package != NULL %}
+											<td>
+												<span class="font-weight-bold text-success">{{  billLign.package.packageName }}</span>
+											</td>
+										{% elseif billLign.outPackage != NULL %}
+											<td>
+												<span class="font-weight-bold text-warning">{{  billLign.outPackage.outPackageName }}</span>
+												{% if billLign.outPackage.proof != NULL %}
+													&nbsp;<span class="text-muted">Justificatif donnée</span>
+												{% else %}
+													&nbsp;<span class="text-danger">
+														<i>Pas de justificatif</i>
+													</span>
+												{% endif %}
+
+											</td>
+										{% endif %}
+
+										<td>{{ billLign.quantity != NULL ? billLign.quantity : '1' }}</td>
+
+										{% if billLign.package != NULL %}
+											<td>
+												{{  billLign.package.value }}
+												€
+											</td>
+										{% elseif billLign.outPackage != NULL %}
+											<td>
+												{{  billLign.outPackage.value }}
+												€
+											</td>
+										{% endif %}
+										<td>
+											<b>{{ billLign.globalLignValue }}
+												€</b>
+										</td>
+									</tr>
+								{% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-3 ">
+				<ul style="list-style:none;" class="mb-2">
+					<li>
+						<a title="retour à la liste des factures" style="text-decoration:none;" href="{{ path('bill_index') }}" class="btn-circle btn-sm btn-secondary mb-2">
+							<i class="fas fa-undo text-white"></i>
+						</a>&nbsp;Factures
+					</li>
+					<li>
+						<a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2">
+							<i class="fas fa-undo text-white"></i>
+						</a>&nbsp;Lignes Factures
+					</li>
+				</ul>
+
+				<ul style="list-style:none;" class="mb-2">
+					{% if is_granted('ROLE_COMPTA') %}
+						<li>
+							{% if modeWait %}
+								<a title="valider cette demande de facture" style="text-decoration:none;" href="{{ path('bill_validate',{'id_bill': bill.id }) }}" class="btn btn-sm btn-warning mb-2">
+									Valider
+								</a>
+							{% endif %}
+
+							{% if modeCreation %}
+								<a title="Mettre cette creation en attente, bloquera l'insertion de nouvelles lignes" style="text-decoration:none;" href="{{ path('bill_wait',{'id_bill': bill.id }) }}" class="btn btn-sm btn-danger mb-2">
+									Mettre en attente
+								</a>
+							{% endif %}
+
+							{% if modeValidate %}
+								<a title="Mettre cette facture à l'état payé" style="text-decoration:none;" href="{{ path('bill_paid',{'id_bill': bill.id }) }}" class="btn btn-sm btn-success mb-2">
+									Payer cette facture
+								</a>
+							{% endif %}
+							<a title="envoyer un message directement" style="text-decoration:none;" href="{{ path('message_new_user',{'user_id': bill.user.id }) }}" class="btn btn-sm btn-primary mb-2">
+								Envoyer un message a
+								<span class="font-weight-bold">{{ bill.user.nom }}
+									{{ bill.user.prenom }}</span>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

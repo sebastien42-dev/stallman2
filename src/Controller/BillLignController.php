@@ -69,8 +69,10 @@ class BillLignController extends AbstractController
     /**
      * @Route("/{id}/edit", name="bill_lign_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, BillLign $billLign): Response
+    public function edit(Request $request, BillLign $billLign,BillRepository $billRepo): Response
     {
+        $bill = $billLign->getBill();
+
         $form = $this->createForm(BillLignType::class, $billLign);
         $form->handleRequest($request);
 
@@ -83,6 +85,7 @@ class BillLignController extends AbstractController
         return $this->render('bill_lign/edit.html.twig', [
             'bill_lign' => $billLign,
             'form' => $form->createView(),
+            'bill' => $bill
         ]);
     }
 
