@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\BillState;
 use Doctrine\ORM\Query\Expr\Func;
 use App\Repository\BillRepository;
@@ -9,17 +10,26 @@ use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
 use App\Repository\MatiereRepository;
 use App\Repository\MessageRepository;
+use App\Repository\BillLignRepository;
 use App\Repository\FonctionRepository;
 use App\Repository\BillStateRepository;
 use Symfony\Component\BrowserKit\Request;
 use App\Repository\EventPlanningRepository;
-use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+    private $billRepo;
+    private $billLignRepo;
+
+    function __construct(BillRepository $billRepo,BillLignRepository $billLignRepo)
+    {
+        $this->billRepo = $billRepo;
+        $this->billLignRepo = $billLignRepo;
+    }
+
     /**
      * @Route("/home", name="home")
      */
@@ -42,7 +52,7 @@ class HomeController extends AbstractController
         $billStateWait = $billStateRepo->findOneById($billStateRepo::STATE_WAIT);        
 
         foreach ($bills as $bill) {
-            if(date_format($bill->getCreatedAt(),'Y-m-d H:i:s') < date('Y-m-1 H:i:s')) {
+            if(date_format($bill->getCreatedAt(),'Y-m-d H:i:s') < date('Y-m-1 H:i:s') && date_format($bill->getCreatedAt(),'m') < date('m')) {
                 $bill->setBillState($billStateWait);
                 $bill->setUpdatedAt($currentDate);
                 $entityManager = $this->getDoctrine()->getManager();
@@ -160,14 +170,24 @@ class HomeController extends AbstractController
             $tabBgColor[] = $bgColor;
             $tabBorderColor[] = $borderColor;
         }
-    
+
+        $globalArray = $this->getGlobalBillLignForChart($this->getUser());
+
+        $totalPackage[] = $globalArray['package'];
+        $totalOutPackage[] = $globalArray['out_package'];
+
+        $totalBill = $globalArray['package'] + $globalArray['out_package'];
+
         return $this->render('home/index.html.twig', [
             'moyenne' => $moyenne,
             'events' => $events,
             'labelsMatieres' => json_encode($tabLabelsLibelle),
             'dataMoyenne' => json_encode($tabDataMoyenne),
             'bgColors' => json_encode($tabBgColor),
-            'borderColors' => json_encode($tabBorderColor)
+            'borderColors' => json_encode($tabBorderColor),
+            'totalPackage' => json_encode($totalPackage),
+            'totalOutPackage' => json_encode($totalOutPackage),
+            'totalBill' => $totalBill
         ]);
     }
 
@@ -233,5 +253,29 @@ class HomeController extends AbstractController
             'count' => $countMessages
         ]);
 
+    }
+
+    public function getGlobalBillLignForChart($user)
+    {
+        $bills = $this->billRepo->findByUser($user);
+        $total_package = 0;
+        $total_out_package = 0;
+
+        foreach ($bills as $bill) {
+            $billLigns = $this->billLignRepo->findByBill($bill);
+            foreach ($billLigns as $lign) {
+
+                if ($lign->getPackage() != NULL) {
+                    $total_package += $lign->getGlobalLignValue();
+                } elseif($lign->getOutPackage() != NULL) {
+                    $total_out_package += $lign->getGlobalLignValue();
+                }
+            }
+        }
+        
+       $globalArray['package'] = $total_package;
+       $globalArray['out_package'] = $total_out_package;
+    
+       return $globalArray;
     }
 }

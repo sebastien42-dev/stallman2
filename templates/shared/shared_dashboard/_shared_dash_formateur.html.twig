@@ -4,7 +4,7 @@
                 <div class="card border-{{ color }} shadow-lg">
                     <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
                     {# TODO mettre le mois en injection en lettre par le controller #}
-                        <span>Heures pour {{'now'|date('m') }} {{'now'|date('Y') }}</span>
+                        <span>Facturables pour {{'now'|date('m') }} {{'now'|date('Y') }}</span>
                     </div>
                     <div class="card-body">
                         <canvas id="MontantFactureChart" width="400" height="200"></canvas>
@@ -37,6 +37,20 @@
                          </div>
             </div>
 
-       </div>
+
+</div>
+
+ <div class="row mt-2">
+
+    <div class="col-lg-6 col-sm-12 mb-2">
+        <div class="card border-{{ color }} shadow-lg">
+            <div class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
+                <span>Total facturable pour {{'now'|date('m') }} {{'now'|date('Y') }}</span>
+            </div>
+            <div class="card-body">
+                <span>{{ totalBill }} €</span>
+            </div>
+        </div>
+    </div>
 
 </div>

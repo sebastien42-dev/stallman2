@@ -1,34 +1,40 @@
 <script>
 var ctx = document.getElementById('MontantFactureChart').getContext('2d');
 var myChart2 = new Chart(ctx, {
-     type: 'doughnut',
+     type: 'bar',
     data: {
+ labels: ["{{ "now"|date("m-Y") }}"],
         datasets: [{
-            data: [32,12],
+            label: 'Hors Forfait',
+            data: {{ totalOutPackage }},
             backgroundColor: [
-                'rgba(140, 200, 0, 0.2)',
-                'rgba(10, 12, 255, 0.2)',
+                'rgba(237, 150, 0, 1)',
             ],
             borderColor: [
-                'rgba(140, 200, 0, 1)',
-                'rgba(10, 12, 255, 1)',
+                'rgba(237, 150, 0, 1)',
             ],
             borderWidth: 1
-        }],
-        labels:[
-            'Montant facturé ce mois',
-            'Reste à régler'
-        ]
+        },
+        {
+            label: 'Forfait',
+            data: {{ totalPackage }},
+            backgroundColor: [
+                'rgba(0, 209, 42, 1)',
+            ],
+            borderColor: [
+                'rgba(0, 209, 42, 1)',
+            ],
+            borderWidth: 1
+        }]
     },
-    options: {
-       responsive: true,
-	    legend: {
-			position: 'top',
-		},
-		animation: {
-			animateScale: true,
-			animateRotate: true
-		}
+   options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
     }
 });
 </script>
