@@ -5,8 +5,8 @@ var myChart2 = new Chart(ctx, {
     data: {
  labels: ["{{ "now"|date("m-Y") }}"],
         datasets: [{
-            label: 'Hors Forfait',
-            data: {{ totalOutPackage }},
+            label: 'Hors Forfait en créée',
+            data: {{ totalOutPackageCreate }},
             backgroundColor: [
                 'rgba(237, 150, 0, 1)',
             ],
@@ -16,13 +16,55 @@ var myChart2 = new Chart(ctx, {
             borderWidth: 1
         },
         {
-            label: 'Forfait',
-            data: {{ totalPackage }},
+            label: 'Forfait en créée',
+            data: {{ totalPackageCreate }},
             backgroundColor: [
                 'rgba(0, 209, 42, 1)',
             ],
             borderColor: [
                 'rgba(0, 209, 42, 1)',
+            ],
+            borderWidth: 1
+        },{
+            label: 'Hors Forfait en attente',
+            data: {{ totalOutPackageWait }},
+            backgroundColor: [
+                'rgba(140, 120, 40, 1)',
+            ],
+            borderColor: [
+                'rgba(140, 120, 40, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Forfait en attente',
+            data: {{ totalPackageWait }},
+            backgroundColor: [
+                'rgba(5, 120, 12, 1)',
+            ],
+            borderColor: [
+                'rgba(5, 120, 12, 1)',
+            ],
+            borderWidth: 1
+        },{
+            label: 'Hors Forfait en validée',
+            data: {{ totalOutPackageValidate }},
+            backgroundColor: [
+                'rgba(255, 20, 100, 1)',
+            ],
+            borderColor: [
+                'rgba(255, 20, 100, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Forfait en validée',
+            data: {{ totalPackageValidate }},
+            backgroundColor: [
+                'rgba(120, 255, 30, 1)',
+            ],
+            borderColor: [
+                'rgba(120, 255, 30, 1)',
             ],
             borderWidth: 1
         }]
