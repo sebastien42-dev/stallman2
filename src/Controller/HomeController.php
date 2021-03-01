@@ -172,7 +172,6 @@ class HomeController extends AbstractController
         }
 
         $globalArray = $this->getGlobalBillLignForChart($this->getUser());
-        $totalBill = 0;
 
         $totalPackageCreate[] = $globalArray['package_created'];
         $totalPackageWait[] = $globalArray['package_wait'];
@@ -182,9 +181,11 @@ class HomeController extends AbstractController
         $totalOutPackageWait[] = $globalArray['out_package_wait'];
         $totalOutPackageValidate[] = $globalArray['out_package_validate'];
 
-        foreach ($globalArray as $key => $value) {
-            $totalBill +=  $value;
-        }
+        $totalBillCreate = $globalArray['global_create'];
+        $totalBillValidate = $globalArray['global_validate'];
+        $totalBillWait = $globalArray['global_wait'];
+
+        $totalBill = $totalBillCreate + $totalBillValidate + $totalBillWait;
 
         return $this->render('home/index.html.twig', [
             'moyenne' => $moyenne,
@@ -199,7 +200,11 @@ class HomeController extends AbstractController
             'totalOutPackageCreate' => json_encode($totalOutPackageCreate),
             'totalOutPackageWait' => json_encode($totalOutPackageWait),
             'totalOutPackageValidate' => json_encode($totalOutPackageValidate),
-            'totalBill' => $totalBill
+            'totalBillWait' => $totalBillWait,
+            'totalBillValidate' => $totalBillValidate,
+            'totalBillCreate' => $totalBillCreate,
+            'totalBill' => $totalBill,
+            
         ]);
     }
 
@@ -277,38 +282,51 @@ class HomeController extends AbstractController
     {
         //TODO a faire apparaitre sur le dashboard en fonction de la date de la facture
 
-        $bills = $this->billRepo->findByUser($user);
+        //je recupère les factures depuis le 1er janvier
+        $bills = $this->billRepo->findByCreatedAtSupAndUser(date('Y-01'),$user);
+
+        // $bills = $this->billRepo->findByUser($user);
         $total_package_created = 0;
         $total_out_package_created = 0;
         $total_package_wait = 0;
         $total_out_package_wait = 0;
         $total_package_validate = 0;
         $total_out_package_validate = 0;
+        
+        $globalWait = 0;
+        $globalCreate = 0;
+        $globalValidate = 0;
 
 
         foreach ($bills as $bill) {
             $billLigns = $this->billLignRepo->findByBill($bill);
-            
+
             foreach ($billLigns as $lign) {
 
                 if ($lign->getPackage() != NULL) {
 
                     if($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_WAIT)){
                         $total_package_wait += $lign->getGlobalLignValue();
+                        $globalWait += $lign->getGlobalLignValue();
                     } elseif($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_VALIDATE)) {
                         $total_package_validate += $lign->getGlobalLignValue();
+                        $globalValidate += $lign->getGlobalLignValue();
                     } elseif($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_CREATE)) {
                         $total_package_created  += $lign->getGlobalLignValue();
+                        $globalCreate += $lign->getGlobalLignValue();
                     }
                         
                 } elseif($lign->getOutPackage() != NULL) {
 
-                    if($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_WAIT)){
+                    if($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_WAIT)) {
                         $total_out_package_wait += $lign->getGlobalLignValue();
+                        $globalWait += $lign->getGlobalLignValue();
                     } elseif($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_VALIDATE)) {
                         $total_out_package_validate += $lign->getGlobalLignValue();
+                        $globalValidate += $lign->getGlobalLignValue();
                     } elseif($bill->getBillState() == $this->billStateRepo->find($this->billStateRepo::STATE_CREATE)) {
                         $total_out_package_created  += $lign->getGlobalLignValue();
+                        $globalCreate += $lign->getGlobalLignValue();
                     }
                 }
             }
@@ -321,7 +339,10 @@ class HomeController extends AbstractController
        $globalArray['package_wait'] = $total_package_wait;
        $globalArray['out_package_wait'] = $total_out_package_wait;
 
-    
+       $globalArray['global_wait'] = $globalWait;
+       $globalArray['global_create'] = $globalCreate;
+       $globalArray['global_validate'] = $globalValidate;
+
        return $globalArray;
     }
 }

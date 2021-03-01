@@ -35,6 +35,22 @@ class BillRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Bill[] Returns an array of Bill objects created for user with date in parameters
+     */
+    
+    public function findByCreatedAtSupAndUser($YearMonth,$user)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.createdAt > :yearMonth')
+            ->andWhere('b.user = :user')
+            ->setParameter('yearMonth', $YearMonth.'%')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     /**
      * @return Bill[] Returns an array of Bill objects
