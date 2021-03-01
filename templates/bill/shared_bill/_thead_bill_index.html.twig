@@ -1,0 +1,23 @@
+<thead class="text-center table-sm thead-dark">
+	<tr>
+		<th>Numéro de facture</th>
+		{% if is_granted('ROLE_ADMIN') %}
+			<th>Pour</th>
+		{% elseif is_granted('ROLE_COMPTA') %}
+			<th>Pour</th>
+		{% endif %}
+		<th>Date de création</th>
+		<th>Date de mise à jour</th>
+		<th>Montant global</th>
+		<th>Statut</th>
+		{% if is_granted('ROLE_ADMIN') %}
+			<th width="20%">Ajouter une ligne</th>
+		{% elseif is_granted('ROLE_PROF') %}
+			<th width="20%">Ajouter une ligne</th>
+		{% endif %}
+		<th width="10%">Actions</th>
+		{% if is_granted('ROLE_COMPTA') %}
+			<th>Actions Comptables</th>
+		{% endif %}
+	</tr>
+</thead>

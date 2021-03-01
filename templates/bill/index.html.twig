@@ -13,29 +13,7 @@
 			<i class="fas fa-plus-square text-white"></i>
 		</a>
 		<table class="table table-bordered table-hover shadow display">
-			<thead class="text-center table-sm thead-dark">
-				<tr>
-					<th>Numéro de facture</th>
-					{% if is_granted('ROLE_ADMIN') %}
-						<th>Pour</th>
-					{% elseif is_granted('ROLE_COMPTA') %}
-						<th>Pour</th>
-					{% endif %}
-					<th>Date de création</th>
-					<th>Date de mise à jour</th>
-					<th>Montant global</th>
-					<th>Statut</th>
-					{% if is_granted('ROLE_ADMIN') %}
-						<th width="20%">Ajouter une ligne</th>
-					{% elseif is_granted('ROLE_PROF') %}
-						<th width="20%">Ajouter une ligne</th>
-					{% endif %}
-					<th width="10%">Actions</th>
-					{% if is_granted('ROLE_COMPTA') %}
-						<th>Actions Comptables</th>
-					{% endif %}
-				</tr>
-			</thead>
+			{% include "/bill/shared_bill/_thead_bill_index.html.twig" %}
 			<tbody>
 				{% for bill in bills %}
 
@@ -105,14 +83,16 @@
 						{% endif %}
 
 						<td>
-							<div
-								class="row">
+							<div class="row">
 								<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
 									<i class="fas fa-edit text-white"></i>
 								</a>
+								{% if not is_granted('ROLE_COMPTA') %}
 								<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
 									<i class="far fa-file"></i>
 								</a>
+								{% endif %}
+								
 								{% if is_granted('ROLE_COMPTA') %}
 									<td>
 										<div class="row">
