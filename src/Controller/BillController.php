@@ -36,8 +36,6 @@ class BillController extends AbstractController
      */
     public function index(BillRepository $billRepository): Response
     {
-        //TODO tester quel user connecter pour afficher que les factures concernées
-
         $roles = $this->getUser()->getRoles();
         foreach ($roles as $role) {
             if($role != 'ROLE_USER') {
@@ -47,7 +45,6 @@ class BillController extends AbstractController
 
         if($role_user == "ROLE_PROF" || $role_user == "ROLE_USER" || $role_user == "ROLE_ELEVE" ) {
             $bills = $billRepository->findByUser($this->getUser());
-            dump($bills);
         } else {
             $bills = $billRepository->findAll();
         }
