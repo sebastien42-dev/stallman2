@@ -5,6 +5,9 @@
 
 {% block body %}
 	<div class="container-fluid">
+	
+		{% include "/shared/shared_alert/_alert.html.twig" %}
+
 		<h2 class="text-center m-3">
 			<span class="badge badge-{{ color }} font-weight-bold text-white">Listes des factures</span>
 		</h2>
@@ -118,4 +121,5 @@
 			<td colspan="6">pas de facture trouvée</td>
 		</tr>
 	{% endfor %}
+
 </tbody></table></div>{% endblock %}{% block javascripts %}{% include "shared/shared_datatable/_datatable_main.html.twig" %}{% endblock %}

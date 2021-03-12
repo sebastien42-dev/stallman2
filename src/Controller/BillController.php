@@ -75,6 +75,8 @@ class BillController extends AbstractController
             $entityManager->persist($bill);
             $entityManager->flush();
 
+            $this->addFlash('success','La nouvelle facture a bien été créée');
+
             return $this->redirectToRoute('bill_index');
         }
 
