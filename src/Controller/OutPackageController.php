@@ -54,6 +54,9 @@ class OutPackageController extends AbstractController
             $entityManager->persist($outPackage);
             $entityManager->flush();
 
+            $date = date_format($billLign->getBill()->getCreatedAt(), 'm/Y');
+            $this->addFlash('success',"la ligne hors forfait pour {$billLign->getBill()->getUser()->getNom()} {$billLign->getBill()->getUser()->getPrenom()} pour la facture de $date a bien été enregistrée");
+
             return $this->redirectToRoute('bill_index');
         }
 

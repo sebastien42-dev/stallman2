@@ -46,6 +46,11 @@ class BillLignController extends AbstractController
             $entityManager->persist($billLign);
             $entityManager->persist($oBill);
             $entityManager->flush();
+
+            $date = date_format($billLign->getBill()->getCreatedAt(), 'm/Y');
+
+            $this->addFlash('success',"la ligne forfait pour {$billLign->getBill()->getUser()->getNom()} {$billLign->getBill()->getUser()->getPrenom()} pour la facture de $date a bien été enregistrée");
+
             return $this->redirectToRoute('bill_index');
         }
 
