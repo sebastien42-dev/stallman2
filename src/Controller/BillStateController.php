@@ -9,10 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-// TODO limiter cette page aux admin
+// TODO limiter cette page aux admin (le security yaml doit pas etre comme il faut...)
 
 /**
- * @Route("/bill/state")
+ * @Route("/admin/bill/state")
  */
 class BillStateController extends AbstractController
 {
@@ -39,6 +39,8 @@ class BillStateController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($billState);
             $entityManager->flush();
+
+            $this->addFlash('success','Le nouvel état de facture a bien été créé');
 
             return $this->redirectToRoute('bill_state_index');
         }
