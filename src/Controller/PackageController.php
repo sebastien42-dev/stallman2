@@ -39,6 +39,8 @@ class PackageController extends AbstractController
             $entityManager->persist($package);
             $entityManager->flush();
 
+            $this->addFlash("success","le forfait '{$package->getPackageName()}' d'un montant de  '{$package->getValue()}' € à bien été ajouté aux forfaits");
+
             return $this->redirectToRoute('package_index');
         }
 

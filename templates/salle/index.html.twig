@@ -4,6 +4,7 @@
 
 {% block body %}
 <div class="container-fluid">
+{% include "/shared/shared_alert/_alert.html.twig" %}
     <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des salles de cours</span></h2>
 
     <a style="text-decoration:none;" title="ajouter une salle" href="{{ path('salle_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="fas fa-plus-square text-white"></i></a>

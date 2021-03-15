@@ -39,6 +39,8 @@ class SalleController extends AbstractController
             $entityManager->persist($salle);
             $entityManager->flush();
 
+            $this->addFlash("success","Le nouvelle salle '{$salle->getLibelleSalle()}' à  été ajoutée");
+
             return $this->redirectToRoute('salle_index');
         }
 
@@ -87,6 +89,7 @@ class SalleController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($salle);
             $entityManager->flush();
+            $this->addFlash("danger","Le salle '{$salle->getLibelleSalle()}' à  été suppirmée");
         }
 
         return $this->redirectToRoute('salle_index');

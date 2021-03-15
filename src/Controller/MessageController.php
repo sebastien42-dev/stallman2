@@ -53,6 +53,8 @@ class MessageController extends AbstractController
             $entityManager->persist($message);
             $entityManager->flush();
 
+            $this->addFlash("success","Votre message a bien été envoyé à  {$message->getUserTo()->getNom()}  {$message->getUserTo()->getPrenom()} (aller dans 'messages envoyés' pour voir s'il a été lu par le destinataire");
+
             return $this->redirectToRoute('message_index');
         }
 

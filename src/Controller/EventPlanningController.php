@@ -59,7 +59,7 @@ class EventPlanningController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        //TODO setter par défaut la date de fin a la date du début, ne pouvoir que changer l'heure
+        //TODO vérifier dans la saisie : il faut que l'heure de fin soit inférieur a debut et la date de fin soit identique a date de début
         $eventPlanning = new EventPlanning();
         $form = $this->createForm(EventPlanningType::class, $eventPlanning);
         $form->handleRequest($request);
@@ -69,7 +69,7 @@ class EventPlanningController extends AbstractController
             $entityManager->persist($eventPlanning);
             $entityManager->flush();
 
-            $this->addFlash("success","Le nouvel cours de {$eventPlanning->getMatieres()->getLibelleMatiere()} pour la classe {$eventPlanning->getClasses()->getLibelleClasse()} à bien été ajouté au planning");
+            $this->addFlash("success","Le nouvel évènement pour le cours de {$eventPlanning->getMatieres()->getLibelleMatiere()} de la classe {$eventPlanning->getClasses()->getLibelleClasse()} à bien été ajouté au planning");
 
             return $this->redirectToRoute('event_planning_index');
         }
