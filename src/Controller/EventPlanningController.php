@@ -69,8 +69,12 @@ class EventPlanningController extends AbstractController
             $entityManager->persist($eventPlanning);
             $entityManager->flush();
 
+            $this->addFlash("success","Le nouvel cours de {$eventPlanning->getMatieres()->getLibelleMatiere()} pour la classe {$eventPlanning->getClasses()->getLibelleClasse()} à bien été ajouté au planning");
+
             return $this->redirectToRoute('event_planning_index');
         }
+
+
 
         return $this->render('event_planning/new.html.twig', [
             'event_planning' => $eventPlanning,

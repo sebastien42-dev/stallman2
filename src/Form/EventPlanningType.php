@@ -57,6 +57,7 @@ class EventPlanningType extends AbstractType
                     'label_attr' => [
                         'class' => 'text-dark font-weight-bold'
                     ],
+                    'required' => false
             ])
             ->add('salles', EntityType::class, [
                 'class' => Salle::class,
