@@ -42,6 +42,8 @@ class MatiereController extends AbstractController
             $entityManager->persist($matiere);
             $entityManager->flush();
 
+            $this->addFlash('success',"La matière {$matiere->getLibelleMatiere()} a bien été créée");
+
             return $this->redirectToRoute('matiere_index');
         }
 
