@@ -4,7 +4,13 @@
         {{ form_row(form.UserTo) }}
     </div>
 
-    {{ form_row(form.title) }}
+    {% if send_back == false %}
+        {{ form_row(form.title) }}
+    {% else %}
+        <div style="display:none;">
+            {{ form_row(form.title) }}
+        </div>
+    {% endif %}
     {{ form_row(form.content) }}
     {{ form_row(form.isImportant) }}
 

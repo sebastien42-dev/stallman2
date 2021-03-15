@@ -72,7 +72,8 @@ class MessageType extends AbstractType
                 'label' => 'Titre du message',
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
-                ]
+                ],
+                'required' => false
             ])
             ->add('content', TextareaType::class,[
                 'attr' => [

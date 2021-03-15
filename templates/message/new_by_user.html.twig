@@ -7,6 +7,10 @@
     <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Envoyer un message</span></h2>
 
     <span> De {{ message.userFrom.nom }}&nbsp;{{ message.userFrom.prenom }} pour {{ message.userTo.nom }}&nbsp;{{ message.userTo.prenom }}</span>
+    <br>
+    {% if send_back %}
+        <span> <b>Titre du message</b> {{ message.title }}</span>
+    {% endif %}
     {{ include('message/_form_by_user.html.twig') }}
 
     <a href="{{ path('message_index') }}"></a>

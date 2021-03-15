@@ -64,10 +64,50 @@ class MessageController extends AbstractController
         ]);
     }
 
+    /** retourne le formulaire de reponse a un message
+     * @Route("/new/user/{user_id}/{send_back}/{message_id}", name="new_response_by_user", methods={"GET","POST"})
+     */
+    public function newResponseByUser(Request $request,UserRepository $userRepo,MessageRepository $messageRepo,$user_id,$send_back,$message_id): Response
+    {//TODO essayer d'adapter cette foction pour l'envoie auto a un user (juste de dessous) avec test sur parametre vide ou null par exemple
+        $user = $userRepo->find($this->getUser());
+        $userTo = $userRepo->find($user_id);
+        $messageFrom = $messageRepo->find($message_id);
+
+        $message = new Message();
+        $date = new DateTime();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+        
+        $message->setUserFrom($user);
+        $message->setUserTo($userTo);
+        if($send_back) {
+            $message->setTitle("Réponse : ".$messageFrom->getTitle());
+            $send_back = true;
+        } else {
+            $send_back = false;
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setDateSend($date);
+            $message->setIsRead(0);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('message_index');
+        }
+
+        return $this->render('message/new_by_user.html.twig', [
+            'message' => $message,
+            'form' => $form->createView(),
+            'send_back' => $send_back
+        ]);
+    }
+
     /** retourne le formulaire de nouveau message pour un user précis
      * @Route("/new/user/{user_id}", name="message_new_user", methods={"GET","POST"})
      */
-    public function newByUser(Request $request,UserRepository $userRepo,$user_id): Response
+    public function newByUser(Request $request,UserRepository $userRepo,MessageRepository $messageRepo,$user_id): Response
     {
         $user = $userRepo->find($this->getUser());
         $userTo = $userRepo->find($user_id);
@@ -81,8 +121,6 @@ class MessageController extends AbstractController
         $message->setUserTo($userTo);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on sette la date du moment de l'envoie par défaut
-           
             $message->setDateSend($date);
             $message->setIsRead(0);
             $entityManager = $this->getDoctrine()->getManager();
@@ -95,6 +133,7 @@ class MessageController extends AbstractController
         return $this->render('message/new_by_user.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
+            'send_back' => false
         ]);
     }
 
