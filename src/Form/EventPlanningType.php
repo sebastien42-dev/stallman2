@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class EventPlanningType extends AbstractType
-{
+{//TODO defaut dans l'affichage de la date et surtout faire un ajax pour que les champs prof s'adapte en fonction de la classe ou la matiere
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

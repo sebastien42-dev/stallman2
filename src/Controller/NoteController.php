@@ -112,7 +112,7 @@ class NoteController extends AbstractController
         $notes = $request->get('notes');
         $commentaires = $request->get('commentaires');
         $eleves = $request->get('eleves');
-
+        //TODO rajouter un try catch ou une gestion de l'erreur si $note vide
         for ($i=0;$i<count($notes);$i++) 
         {
             $notetmp = $notes[$i];

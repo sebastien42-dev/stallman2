@@ -28,7 +28,10 @@
             start: 'prev,next today',
             center:'title',
             end:'dayGridMonth,timeGridWeek,timeGridDay'
-        },
+        } ,
+        //blocage de l'affichage de l'heure entre 7 et 19h
+        slotMinTime : "07:00:00",
+        slotMaxTime : "19:00:00",
         buttonText: {
                     today:    'Aujourd\'hui',
                     month:    'Mois',
