@@ -10,6 +10,8 @@ use App\Repository\FonctionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,7 +22,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/admin/", name="user_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')")
+     * @Route("/", name="user_index", methods={"GET"})
      */
     public function index(UserRepository $userRepository,FonctionRepository $fonctionRepo): Response
     {
@@ -39,7 +42,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/new", name="user_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+     * @Route("/new", name="user_new", methods={"GET","POST"})
+     * 
      */
     public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -66,7 +71,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}", name="user_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')")
+     * @Route("/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -76,7 +82,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user,UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -98,7 +105,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}", name="user_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+     * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, User $user): Response
     {
