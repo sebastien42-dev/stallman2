@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// TODO limiter cette page aux admin et compta 
+
 /**
  * @Route("/bill")
  */
@@ -144,6 +144,7 @@ class BillController extends AbstractController
     public function billValidate(BillRepository $billRepo, $id_bill) 
     {
         //TODO faire un test sur les outpackage, si pas de preuves erreur pas possible de valider
+
         $bill = $billRepo->find($id_bill);
         $bill->setBillState($this->billStateValidate);
         $bill->setUpdatedAt(new DateTime());

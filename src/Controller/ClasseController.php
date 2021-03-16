@@ -8,10 +8,12 @@ use App\Repository\ClasseRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/classe")
+ * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+ * @Route("/classe")
  */
 class ClasseController extends AbstractController
 {

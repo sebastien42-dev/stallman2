@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Salle;
 use App\Form\SalleType;
 use App\Repository\SalleRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
+ * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
  * @Route("/admin/salle")
  */
 class SalleController extends AbstractController

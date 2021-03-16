@@ -5,14 +5,15 @@ namespace App\Controller;
 use App\Entity\BillState;
 use App\Form\BillStateType;
 use App\Repository\BillStateRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-// TODO limiter cette page aux admin (le security yaml doit pas etre comme il faut...)
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/bill/state")
+ * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+ * @Route("/bill/state")
  */
 class BillStateController extends AbstractController
 {

@@ -4,16 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Matiere;
 use App\Form\MatiereType;
-use App\Repository\FonctionRepository;
 use App\Repository\UserRepository;
 use App\Repository\MatiereRepository;
+use App\Repository\FonctionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/admin/matiere")
+ * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+ * @Route("/matiere")
  */
 class MatiereController extends AbstractController
 {
