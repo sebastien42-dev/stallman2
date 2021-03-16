@@ -9,6 +9,8 @@ use App\Entity\BillState;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\BillStateRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +34,7 @@ class BillController extends AbstractController
         $this->billStatePaid = $billStateRepo->find($billStateRepo::STATE_PAID);
     }
     /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/", name="bill_index", methods={"GET"})
      */
     public function index(BillRepository $billRepository): Response
@@ -55,6 +58,7 @@ class BillController extends AbstractController
     }
 
     /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/new", name="bill_new", methods={"GET","POST"})
      */
     public function new(Request $request,BillRepository $billRepo): Response
@@ -87,6 +91,7 @@ class BillController extends AbstractController
     }
 
     /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/{id}", name="bill_show", methods={"GET"},requirements={"id":"\d+"})
      */
     public function show(Bill $bill): Response
@@ -97,6 +102,7 @@ class BillController extends AbstractController
     }
 
     /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/{id}/edit", name="bill_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Bill $bill): Response
@@ -117,6 +123,7 @@ class BillController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
      * @Route("/{id}", name="bill_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Bill $bill): Response
@@ -130,7 +137,8 @@ class BillController extends AbstractController
         return $this->redirectToRoute('bill_index');
     }
 
-    /** change l'etat de facture a valide
+    /**
+     * @IsGranted("ROLE_COMPTA",message="Accès réservé aux comptables !")
      * @Route("/bill/validate/{id_bill}", name="bill_validate")
      */
     public function billValidate(BillRepository $billRepo, $id_bill) 
@@ -148,6 +156,7 @@ class BillController extends AbstractController
     }
 
     /** change l'etat de facture a en attente
+     * @IsGranted("ROLE_COMPTA",message="Accès réservé aux comptables !")
      * @Route("/bill/wait/{id_bill}", name="bill_wait")
      */
     public function billWait(BillRepository $billRepo, $id_bill) 
@@ -164,6 +173,7 @@ class BillController extends AbstractController
     }
 
     /** change l'etat de facture a en attente
+     * @IsGranted("ROLE_COMPTA",message="Accès réservé aux comptables !")
      * @Route("/bill/paid/{id_bill}", name="bill_paid")
      */
     public function billPaid(BillRepository $billRepo, $id_bill) 
@@ -182,6 +192,7 @@ class BillController extends AbstractController
 
 
     /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/bill/showall/{id_bill}", name="bill_show_all")
      */
     public function billShowAll(BillRepository $billRepo,BillLignRepository $billLignRepo, $id_bill) 
