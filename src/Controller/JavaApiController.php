@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
+use App\Entity\Message;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use JMS\Serializer\SerializationContext;
@@ -98,6 +100,39 @@ class JavaApiController extends AbstractController
     {
         $data = $messageRepo->find($message_id);
         return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+    /**
+     * créer un message
+     *
+     * @Route("/message/new", name="api_new_message",methods={"PUT"})
+     * @return JSON
+     */
+    public function apiNewMessage(Request $request,UserRepository $userRepo)
+    {
+        $datas = json_decode($request->getContent());
+
+        $user_from = $userRepo->find($datas->user_from);
+        $user_to = $userRepo->find($datas->user_to);
+
+        $date = new DateTime('NOW');
+
+        $message = new Message();
+
+        $message->setTitle($datas->title);
+        $message->setContent($datas->content);
+        $message->setUserFrom($user_from);
+        $message->setUserTo($user_to);
+        $message->setDateSend($date);
+        $message->setIsImportant($datas->is_important);
+        $message->setIsRead(0);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        return JsonResponse::fromJsonString($this->serializer->serialize($message, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
 
