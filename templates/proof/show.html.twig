@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Proof{% endblock %}
+
+{% block body %}
+    <h1>Proof</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ proof.id }}</td>
+            </tr>
+            <tr>
+                <th>ProofFile</th>
+                <td>{{ proof.proofFile }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('proof_index') }}">back to list</a>
+
+    <a href="{{ path('proof_edit', {'id': proof.id}) }}">edit</a>
+
+    {{ include('proof/_delete_form.html.twig') }}
+{% endblock %}

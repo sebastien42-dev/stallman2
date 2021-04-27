@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Proof{% endblock %}
+
+{% block body %}
+    <h1>Create new Proof</h1>
+
+    {{ include('proof/_form.html.twig') }}
+
+    <a href="{{ path('proof_index') }}">back to list</a>
+{% endblock %}
