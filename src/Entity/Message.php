@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -42,11 +43,13 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @MaxDepth(1)
      */
     private $userFrom;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @MaxDepth(1)
      */
     private $userTo;
 

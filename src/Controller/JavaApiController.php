@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Repository\MessageRepository;
+use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 
     /**
@@ -25,16 +27,16 @@ class JavaApiController extends AbstractController
     // }
 
     /**
-     * retourne la liste des messages
+     * retourne la liste des messages du user concerné
      *
-     * @Route("/message/list", name="api_get_message",methods={"POST","GET"})
+     * @Route("/message/list/{user_id}", name="api_get_message",methods={"POST","GET"})
      * @return JSON
      */
-    public function apiGetMessage(MessageRepository $messageRepo)
+    public function apiGetMessage(MessageRepository $messageRepo,$user_id)
     {
-        $data = $messageRepo->findAll();
+        $data = $messageRepo->findByUserTo($user_id);
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        return JsonResponse::fromJsonString($serializer->serialize($data, 'json'));
+        return JsonResponse::fromJsonString($serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
 
