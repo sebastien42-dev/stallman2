@@ -17,6 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
      */
 class JavaApiController extends AbstractController
 {
+    public $serializer;
+
+    public function __construct()
+    {
+        $this->serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+    }
     
     /**
      * retourne la liste des messages du user concerné
@@ -27,8 +33,7 @@ class JavaApiController extends AbstractController
     public function apiGetMessage(MessageRepository $messageRepo,$user_id)
     {
         $data = $messageRepo->findByUserTo($user_id);
-        $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-        return JsonResponse::fromJsonString($serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
 
@@ -65,13 +70,17 @@ class JavaApiController extends AbstractController
     {
         $datas = json_decode($request->getContent());
         $user = $userRepo->findOneByEmail(["email"=>$datas->email,"password"=>$datas->password]);
+        
         if(!is_null($user)) {
+
             $userData["nom"]=$user->getNom();
             $userData["prenom"]=$user->getPrenom();
             $userData["id"]=$user->getId();
-            $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-            return JsonResponse::fromJsonString($serializer->serialize($userData, 'json'));   
+
+            return JsonResponse::fromJsonString($this->serializer->serialize($userData, 'json'));  
+
         } else {
+
             $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
             return JsonResponse::fromJsonString($serializer->serialize(['user'=> false], 'json'));
         }
