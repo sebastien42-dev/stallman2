@@ -23,19 +23,7 @@ class JavaApiController extends AbstractController
     {
         $this->serializer = \JMS\Serializer\SerializerBuilder::create()->build();
     }
-    
-    /**
-     * retourne la liste des messages du user concerné
-     *
-     * @Route("/message/list/{user_id}", name="api_get_message",methods={"POST","GET"})
-     * @return JSON
-     */
-    public function apiGetMessage(MessageRepository $messageRepo,$user_id)
-    {
-        $data = $messageRepo->findByUserTo($user_id);
-        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
-    }
 
     // /**
     //  * permet de tester la connexion à partir de app_stallman
@@ -70,7 +58,7 @@ class JavaApiController extends AbstractController
     {
         $datas = json_decode($request->getContent());
         $user = $userRepo->findOneByEmail(["email"=>$datas->email,"password"=>$datas->password]);
-        
+
         if(!is_null($user)) {
 
             $userData["nom"]=$user->getNom();
@@ -86,6 +74,34 @@ class JavaApiController extends AbstractController
         }
         
     }
+        
+    /**
+     * retourne la liste des messages du user concerné
+     *
+     * @Route("/message/list/{user_id}", name="api_get_list_message",methods={"POST","GET"})
+     * @return JSON
+     */
+    public function apiGetListMessage(MessageRepository $messageRepo,$user_id)
+    {
+        $data = $messageRepo->findByUserTo($user_id);
+        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+    /**
+     * retourne le message de l'index
+     *
+     * @Route("/message/{message_id}", name="api_get_message",methods={"POST","GET"})
+     * @return JSON
+     */
+    public function apiGetMessage(MessageRepository $messageRepo,$message_id)
+    {
+        $data = $messageRepo->find($message_id);
+        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+    
 
 
 }
