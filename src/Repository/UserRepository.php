@@ -46,7 +46,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->andWhere('u.fonction = :val')
             ->setParameter('val', $id_function)
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
