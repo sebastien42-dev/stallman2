@@ -36,8 +36,8 @@
                 <thead class="table-sm thead-dark">
                     <tr>
                         <th width="10%">Nom</th>
-                        <th width=>classe</th>
                         <th>Prénom</th>
+                        <th width="20%">Classe</th>
                         <th>Fonction</th>
                         <th width="10%">actions</th>
                     </tr>
@@ -47,13 +47,13 @@
                     <tr>
                         <td title="{{ user.id }}">
                         {{ user.civ.libelleCivilite|default(' ') }} {{ user.nom }}
-                        <td>
-                            {% for classe in user.classes %}
-                                <span class="text-primary">{{ classe.libelleCLasse }}</span><br>
-                            {% endfor %}
-                        </td>
                          </td>
                         <td>{{ user.prenom }}</td>
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-{{ color }}">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
                             <div class="row">
@@ -80,6 +80,7 @@
                     <tr>
                         <th width="10%">Nom</th>
                         <th>Prénom</th>
+                        <th width="20%">Classe</th>
                         <th>Fonction</th>
                         <th width="10%">actions</th>
                     </tr>
@@ -89,6 +90,11 @@
                     <tr>
                         <td title="{{ user.id }}">{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-{{ color }}">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
                             <div class="row">
@@ -116,6 +122,7 @@
                     <tr>
                         <th width="10%">Nom</th>
                         <th>Prénom</th>
+                        <th width="20%">Classe</th>
                         <th>Fonction</th>
                         <th width="10%">actions</th>
                     </tr>
@@ -125,6 +132,11 @@
                     <tr>
                         <td title="{{ user.id }}">{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-{{ color }}">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
                             <div class="row">
@@ -151,6 +163,7 @@
                     <tr>
                         <th width="10%">Nom</th>
                         <th>Prénom</th>
+                        <th width="20%">Classe</th>
                         <th>Fonction</th>
                         <th width="10%">actions</th>
                     </tr>
@@ -160,6 +173,11 @@
                     <tr>
                         <td title="{{ user.id }}">{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-{{ color }}">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
                             <div class="row">
@@ -187,6 +205,7 @@
                         <th width="10%">Nom</th>
                         <th>Prénom</th>
                         <th>Fonction</th>
+                        <th width="20%">Classe</th>
                         <th width="10%">actions</th>
                     </tr>
                 </thead>
@@ -195,6 +214,11 @@
                     <tr>
                         <td title="{{ user.id }}">{{ user.nom }}</td>
                         <td>{{ user.prenom }}</td>
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-{{ color }}">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
                             <div class="row">
