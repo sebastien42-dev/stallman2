@@ -7,14 +7,17 @@ use App\Entity\User;
 use App\Entity\Message;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
+use App\Security\LoginFormAuthenticator;
 use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-    /**
+/**
      * @Route("/api", name="java_api")
      */
 class JavaApiController extends AbstractController
@@ -56,24 +59,24 @@ class JavaApiController extends AbstractController
      * @Route("/login", name="api_login",methods={"POST","GET"})
      * @return void
      */
-    public function apiLogin(UserRepository $userRepo,Request $request)
+    public function apiLogin(UserRepository $userRepo,Request $request,UserPasswordEncoderInterface $encoder)
     {
         $datas = json_decode($request->getContent());
-        $user = $userRepo->findOneByEmail(["email"=>$datas->email,"password"=>$datas->password]);
+        
+        $user = $userRepo->findOneByEmail($datas->email);
+        $isPasswordValid = $encoder->isPasswordValid($user, $datas->password);
 
-        if(!is_null($user)) {
-
+        if (!$isPasswordValid) {
+            return JsonResponse::fromJsonString($this->serializer->serialize(['user'=> false], 'json'));
+        } else {
+           
             $userData["nom"]=$user->getNom();
             $userData["prenom"]=$user->getPrenom();
             $userData["id"]=$user->getId();
-
+    
             return JsonResponse::fromJsonString($this->serializer->serialize($userData, 'json'));  
-
-        } else {
-
-            $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-            return JsonResponse::fromJsonString($serializer->serialize(['user'=> false], 'json'));
-        }
+    
+        }  
         
     }
         
@@ -106,7 +109,7 @@ class JavaApiController extends AbstractController
     /**
      * créer un message
      *
-     * @Route("/message/new", name="api_new_message",methods={"PUT"})
+     * @Route("/message/new", name="api_new_message",methods={"PUT","POST"})
      * @return JSON
      */
     public function apiNewMessage(Request $request,UserRepository $userRepo)
