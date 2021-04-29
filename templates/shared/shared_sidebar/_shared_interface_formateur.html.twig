@@ -29,3 +29,17 @@
           </div>
         </div>
       </li>
+      
+      {% if is_granted('ROLE_PROF') %}
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClasse" aria-expanded="true" aria-controls="collapseClasse">
+            <i class="fas fa-fw fa-chalkboard-teacher {{ text_color }}"></i>
+            <span>Classe</span>
+          </a>
+          <div id="collapseClasse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href={{ path('index_classe_prof') }}>Liste classe</a>
+            </div>
+          </div>
+        </li>
+      {% endif %}

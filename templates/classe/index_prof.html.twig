@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classe{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+{% include "shared/shared_alert/_alert.html.twig" %}
+    <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes de mes classes</span></h2>
+    <table class="table table-bordered table-hover shadow display text-center">
+        <thead class="table-sm thead-dark">
+            <tr>
+                <th width="50%">Nom de la classe</th>
+                <th width="50%">Liste des Eleves</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for classe in classes %}
+                <tr>
+                    <td class="font-weight-bold text-{{ color }}">
+                        {{classe.libelleClasse}}
+                    </td>
+                    <td>
+                        {% for user in classe.users %}
+                            {% if user.fonction.libelleFonction == "élève" %}
+                                <span class="font-weight-bold">{{ user.nom|upper }} {{ user.prenom|capitalize }}</span> <br>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {% include "shared/shared_datatable/_datatable_main.html.twig" %}
+{% endblock %}
