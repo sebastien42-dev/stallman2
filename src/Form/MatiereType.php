@@ -35,7 +35,8 @@ class MatiereType extends AbstractType
                 'label' => 'Coefficient de la matière',
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
-                ]
+                ],
+                'required' => false
             ])
             ->add('eventBackgroundColor',ColorType::class,[
                 'attr' => [

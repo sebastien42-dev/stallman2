@@ -65,7 +65,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class'=> 'form-control border border-dark mb-2'
                 ],
-                'label' => "Fonction de la classe",
+                'label' => "classe de l'utilisateur si formateur",
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
                 ],
@@ -81,7 +81,7 @@ class UserType extends AbstractType
                 'label' => "Adresse de l'utilisateur",
                 'label_attr' => [
                     'class' => 'text-dark font-weight-bold'
-                    ]
+                ]
             ])
             ->add('societe',NULL,[
                 'attr' => [
