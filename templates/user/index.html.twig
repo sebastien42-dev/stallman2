@@ -36,6 +36,7 @@
                 <thead class="table-sm thead-dark">
                     <tr>
                         <th width="10%">Nom</th>
+                        <th width=>classe</th>
                         <th>Prénom</th>
                         <th>Fonction</th>
                         <th width="10%">actions</th>
@@ -43,9 +44,15 @@
                 </thead>
                 <tbody class="table-sm">
                 {% for user in users %}
-                
                     <tr>
-                        <td title="{{ user.id }}">{{ user.civ.libelleCivilite|default(' ') }} {{ user.nom }}</td>
+                        <td title="{{ user.id }}">
+                        {{ user.civ.libelleCivilite|default(' ') }} {{ user.nom }}
+                        <td>
+                            {% for classe in user.classes %}
+                                <span class="text-primary">{{ classe.libelleCLasse }}</span><br>
+                            {% endfor %}
+                        </td>
+                         </td>
                         <td>{{ user.prenom }}</td>
                         <td>{{ user.fonction.libelleFonction }}</td>
                         <td class="text-center">
