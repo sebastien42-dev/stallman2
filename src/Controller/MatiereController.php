@@ -41,6 +41,7 @@ class MatiereController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $matiere->setCoefficient(1);
             $entityManager->persist($matiere);
             $entityManager->flush();
 
