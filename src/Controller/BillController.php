@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Bill;
+use App\Entity\BillLign;
 use App\Form\BillType;
 use App\Entity\BillState;
 use App\Repository\BillLignRepository;
@@ -72,15 +73,23 @@ class BillController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $bill->setCreatedAt(new DateTime());
             $bill->setUser($this->getUser());
             $bill->setBillState($this->billStateCreated);
+            //TODO tester si la quantité est supérieure à 0 (assert)
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($bill);
+            $total = 0;
+            foreach ($bill->getBillLigns() as $lign) {
+                $lign->setBill($bill);
+                $lign->setGlobalLignValue($lign->getQuantity()*$lign->getPackage()->getValue());
+                $total += $lign->getGlobalLignValue();
+            }
+            $bill->setGlobalBillValue($total);
             $entityManager->flush();
 
             $this->addFlash('success','La nouvelle facture a bien été créée');
-
             return $this->redirectToRoute('bill_index');
         }
 

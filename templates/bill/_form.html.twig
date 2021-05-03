@@ -1,7 +1,12 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+   {{form_row(form.billProviderNum)}}
+    <button class="btn btn-{{color}}" id="addLign">Ajouter une ligne forfait</button>
+    <div class="form-group">
+     {{form_row(form.billLigns)}}
+     </div>
    <br>
     <div class="text-center m-3">
-        <button class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
+        <button  class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form) }}
+

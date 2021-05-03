@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Bill;
+use App\Form\BillLignType;
+use App\Form\BillLignForBillType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class BillType extends AbstractType
 {
@@ -20,6 +23,15 @@ class BillType extends AbstractType
                 'label_attr' => [
                 'class' => 'text-dark font-weight-bold'
                 ]
+            ])
+            ->add("billLigns",CollectionType::class,[
+                "entry_type" => BillLignForBillType::class,
+                "entry_options" => [
+                    "label" => false, 
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false
             ])
             //->add('createdAt')
             //->add('updatedAt')

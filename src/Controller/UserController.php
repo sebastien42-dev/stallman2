@@ -82,7 +82,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')")
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user,UserPasswordEncoderInterface $passwordEncoder): Response

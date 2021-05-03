@@ -50,7 +50,7 @@ class Bill
     private $billState;
 
     /**
-     * @ORM\OneToMany(targetEntity=BillLign::class, mappedBy="bill")
+     * @ORM\OneToMany(targetEntity=BillLign::class, mappedBy="bill",cascade={"persist"})
      */
     private $billLigns;
 
