@@ -7,6 +7,7 @@ use App\Entity\Bill;
 use App\Entity\BillLign;
 use App\Form\BillType;
 use App\Entity\BillState;
+use App\Entity\OutPackage;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\BillStateRepository;
@@ -64,14 +65,16 @@ class BillController extends AbstractController
      */
     public function new(Request $request,BillRepository $billRepo): Response
     {
+       
         if(count($billRepo->findByCreatedAtAndUser(date('Y-m'),$this->getUser()->getId())) > 0) {
             return $this->render('error/error_bill_exist.html.twig');
         }
-
+        
         $bill = new Bill();
         $form = $this->createForm(BillType::class, $bill);
         $form->handleRequest($request);
-
+        $nbOutPackage = $request->request->get("countOutPackage");
+        
         if ($form->isSubmitted() && $form->isValid()) {
 
             $bill->setCreatedAt(new DateTime());
@@ -81,13 +84,37 @@ class BillController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($bill);
             $total = 0;
+
             foreach ($bill->getBillLigns() as $lign) {
                 $lign->setBill($bill);
                 $lign->setGlobalLignValue($lign->getQuantity()*$lign->getPackage()->getValue());
                 $total += $lign->getGlobalLignValue();
             }
+
+            if($nbOutPackage>0) {
+                for ($i=0; $i < $nbOutPackage; $i++) { 
+                    $date = new DateTime($request->request->get("outpackageDate".$i));
+                    $outPackage = new OutPackage();
+                    $outPackage->setOutPackageName( $request->request->get("outPackageName".$i));
+                    $outPackage->setValue($request->request->get("outpackageValue".$i));
+                    $entityManager->persist($outPackage);
+                    $billLignOut = new BillLign();
+                    $billLignOut->setOutPackage($outPackage);
+                    $billLignOut->setCreatedAt($date);
+                    $billLignOut->setGlobalLignValue($outPackage->getValue());
+                    $billLignOut->setBill($bill);
+                    $entityManager->persist($billLignOut);
+                    $total += $outPackage->getValue();
+    
+                }
+            }
+            
+
+
             $bill->setGlobalBillValue($total);
             $entityManager->flush();
+
+
 
             $this->addFlash('success','La nouvelle facture a bien été créée');
             return $this->redirectToRoute('bill_index');

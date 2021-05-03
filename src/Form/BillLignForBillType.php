@@ -4,12 +4,14 @@ namespace App\Form;
 
 use App\Entity\Package;
 use App\Entity\BillLign;
+use App\Form\OutPackageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class BillLignForBillType extends AbstractType
 {
@@ -18,7 +20,7 @@ class BillLignForBillType extends AbstractType
         $builder
             ->add('quantity',IntegerType::class,[
                 'attr' => [
-                    'class'=> 'form-control border border-dark mb-1 mt-5 col-4 text-info',
+                    'class'=> 'form-control mb-1 mt-5 col-12 text-success border border-success',
                     'placeholder' => "quantité",
                     "style" => "font-size:12px;"
                 ],
@@ -27,14 +29,11 @@ class BillLignForBillType extends AbstractType
             ->add('package', EntityType::class,[
                 'class' => Package::class,
                 'attr' => [
-                    'class'=> 'form-control border border-dark mb-1 col-4 text-info',
+                    'class'=> 'form-control mb-1 col-12 text-success border border-success',
                     'placeholder' => "forfait",
                     "style" => "font-size:12px;"
                 ],
-                'label' => "Forfait",
-                'label_attr' => [
-                'class' => 'text-dark'
-                ],
+                'label' => false,
                 "choice_label" => "packageName"
             ])
             // ->add('globalLignValue',NULL,[
@@ -48,13 +47,10 @@ class BillLignForBillType extends AbstractType
             // ])
             ->add('createdAt',DateType::class,[
                 'attr' => [
-                    'class'=> 'form-control border border-dark mb-4 col-4 text-info',
+                    'class'=> 'form-control mb-4 col-12 text-success border border-success',
                     "style" => "font-size:12px;"
                 ],
-                'label' => "Date concernée par le frais",
-                'label_attr' => [
-                'class' => 'text-dark'
-                ],
+                'label' => false,
                 "widget" => "single_text"
             ])
             //->add('bill')

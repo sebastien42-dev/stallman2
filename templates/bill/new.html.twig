@@ -14,12 +14,20 @@
 {% endblock %}
 {% block javascripts %}
 <script>
+
 $("#addLign").click(function(){
     const index = $("#bill_billLigns>div").length;
-    console.log(index);
+    //console.log($(id));
     const tmpl = $("#bill_billLigns").data("prototype").replace(/__name__/g,index);
     $("#bill_billLigns").append(tmpl);
-    
+})
+
+$("#addOutLign").click(function() {
+  const index = $(".outpackageName").length;
+  $("<input class='border border-warning form-control col-12 text-warning outpackageName mb-1' style='font-size:12px;' placeholder='libelle du hors forfait' type='text' id='outPackageName"+index+"' name='outPackageName"+index+"' value=''/>").appendTo(".out");
+  $("<input class='border border-warning form-control col-12 text-warning outpackageValue mb-1' style='font-size:12px;' placeholder='Montant' type='integer' name='outpackageValue"+index+"' value=''/>").appendTo(".out");
+  $("<input class='border border-warning form-control col-12 text-warning outpackageDate mb-5' style='font-size:12px;' type='date' name='outpackageDate"+index+"' value=''/>").appendTo(".out");
+  $("#countOutPackage").val(index+1);
 })
 </script>
 {% endblock %}
