@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div class="container-fluid">
-	
+
 		{% include "/shared/shared_alert/_alert.html.twig" %}
 
 		<h2 class="text-center m-3">
@@ -15,7 +15,7 @@
 		<a style="text-decoration:none;" title="ajouter une facture" href="{{ path('bill_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3">
 			<i class="fas fa-plus-square text-white"></i>
 		</a>
-		<table class="table table-bordered table-hover shadow display">
+		<table class="table table-bordered table-hover shadow display" id="billTable" class="display" style="width:100%">
 			{% include "/bill/shared_bill/_thead_bill_index.html.twig" %}
 			<tbody>
 				{% for bill in bills %}
@@ -42,6 +42,11 @@
 
 					{# TODO rajouter un test sur profil pour les icones action, les formteurs peuvent uniquement voir et ajouter des lignes #}
 					<tr class="text-center">
+						<td class="details-control">
+							<button type="button" class="btn btn-sm btn-{{ color }}" data-toggle="collapse" data-target="#lign{{bill.id}}" aria-expanded="true" aria-controls="lign{{bill.id}}">
+								Voir
+							</button>
+						</td>
 						<td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
 						{% if is_granted('ROLE_ADMIN') %}
 							<td>{{ bill.user.nom }}
@@ -91,11 +96,11 @@
 									<i class="fas fa-edit text-white"></i>
 								</a>
 								{% if not is_granted('ROLE_COMPTA') %}
-								<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
-									<i class="far fa-file"></i>
-								</a>
+									<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
+										<i class="far fa-file"></i>
+									</a>
 								{% endif %}
-								
+
 								{% if is_granted('ROLE_COMPTA') %}
 									<td>
 										<div class="row">
@@ -113,7 +118,85 @@
 							</td>
 						</td>
 					</tr>
-				</div>
+
+
+					<tr id="lign{{bill.id}}" class="collapse">
+						<td colspan="9">
+							<table class="table table-sm table-bordered table-hover shadow text-center">
+								<thead>
+									<tr class="table-{{ color }}">
+										<th>Période</th>
+										<th>Quantité</th>
+										<th>
+											<span class="text-success">Forfait</span>
+											&nbsp;/&nbsp;
+											<span class="text-warning">Hors forfait</span>
+										</th>
+										<th>Prix unitaire ht</th>
+										<th>valeur total</th>
+										<th>Date concernée</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for bill_lign in bill.billLigns %}
+
+										{% if bill_lign.bill.billState.id == 1 %}
+											{% set badgeColor = 'info' %}
+											{% set modeCreation = true %}
+										{% elseif bill_lign.bill.billState.id == 2 %}
+											{% set badgeColor = 'danger' %}
+										{% elseif bill_lign.bill.billState.id == 3 %}
+											{% set badgeColor = 'warning' %}
+										{% elseif bill_lign.bill.billState.id == 4 %}
+											{% set badgeColor = 'success' %}
+										{% endif %}
+
+										<tr class="text-center">
+											<td>
+												{{ bill_lign.bill.createdAt | date('m-Y') }}
+											</td>
+											<td title="ibl{{ bill_lign.id }}">{{ bill_lign.quantity }}</td>
+											<td>
+												<span class="text-success font-weight-bold">
+													{{ bill_lign.package.id is defined  ? bill_lign.package.packageName : '' }}
+												</span>
+												<span class="text-warning font-weight-bold">
+													{{ bill_lign.outPackage.id is defined ? bill_lign.outpackage.outPackageName : '' }}
+												</span>
+											</td>
+											<td>
+												{{ bill_lign.package.id is defined ?  bill_lign.package.value : '' }}
+												{{ bill_lign.outPackage.id is defined ? bill_lign.outPackage.value : '' }}
+											</td>
+											<td>{{ bill_lign.globalLignValue }}</td>
+											<td>{{ bill_lign.createdAt is defined  ? bill_lign.createdAt|date('d/m/Y') : '' }}</td>
+											<td>
+												<div class="row">
+													<a title="voir" href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+														<i class="fas fa-eye text-white"></i>
+													</a>
+													<a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+														<i class="fas fa-edit text-white"></i>
+													</a>
+													{# <a href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}">show</a>
+																								<a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a> #}
+												</div>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="5">Pas de lignes enregistrées</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</td>
+					</tr>
+
+
+					
+				</tbody>
 			</tbody>
 		</tr>
 	{% else %}
@@ -122,4 +205,8 @@
 		</tr>
 	{% endfor %}
 
-</tbody></table></div>{% endblock %}{% block javascripts %}{% include "shared/shared_datatable/_datatable_main.html.twig" %}{% endblock %}
+</tbody></table></div>{% endblock %}
+
+{% block javascripts %}
+{% include "shared/shared_datatable/_datatable_main.html.twig" %}
+{% endblock %}

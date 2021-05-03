@@ -4,6 +4,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+      {% if is_granted('ROLE_PROF') %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFactureForm" aria-expanded="true" aria-controls="collapseFactureForm">
           <i class="fas fa-fw fa-file-invoice {{ text_color }}"></i>
@@ -15,6 +16,7 @@
             <a class="collapse-item" href={{ path('bill_lign_index') }}>Liste lignes</a>
         </div>
       </li>
+      {% endif %}
 
 
       <li class="nav-item">
