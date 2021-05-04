@@ -1,13 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification lignes{% endblock %}
+{% block title %}Modification lignes forfait{% endblock %}
 
 {% block body %}
-    <h1>Modification lignes</h1>
+<div class="container">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">facture période :
+			{{ bill.createdAt | date("m - Y") }} "{{bill.billProviderNum}}"
+			pour :
+			{{ bill.user.nom }}
+			{{ bill.user.prenom }}</span></h2>
+        <div class="card bg-gradient-{{ color }} m-3 p-4">
 
-    {{ include('bill_lign/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('bill_lign/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('bill_lign_index') }}">back to list</a>
-
-    {{ include('bill_lign/_delete_form.html.twig') }}
+        </div>
+    <a title="retour à la liste" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
+    {# {{ include('bill_lign/_delete_form.html.twig') }} #}
+</div>
 {% endblock %}

@@ -1,14 +1,12 @@
 {{ form_start(form) }}
 <div class="text-center">
 	<h3>
-		<span class="badge badge-secondary">facture période :
-			{{ bill.createdAt | date("m - Y") }}
-			pour :
-			{{ bill.user.nom }}
-			{{ bill.user.prenom }}</span>
+		<span class="badge badge-secondary">Ligne Hors forfait
 	</h3>
 </div>
 {{ form_widget(form) }}
+	<label for="dateOutPackage" class="text-dark font-weight-bold" >Date concernée</label>
+	<input class="form-control border border-dark mb-2" type="date" name="dateOutPackage" id="dateOutPackage" value="">
 <br>
 <div class="text-center m-3">
 	<button class="btn btn-{{ color }} border border-white text-white font-weight-bold">{{ button_label|default('Enregistrer') }}</button>

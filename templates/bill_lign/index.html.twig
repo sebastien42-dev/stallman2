@@ -9,6 +9,11 @@
         <thead class="table-sm thead-dark">
             <tr>
                 <th>Facture concernée</th>
+					{% if is_granted('ROLE_ADMIN') %}
+                        <th>Personne concernée</th>
+					{% elseif is_granted('ROLE_COMPTA') %}
+					    <th>Personne concernée</th>
+					{% endif %}
                 <th>Période</th>
                 <th>Etat de la facture</th>
                 <th>Quantité</th>
@@ -43,6 +48,11 @@
                         {{ bill_lign.bill.billProviderNum is defined ? bill_lign.bill.billProviderNum : 'pas encore de numéro' }}
                     </a>
                 </td>
+					{% if is_granted('ROLE_ADMIN') %}
+                        <td>{{ bill_lign.bill.user.nom|upper }} {{ bill_lign.bill.user.prenom|capitalize }}</td>
+					{% elseif is_granted('ROLE_COMPTA') %}
+					    <td>{{ bill_lign.bill.user.nom|upper }} {{ bill_lign.bill.user.prenom|capitalize }}</td>
+					{% endif %}
                 <td>
                     {{ bill_lign.bill.createdAt | date('m-Y') }}
                 </td>
@@ -67,7 +77,16 @@
                 <td>
                 <div class="row">
                     <a title="voir" href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-eye text-white"></i></a>
-                    <a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+                    {% if bill_lign.package.id is defined %}
+                        {% if bill_lign.bill.billState.id == 1 %}
+                            <a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+                        {% endif %}
+                    {% else %}
+                        {% if bill_lign.bill.billState.id == 1 %}
+                            <a title="modifier" href="{{ path('out_package_edit', {'id': bill_lign.outPackage.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>  
+                        {% endif %}
+                    {% endif %}
+                    {# <a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a> #}
                     {# <a href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}">show</a>
                     <a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a> #}
                 </div>

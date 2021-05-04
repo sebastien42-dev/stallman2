@@ -173,14 +173,15 @@
 											<td>{{ bill_lign.createdAt is defined  ? bill_lign.createdAt|date('d/m/Y') : '' }}</td>
 											<td>
 												<div class="row">
-													<a title="voir" href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
-														<i class="fas fa-eye text-white"></i>
-													</a>
-													<a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
-														<i class="fas fa-edit text-white"></i>
-													</a>
-													{# <a href="{{ path('bill_lign_show', {'id': bill_lign.id}) }}">show</a>
-																								<a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a> #}
+													{% if bill_lign.package.id is defined %}
+														{% if bill_lign.bill.billState.id == 1 %}
+															<a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+														{% endif %}
+													{% else %}
+														{% if bill_lign.bill.billState.id == 1 %}
+															<a title="modifier" href="{{ path('out_package_edit', {'id': bill_lign.outPackage.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>  
+														{% endif %}
+													{% endif %}
 												</div>
 											</td>
 										</tr>

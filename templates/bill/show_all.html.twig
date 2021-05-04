@@ -144,11 +144,19 @@
 							<i class="fas fa-undo text-white"></i>
 						</a>&nbsp;Factures
 					</li>
-					<li>
-						<a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2">
-							<i class="fas fa-undo text-white"></i>
-						</a>&nbsp;Lignes Factures
-					</li>
+					{% if is_granted('ROLE_ADMIN') %}
+						<li>
+							<a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2">
+								<i class="fas fa-undo text-white"></i>
+							</a>&nbsp;Lignes Factures
+						</li>
+					{% elseif is_granted('ROLE_COMPTA') %}
+						<li>
+							<a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2">
+								<i class="fas fa-undo text-white"></i>
+							</a>&nbsp;Lignes Factures
+						</li>
+					{% endif %}
 				</ul>
 
 				<ul style="list-style:none;" class="mb-2">

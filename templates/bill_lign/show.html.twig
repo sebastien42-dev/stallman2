@@ -1,34 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BillLign{% endblock %}
+{% block title %}ligne facture{% endblock %}
 
 {% block body %}
-    <h1>BillLign</h1>
+{% if bill_lign.bill.billState.id == 1 %}
+    {% set badgeColor = 'info' %}
+    {% set modeCreation = true %}
+{% elseif bill_lign.bill.billState.id == 2 %}
+    {% set badgeColor = 'danger' %}
+{% elseif bill_lign.bill.billState.id == 3 %}
+    {% set badgeColor = 'warning' %}
+{% elseif bill_lign.bill.billState.id == 4 %}
+    {% set badgeColor = 'success' %}
+{% endif %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ bill_lign.id }}</td>
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ bill_lign.quantity }}</td>
-            </tr>
-            <tr>
-                <th>GlobalLignValue</th>
-                <td>{{ bill_lign.globalLignValue }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ bill_lign.createdAt ? bill_lign.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container align-content-center">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">Ligne facture</span></h2>
+    <br>
+    <div class="row">
+        <div class="col-9">
+            <div class="card  border border-{{ color }} shadow">
+                <div class="card-header bg-dark text-white font-weight-bold">
+                    <span title="{{ bill_lign.bill.id }}">Numéro : </span>{{ bill_lign.bill.billProviderNum is defined ? bill_lign.bill.billProviderNum : 'pas encore de numéro' }}
+                </div>
+                <div class="card-body">
+                    <table class="table-borderless table-sm">
+                        <tbody>
+                            <tr>
+                                <th>Quantité</th>
+                                <td>{{ bill_lign.quantity }}</td>
+                            </tr>
+                            <tr>
+                                    <th>Type de ligne</th>
+                                    <td>
+                                        {% if  bill_lign.package.id is defined %}
+                                            <span class="text-success">Ligne forfait</span>
+                                        {% else %}
+                                            <span class="text-warning">Ligne forfait</span>
+                                        {% endif %}
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th>Montant Unitaire</th>
+                                <td>
+                                    {{ bill_lign.package.id is defined ?  bill_lign.package.value : '' }}
+                                    {{ bill_lign.outPackage.id is defined ? bill_lign.outPackage.value : '' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Montant total</th>
+                                <td>{{ bill_lign.globalLignValue }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date concernée</th>
+                                <td>{{ bill_lign.createdAt ? bill_lign.createdAt|date('d/m/Y') : '' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 ">
+            <ul style="list-style:none;" class="mb-2">
+                <li>
+                    <a title="retour à la liste des factures" style="text-decoration:none;" href="{{ path('bill_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>&nbsp;Factures
+                </li>
+                 {% if is_granted('ROLE_ADMIN') %}
+                    <li>
+                        <a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>&nbsp;Lignes Factures
+                    </li>
+                {% elseif is_granted('ROLE_COMPTA') %}
+                     <li>
+                        <a title="retour à la liste des lignes factures" style="text-decoration:none;" href="{{ path('bill_lign_index') }}" class="btn-circle btn-sm btn-secondary mb-2"><i class="fas fa-undo text-white"></i></a>&nbsp;Lignes Factures
+                    </li>
+                {% endif %}  
+                
+            </ul>
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('bill_lign_index') }}">back to list</a>
-
-    <a href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}">edit</a>
-
-    {{ include('bill_lign/_delete_form.html.twig') }}
+    {# {{ include('bill_lign/_delete_form.html.twig') }} #}
 {% endblock %}

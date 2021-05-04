@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 //TODO les champs globalValue dans les lignes et bill sont des champs calculés ATTENTION DONC DANS DELETE ET UPDATE !
 /**
  * @Route("/bill/lign")
@@ -18,6 +20,7 @@ class BillLignController extends AbstractController
 {
     /**
      * @Route("/", name="bill_lign_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')")
      */
     public function index(BillLignRepository $billLignRepository,BillRepository $billRepo): Response
     {
@@ -30,7 +33,7 @@ class BillLignController extends AbstractController
             }
         }
         
-        if($role_user == "ROLE_ADMIN") {
+        if($role_user == "ROLE_ADMIN" || $role_user == "ROLE_COMPTA") {
             $billLigns = $billLignRepository->findAll();
         } else {
             $bills = $billRepo->findByUser($this->getUser());
@@ -92,15 +95,28 @@ class BillLignController extends AbstractController
      */
     public function edit(Request $request, BillLign $billLign,BillRepository $billRepo): Response
     {
+        $total = 0;
         $bill = $billLign->getBill();
 
         $form = $this->createForm(BillLignType::class, $billLign);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('bill_lign_index');
+            $billLign->setGlobalLignValue($billLign->getQuantity()*$billLign->getPackage()->getValue());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($billLign);
+            $billLigns = $bill->getBillLigns();
+
+            foreach ($billLigns as $lign) {
+                $total += $lign->getGlobalLignValue();
+            }
+            $bill->setGlobalBillValue($total);
+            $entityManager->persist($bill);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('bill_index');
         }
 
         return $this->render('bill_lign/edit.html.twig', [

@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('out_package_delete', {'id': out_package.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer cette ligne ?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ out_package.id) }}">
+    <button class="btn-circle btn-danger btn-sm" title="supprimer la ligne"><i class="fas fa-trash-alt text-white"></i></button>
+</form>

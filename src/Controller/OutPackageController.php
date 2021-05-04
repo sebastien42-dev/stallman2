@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\BillLign;
 use App\Entity\OutPackage;
 use App\Form\OutPackageType;
+use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\OutPackageRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,8 +45,10 @@ class OutPackageController extends AbstractController
             $billLign->setBill($oBill);
 
             $billLign->setOutPackage($outPackage);
+            $date= new DateTime($request->request->get("dateOutPackage"));
 
             $billLign->setGlobalLignValue($billLign->getOutPackage()->getValue());
+            $billLign->setCreatedAt($date);
 
             $oBill->setGlobalBillValue($oBill->getGlobalBillValue()+($billLign->getGlobalLignValue()));
 
@@ -80,20 +84,44 @@ class OutPackageController extends AbstractController
     /**
      * @Route("/{id}/edit", name="out_package_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, OutPackage $outPackage): Response
+    public function edit(Request $request, OutPackage $outPackage,BillLignRepository $billLignRepository,BillRepository $billRepo,$id): Response
     {
+        $total = 0;
+        $billLign = $billLignRepository->findOneByOutPackage($id);
+        $bill = $billRepo->find($billLign->getBill());
+
         $form = $this->createForm(OutPackageType::class, $outPackage);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if(!null==$request->request->get("dateOutPackage")) {
+                $date= new DateTime($request->request->get("dateOutPackage"));
+                $billLign->setCreatedAt($date);
+            }
+
+            $billLign->setGlobalLignValue($outPackage->getValue());
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($billLign);
+            
+            $billLigns = $bill->getBillLigns();
+
+            foreach ($billLigns as $lign) {
+                $total += $lign->getGlobalLignValue();
+            }
+
+            $bill->setGlobalBillValue($total);
+            $entityManager->persist($bill);
+            $entityManager->flush();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('out_package_index');
+            return $this->redirectToRoute('bill_index');
         }
 
         return $this->render('out_package/edit.html.twig', [
             'out_package' => $outPackage,
             'form' => $form->createView(),
+            'bill' => $bill
         ]);
     }
 
@@ -108,6 +136,6 @@ class OutPackageController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('out_package_index');
+        return $this->redirectToRoute('bill_lign_index');
     }
 }
