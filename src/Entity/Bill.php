@@ -6,6 +6,7 @@ use App\Repository\BillRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=BillRepository::class)
@@ -41,16 +42,19 @@ class Bill
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bills")
+     * @MaxDepth(1)
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=BillState::class, inversedBy="bills")
+     * @MaxDepth(1)
      */
     private $billState;
 
     /**
      * @ORM\OneToMany(targetEntity=BillLign::class, mappedBy="bill",cascade={"persist"})
+     * @MaxDepth(2)
      */
     private $billLigns;
 

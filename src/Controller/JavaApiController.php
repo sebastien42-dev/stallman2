@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use App\Entity\Message;
+use App\Repository\BillRepository;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use App\Security\LoginFormAuthenticator;
@@ -89,6 +90,19 @@ class JavaApiController extends AbstractController
     public function apiGetListMessage(MessageRepository $messageRepo,$user_id)
     {
         $data = $messageRepo->findByUserTo($user_id);
+        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+    /**
+     * retourne la liste des factures du user concerné
+     *
+     * @Route("/bill/list/{user_id}", name="api_get_list_bill",methods={"POST","GET"})
+     * @return JSON
+     */
+    public function apiGetListBill(BillRepository $billRepo,$user_id)
+    {
+        $data = $billRepo->findByUser($user_id);
         return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
