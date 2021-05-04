@@ -8,6 +8,7 @@ use App\Entity\BillLign;
 use App\Form\BillType;
 use App\Entity\BillState;
 use App\Entity\OutPackage;
+use App\Form\BillTypeLight;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\BillStateRepository;
@@ -143,9 +144,44 @@ class BillController extends AbstractController
      */
     public function edit(Request $request, Bill $bill): Response
     {
-        $form = $this->createForm(BillType::class, $bill);
+        $form = $this->createForm(BillTypeLight::class, $bill);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('bill_index');
+        }
+
+        return $this->render('bill/editBillName.html.twig', [
+            'bill' => $bill,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
+     * @Route("/{id}/edit/bill/name", name="bill_edit_name", methods={"GET","POST"})
+     */
+    public function DisplayEditBillName(Request $request, Bill $bill,BillRepository $billRepo,$id): Response
+    {
+        
+        $bill = $billRepo->find($id);
+
+        return $this->render('bill/editBillName.html.twig', [
+            'bill' => $bill,
+        ]);
+    }
+
+    
+    /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
+     * @Route("/{id}/edit/bill/name", name="bill_edit_name", methods={"GET","POST"})
+     */
+    public function editBillName(Request $request, Bill $bill,BillRepository $billRepo,$id): Response
+    {
+        
+        $bill = $billRepo->find($id);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
