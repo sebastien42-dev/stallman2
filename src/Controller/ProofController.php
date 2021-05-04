@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/proof")
@@ -22,6 +24,7 @@ class ProofController extends AbstractController
 {
     /**
      * @Route("/", name="proof_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      */
     public function index(ProofRepository $proofRepository,BillRepository $billRepo,BillLignRepository $billLignRepo,OutPackageRepository $outPackageRepo): Response
     {
@@ -32,15 +35,21 @@ class ProofController extends AbstractController
                 $role_user = $role;
             }
         }
-
+        $proofs=array();
         if($role_user == "ROLE_ADMIN" || $role_user == "ROLE_COMPTA") {
             $proofs = $proofRepository->findAll();
         } else {
             $bills = $billRepo->findByUser($this->getUser());
             $billLigns = $billLignRepo->findByBill($bills);
-            $outPackages = $outPackageRepo->findByBillLigns($billLigns);
-            $proofs = $proofRepository->findByOutPackages($outPackages);
-            dd($proofs);
+            
+            foreach ($billLigns as $lign) {
+               if( $lign->getOutPackage() != null) {
+                    if($lign->getOutPackage()->getProof() != null ) {
+                        $proofs[]=$lign->getOutPackage()->getProof();
+                    }
+                }
+                
+            }
         }
         return $this->render('proof/index.html.twig', [
             'proofs' => $proofs,
@@ -49,6 +58,7 @@ class ProofController extends AbstractController
 
     /**
      * @Route("/new/{id_out_package}", name="proof_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      */
     public function new(Request $request,SluggerInterface $slugger,$id_out_package,OutPackageRepository $outPackageRepo): Response
     {
@@ -61,45 +71,48 @@ class ProofController extends AbstractController
         
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             if($outPackage->getProof() !== null) {
+
                 return $this->render('error/error_proof_exist.html.twig');
+
             } else{
 ////////////////////////
-                        $proofFile = $form->get('proofFile')->getData();
+                $proofFile = $form->get('proofFile')->getData();
 
-                        // this condition is needed because the 'brochure' field is not required
-                        // so the PDF file must be processed only when a file is uploaded
-                        if ($proofFile) {
-                            $originalFilename = pathinfo($proofFile->getClientOriginalName(), PATHINFO_FILENAME);
-                            // this is needed to safely include the file name as part of the URL
-                            $safeFilename = $slugger->slug($originalFilename);
-                            $newFilename = $safeFilename.'-'.uniqid().'.'.$proofFile->guessExtension();
+                // this condition is needed because the 'brochure' field is not required
+                // so the PDF file must be processed only when a file is uploaded
+                if ($proofFile) {
+                    $originalFilename = pathinfo($proofFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$proofFile->guessExtension();
             
-                            // Move the file to the directory where brochures are stored
-                            try {
-                                $proofFile->move(
-                                    $this->getParameter('proof_directory'),
-                                    $newFilename
-                                );
-                            } catch (FileException $e) {
-                                echo'toto';
-                            }
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $proofFile->move(
+                            $this->getParameter('proof_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                         echo'toto';
+                    }
             
-                            // updates the 'brochureFilename' property to store the PDF file name
-                            // instead of its contents
-                            $proof->setProofFile($newFilename);
-                        }
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $proof->setProofFile($newFilename);
+                }
             //////////////////////////
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($proof);
-            
-            $outPackage->setProof($proof);
-            $entityManager->persist($outPackage);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($proof);
+                
+                $outPackage->setProof($proof);
+                $entityManager->persist($outPackage);
 
-            $entityManager->flush();
-            $this->addFlash("success","le justificatif a bien été enregistré");
-            return $this->redirectToRoute('proof_index');
+                $entityManager->flush();
+                $this->addFlash("success","le justificatif a bien été enregistré");
+                return $this->redirectToRoute('proof_index');
             }
             
         }
@@ -112,6 +125,7 @@ class ProofController extends AbstractController
 
     /**
      * @Route("/{id}", name="proof_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      */
     public function show(Proof $proof): Response
     {
@@ -122,6 +136,7 @@ class ProofController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="proof_edit", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      */
     public function edit(Request $request, Proof $proof): Response
     {
@@ -142,6 +157,7 @@ class ProofController extends AbstractController
 
     /**
      * @Route("/{id}", name="proof_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      */
     public function delete(Request $request, Proof $proof): Response
     {

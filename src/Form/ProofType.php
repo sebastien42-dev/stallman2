@@ -38,8 +38,10 @@ class ProofType extends AbstractType
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
+                            'image/jpg',
+                            'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'vous devez envoyer un pdf ou un jpg',
                     ])
                 ],
             ])
