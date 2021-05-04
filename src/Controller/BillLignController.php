@@ -19,10 +19,26 @@ class BillLignController extends AbstractController
     /**
      * @Route("/", name="bill_lign_index", methods={"GET"})
      */
-    public function index(BillLignRepository $billLignRepository): Response
+    public function index(BillLignRepository $billLignRepository,BillRepository $billRepo): Response
     {
+       
+        $roles = $this->getUser()->getRoles();
+
+        foreach($roles as $role) {
+            if($role != 'ROLE_USER') {
+                $role_user = $role;
+            }
+        }
+        
+        if($role_user == "ROLE_ADMIN") {
+            $billLigns = $billLignRepository->findAll();
+        } else {
+            $bills = $billRepo->findByUser($this->getUser());
+            $billLigns = $billLignRepository->findByBill($bills);
+        }
+
         return $this->render('bill_lign/index.html.twig', [
-            'bill_ligns' => $billLignRepository->findAll(),
+            'bill_ligns' => $billLigns,
         ]);
     }
 
