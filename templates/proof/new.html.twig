@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Proof{% endblock %}
+{% block title %}nouvelle preuve{% endblock %}
 
 {% block body %}
-    <h1>Create new Proof</h1>
+<div class="container-fluid">
+    <h2 class="text-center m-3"><span class="font-weight-bold text-white badge badge-{{ color }}">ajouter une preuve</span></h2>
 
     {{ include('proof/_form.html.twig') }}
 
-    <a href="{{ path('proof_index') }}">back to list</a>
+    <a title="retour à la liste des factures" style="text-decoration:none;" href="{{ path('bill_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-undo text-white"></i></a>
+    <a title="voir la liste des preuves" style="text-decoration:none;" href="{{ path('proof_index') }}" class=" mt-3 btn-circle btn-secondary"><i class="fas fa-list text-white"></i></a>
+</div>
 {% endblock %}

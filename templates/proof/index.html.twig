@@ -1,26 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Proof index{% endblock %}
+{% block title %}liste justificatifs{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
 {% include "/shared/shared_alert/_alert.html.twig" %}
     <h2 class="text-center m-3"><span class="badge badge-{{ color }} font-weight-bold text-white">Listes des justificatifs</span></h2>
-
+<pre>
+    
+</pre>
     <table class="table table-bordered table-hover shadow display">
         <thead class="text-center table-sm thead-dark">
             <tr> 
                 <th>Fichier</th>
+                <th>Ligne concernée</th>
+                <th>Facture</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody class="text-center">
         {% for proof in proofs %}
+        
+        
             <tr>
                 <td title="{{ proof.id }}">{{ proof.proofFile }}</td>
+                
+                    {% for lign in proof.outPackages %}
+                        {% if lign.outPackageName is defined  %}
+                            <td>{{ lign.outPackageName }}</td>
+                            {% for bill_lign in lign.billLigns %}
+                                <td>{{ bill_lign.bill.billProviderNum }}</td>
+                            {% endfor %}
+                        {% else %}
+                            <td></td>
+                            <td></td>
+                        {% endif %}
+                    {% endfor %}
+                
                 <td>
-                     <a title="modifier" href="{{ asset('/uploads/proof/') }}{{ proof.proofFile }}" target="_blank" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-file-pdf text-white"></i></a>
-                    {# <a href="{{ path('proof_edit', {'id': proof.id}) }}">edit</a> #}
+                     <a title="voir" href="{{ asset('/uploads/proof/') }}{{ proof.proofFile }}" target="_blank" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-file-pdf text-white"></i></a>
                 </td>
             </tr>
         {% else %}

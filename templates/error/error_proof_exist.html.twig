@@ -1,16 +1,19 @@
+
+
 {% extends 'base.html.twig' %}
 
 {% block title %}erreur note{% endblock %}
 {% block body %}
 <div class="container">
     <div class="card bg-danger text-center">
-        <h2 class="text-white font-weight-bold p-2">ERREUR DE CLASSE OU DE MATIERE</h2>
+        <h2 class="text-white font-weight-bold p-2">ERREUR Justificatif</h2>
     </div>
     <br>
-    <span class="text-danger font-weight-bold p-2">Il n'y a pas de classe ou de matière affiliée à votre profil</span>
+    <span class="text-danger font-weight-bold p-2">Vous avez déjà envoyé un justificatif pour cette ligne</span>
     <br>
     <div class="text-center mt-5">
         <a href="{{ path('home')}}" class="btn btn-secondary text-white font-weight-bold">Retour au dashboard</a>
+        <a href="{{ path('proof_index')}}" class="btn btn-secondary text-white font-weight-bold">Voir la liste des justificatifs</a>
     </div>
 </div>
 {% endblock %}

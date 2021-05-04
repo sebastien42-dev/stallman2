@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Proof;
 use App\Form\ProofType;
+use App\Repository\BillLignRepository;
+use App\Repository\BillRepository;
+use App\Repository\OutPackageRepository;
 use App\Repository\ProofRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,25 +23,48 @@ class ProofController extends AbstractController
     /**
      * @Route("/", name="proof_index", methods={"GET"})
      */
-    public function index(ProofRepository $proofRepository): Response
+    public function index(ProofRepository $proofRepository,BillRepository $billRepo,BillLignRepository $billLignRepo,OutPackageRepository $outPackageRepo): Response
     {
+        $roles = $this->getUser()->getRoles();
+
+        foreach($roles as $role) {
+            if($role != 'ROLE_USER') {
+                $role_user = $role;
+            }
+        }
+
+        if($role_user == "ROLE_ADMIN" || $role_user == "ROLE_COMPTA") {
+            $proofs = $proofRepository->findAll();
+        } else {
+            $bills = $billRepo->findByUser($this->getUser());
+            $billLigns = $billLignRepo->findByBill($bills);
+            $outPackages = $outPackageRepo->findByBillLigns($billLigns);
+            $proofs = $proofRepository->findByOutPackages($outPackages);
+            dd($proofs);
+        }
         return $this->render('proof/index.html.twig', [
-            'proofs' => $proofRepository->findAll(),
+            'proofs' => $proofs,
         ]);
     }
 
     /**
-     * @Route("/new", name="proof_new", methods={"GET","POST"})
+     * @Route("/new/{id_out_package}", name="proof_new", methods={"GET","POST"})
      */
-    public function new(Request $request,SluggerInterface $slugger): Response
+    public function new(Request $request,SluggerInterface $slugger,$id_out_package,OutPackageRepository $outPackageRepo): Response
     {
         $proof = new Proof();
         $form = $this->createForm(ProofType::class, $proof);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $outPackage = $outPackageRepo->find($id_out_package);
 
-            ////////////////////////
+        
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($outPackage->getProof() !== null) {
+                return $this->render('error/error_proof_exist.html.twig');
+            } else{
+////////////////////////
                         $proofFile = $form->get('proofFile')->getData();
 
                         // this condition is needed because the 'brochure' field is not required
@@ -67,9 +93,15 @@ class ProofController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($proof);
+            
+            $outPackage->setProof($proof);
+            $entityManager->persist($outPackage);
+
             $entityManager->flush();
             $this->addFlash("success","le justificatif a bien été enregistré");
             return $this->redirectToRoute('proof_index');
+            }
+            
         }
 
         return $this->render('proof/new.html.twig', [
