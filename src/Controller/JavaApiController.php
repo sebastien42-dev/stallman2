@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use App\Entity\Message;
+use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
@@ -103,6 +104,20 @@ class JavaApiController extends AbstractController
     public function apiGetListBill(BillRepository $billRepo,$user_id)
     {
         $data = $billRepo->findByUser($user_id);
+        return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+    
+
+    /**
+     * retourne la liste des lignes de la facture du user concerné
+     *
+     * @Route("/billlign/list/{bill_id}", name="api_get_bill_lign",methods={"POST","GET"})
+     * @return JSON
+     */
+    public function apiGetBillLigns(BillLignRepository $BillLignRepo,$bill_id)
+    {
+        $data = $BillLignRepo->findByBill($bill_id);
         return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }

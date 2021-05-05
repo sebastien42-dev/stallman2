@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BillLignRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=BillLignRepository::class)
@@ -35,16 +36,19 @@ class BillLign
 
     /**
      * @ORM\ManyToOne(targetEntity=Bill::class, inversedBy="billLigns")
+     * @MaxDepth(1)
      */
     private $bill;
 
     /**
      * @ORM\ManyToOne(targetEntity=Package::class, inversedBy="billLigns")
+     * @MaxDepth(1)
      */
     private $package;
 
     /**
      * @ORM\ManyToOne(targetEntity=OutPackage::class, inversedBy="billLigns")
+     * @MaxDepth(1)
      */
     private $outPackage;
 
