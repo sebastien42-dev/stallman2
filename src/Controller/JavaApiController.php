@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\BillLign;
 use DateTime;
 use App\Entity\User;
 use App\Entity\Message;
+use App\Entity\OutPackage;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\UserRepository;
@@ -165,6 +167,40 @@ class JavaApiController extends AbstractController
         $entityManager->flush();
 
         return JsonResponse::fromJsonString($this->serializer->serialize($message, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+        /**
+     * créer un message
+     *
+     * @Route("/outpackage/new/{bill_id}", name="api_new_outpackage",methods={"PUT","POST"})
+     * @return JSON
+     */
+    public function apiNewOutPackage(Request $request,BillRepository $billRepo,$bill_id)
+    {
+        $datas = json_decode($request->getContent());
+        $entityManager = $this->getDoctrine()->getManager();
+        $date = new DateTime('NOW');
+
+        $outPackage = new OutPackage();
+        $billLign = new BillLign();
+        $bill = $billRepo->findOneById($bill_id);
+
+        $outPackage->setOutPackageName($datas->out_package_name);
+        $outPackage->setValue($datas->out_package_value);
+        $entityManager->persist($outPackage);
+        
+        $billLign->setCreatedAt($date);
+        $billLign->setOutPackage($outPackage);
+        $billLign->setBill($bill);
+        $billLign->setGlobalLignValue($datas->out_package_value);
+        $entityManager->persist($billLign);
+
+        $bill->setGlobalBillValue($bill->getGlobalBillValue()+$datas->out_package_value);
+        $entityManager->persist($bill);
+        
+        $entityManager->flush();
+        return JsonResponse::fromJsonString($this->serializer->serialize($billLign, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
 
