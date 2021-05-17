@@ -101,7 +101,7 @@
 											<td>
 												<span class="font-weight-bold text-warning">{{  billLign.outPackage.outPackageName }}</span>
 												{% if billLign.outPackage.proof != NULL %}
-													&nbsp;<span class="text-muted">Justificatif donnée</span>
+													&nbsp;<a href="/uploads/proof/{{ billLign.outPackage.proof.proofFile }}" target="_blank"><span class="text-primary">Justificatif</span></a>
 												{% else %}
 													&nbsp;<span class="text-danger">
 														<i>Pas de justificatif</i>

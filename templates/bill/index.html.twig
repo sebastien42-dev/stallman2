@@ -182,9 +182,9 @@
 															<a title="modifier" href="{{ path('out_package_edit', {'id': bill_lign.outPackage.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
 														{% endif %}
 														{% if bill_lign.outPackage.proof != null %}
-															<span class="text-muted"><i>Justificatif donné</i></span>
+															<a class="btn btn-sm btn-outline-secondary" title="voir le justificatif" target="_blank" href="/uploads/proof/{{ bill_lign.outPackage.proof.proofFile }}"><i class="fas fa-folder-open text-primary" ></i>&nbsp;Justificatif</a>
 														{% else %}
-															<a class="btn btn-sm btn-secondary text-light" title="ajouter une preuve" href="{{ path('proof_new', {'id_out_package': bill_lign.outPackage.id}) }}"><i class="fas fa-plus text-white"></i>&nbsp;Justificatif</a>
+															<a class="btn btn-sm btn-secondary text-light" title="ajouter un justificatif" href="{{ path('proof_new', {'id_out_package': bill_lign.outPackage.id}) }}"><i class="fas fa-plus text-white"></i>&nbsp;Justificatif</a>
 														{% endif %}
 													{% endif %}
 												</div>
