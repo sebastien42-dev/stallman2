@@ -29,7 +29,7 @@
                         {% if lign.outPackageName is defined  %}
                             <td>{{ lign.outPackageName }}</td>
                             {% for bill_lign in lign.billLigns %}
-                                <td>{{ bill_lign.bill.billProviderNum }}</td>
+                                <td><a href="{{path('bill_show_all', { 'id_bill': bill_lign.bill.id } )}}">{{ bill_lign.bill.billProviderNum }}</a></td>
                             {% endfor %}
                         {% else %}
                             <td></td>
