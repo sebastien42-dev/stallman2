@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class BillStateRepository extends ServiceEntityRepository
 {
     const STATE_CREATE = 1;
-    const STR_STATE_CREATE = 'Créee';
+    const STR_STATE_CREATE = 'Créée';
     const STATE_WAIT = 2;
     const STR_STATE_WAIT = 'En attente';
     const STATE_VALIDATE = 3;

@@ -9,6 +9,7 @@ use App\Entity\Message;
 use App\Entity\OutPackage;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
+use App\Repository\BillStateRepository;
 use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use App\Security\LoginFormAuthenticator;
@@ -186,21 +187,30 @@ class JavaApiController extends AbstractController
         $billLign = new BillLign();
         $bill = $billRepo->findOneById($bill_id);
 
-        $outPackage->setOutPackageName($datas->out_package_name);
-        $outPackage->setValue($datas->out_package_value);
-        $entityManager->persist($outPackage);
-        
-        $billLign->setCreatedAt($date);
-        $billLign->setOutPackage($outPackage);
-        $billLign->setBill($bill);
-        $billLign->setGlobalLignValue($datas->out_package_value);
-        $entityManager->persist($billLign);
+        if ($bill->getBillState()->getStateName() == BillStateRepository::STR_STATE_CREATE) {
+            
+            $outPackage->setOutPackageName($datas->out_package_name);
+            $outPackage->setValue($datas->out_package_value);
+            $entityManager->persist($outPackage);
+            
+            $billLign->setCreatedAt($date);
+            $billLign->setOutPackage($outPackage);
+            $billLign->setBill($bill);
+            $billLign->setGlobalLignValue($datas->out_package_value);
+            $entityManager->persist($billLign);
+    
+            $bill->setGlobalBillValue($bill->getGlobalBillValue()+$datas->out_package_value);
+            $entityManager->persist($bill);
+            
+            $entityManager->flush();
 
-        $bill->setGlobalBillValue($bill->getGlobalBillValue()+$datas->out_package_value);
-        $entityManager->persist($bill);
+            return JsonResponse::fromJsonString($this->serializer->serialize($billLign, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+        } else {
+
+            return JsonResponse::fromJsonString($this->serializer->serialize(['billLign'=> false], 'json'));
+        }
         
-        $entityManager->flush();
-        return JsonResponse::fromJsonString($this->serializer->serialize($billLign, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
 
