@@ -3,10 +3,10 @@
 
                 <div class="card border-{{ color }} shadow-lg">
                     <div class="card-header text-uppercase text-left bg-{{ color }} text-white">
-                        <span>Facturation formateurs</span>
+                        <span>Facturation pour la periode {{ 'now'|date("m / Y")}}</span>
                     </div>
                     <div class="card-body">
-                        <canvas id="myChart" width="400" height="200"></canvas>
+                        <canvas id="billChartAdmin" width="400" height="300"></canvas>
                     </div>
                 </div>
 

@@ -122,7 +122,7 @@ class HomeController extends AbstractController
      * @Route("/homeadmin", name="home_admin")
      */
 
-    public function indexAdmin(UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
+    public function indexAdmin(UserRepository $userRepo,FonctionRepository $fonctionRepo,BillRepository $billRepo): Response
     {
 
         $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
@@ -133,10 +133,28 @@ class HomeController extends AbstractController
         $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
         $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
         $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
+
+        $users = $userRepo->findAll();
+        $tab_bills = array();
+        
+        foreach ($users as $user) {
+            $totalUser = 0;
+            if (!in_array("ROLE_ELEVE",$user->getRoles())) {
+                $bills = $billRepo->findByCreatedAtAndUser(date("Y-m"),$user);
+                foreach ($bills as $bill) {
+                    $totalUser += $bill->getGlobalBillValue();
+                    $tab_bills[$user->getNom()]=$bill->getGlobalBillValue();
+                }
+               $tab_bills[$user->getNom()] = $totalUser;
+            }
+        }
+        
          
         return $this->render('home/index.html.twig', [
             'nbUser' => json_encode($tab_nb_user),
-            'labelCatgorie' => json_encode($tab_nom_categorie)
+            'labelCatgorie' => json_encode($tab_nom_categorie),
+            'formateurs' => json_encode(array_keys($tab_bills)),
+            'billTotal' => json_encode(array_values($tab_bills)) 
         ]);
     }
 

@@ -1,39 +1,39 @@
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
+//TODO faire une genration automatique des couleurs côté php pour plus de dynamisme
+var ctx = document.getElementById('billChartAdmin').getContext('2d');
 var myChart = new Chart(ctx, {
-     type: 'line',
+    type: 'polarArea',
     data: {
-        labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+        labels: {{ formateurs|raw}},
         datasets: [{
-            label: 'montants cumulés des notes de frais formateur 1',
-            data: [0,0,0,0,12,24,36,48,48,48,48,48,112,112,112,112,150,150,150,150,170,182,196,196,196,204,204,250,290,290],
+            data: {{ billTotal }},
             backgroundColor: [
-                'rgba(252, 186, 3, 0.2)'
+                'rgba(52, 67, 235, 0.5)',
+                'rgba(235, 52, 52, 0.5)',
+                'rgba(52, 235, 61, 0.5)',
+                'rgba(255, 0, 208, 0.5)',
+                'rgba(170, 0, 255, 0.5)',
+                'rgba(255, 0, 153, 0.5)',
+                'rgba(255, 102, 0, 0.5)',
+                'rgba(255, 208, 0, 0.5)',
+                'rgba(0, 0, 0, 0.5)',
+                'rgba(214, 107, 107, 0.5)',
+                'rgba(107, 214, 125, 0.5)',
+                'rgba(107, 112, 214, 0.5)',
             ],
             borderColor: [
-                'rgba(252, 186, 3, 1)'
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'montants cumulés des notes de frais formateur 2',
-            data: [0,0,0,0,12,24,36,48,48,48,48,48,48,48,48,48,48,110,110,110,110,120,120,120,120,120,132,132,132,132],
-            backgroundColor: [
-                'rgba(3, 252, 181, 0.2)'
-            ],
-            borderColor: [
-                'rgba(3, 252, 181, 1)'
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'montants cumulés des notes de frais formateur 3',
-            data: [0,0,0,0,0,12,12,12,12,12,12,12,12,52,52,52,52,72,100,100,100,100,100,100,100,100,100,100,100,100],
-            backgroundColor: [
-                'rgba(194, 3, 252, 0.2)'
-            ],
-            borderColor: [
-                'rgba(194, 3, 252, 1)'
+                'rgba(52, 67, 235, 1)',
+                'rgba(235, 52, 52, 1)',
+                'rgba(52, 235, 61, 1)',
+                'rgba(255, 0, 208, 1)',
+                'rgba(170, 0, 255, 1)',
+                'rgba(255, 0, 153, 1)',
+                'rgba(255, 102, 0, 1)',
+                'rgba(255, 208, 0, 1)',
+                'rgba(0, 0, 0, 0, 1)',
+                'rgba(214, 107, 107, 1)',
+                'rgba(107, 214, 125, 0, 1)',
+                'rgba(107, 112, 214, 1)',
             ],
             borderWidth: 1
         }]
