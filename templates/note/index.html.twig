@@ -45,7 +45,7 @@
                     <div class="row">
                         {# <a title="voir" href="{{ path('note_show', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-1"><i class="fas fa-eye text-white"></i></a> #}
                         <a title="modifier" href="{{ path('note_edit', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-edit text-white"></i></a>
-                        {{ include('note/_delete_form_icone.html.twig') }}
+                        {# {{ include('note/_delete_form_icone.html.twig') }} #}
                     </div>
                  </td>
                 {% elseif is_granted('ROLE_PROF') %}
@@ -54,7 +54,7 @@
                     <div class="row">
                         {# <a title="voir" href="{{ path('note_show', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-1"><i class="fas fa-eye text-white"></i></a> #}
                         <a title="modifier" href="{{ path('note_edit', {'id': note.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-4"><i class="fas fa-edit text-white"></i></a>
-                        {{ include('note/_delete_form_icone.html.twig') }}
+                        {# {{ include('note/_delete_form_icone.html.twig') }} #}
                     </div>
                  </td>
                 {% endif %}
