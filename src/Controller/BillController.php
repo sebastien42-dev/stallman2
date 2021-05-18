@@ -12,6 +12,7 @@ use App\Form\BillTypeLight;
 use App\Repository\BillLignRepository;
 use App\Repository\BillRepository;
 use App\Repository\BillStateRepository;
+use App\Repository\PackageRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,61 +139,131 @@ class BillController extends AbstractController
         ]);
     }
 
+    // /**
+    //  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
+    //  * @Route("/{id}/edit", name="bill_edit", methods={"GET","POST"})
+    //  */
+    // public function edit(Request $request, Bill $bill): Response
+    // {
+    //     $form = $this->createForm(BillTypeLight::class, $bill);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $this->getDoctrine()->getManager()->flush();
+
+    //         return $this->redirectToRoute('bill_index');
+    //     }
+
+    //     return $this->render('bill/editBillName.html.twig', [
+    //         'bill' => $bill,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
+
+
+
+    /**
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
+     * @Route("/{id}/edit/save", name="bill_edit_save", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Bill $bill,BillLignRepository $billLignRepo,PackageRepository $packageRepo): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if ($request->get('num_bill') != $bill->getBillProviderNum()) {
+            $bill->setBillProviderNum($request->get('num_bill'));
+            $entityManager->persist($bill);
+            $entityManager->flush();
+        }
+
+        $billLigns = $bill->getBillLigns();
+        
+        $totalBill = 0;
+
+        foreach ($billLigns as $lign) {
+
+            $package = $packageRepo->findOneById($request->get('package_name_'.$lign->getId()));
+            $date = new DateTime($request->get('package_date_'.$lign->getId()));
+            
+            $lign->setQuantity($request->get('package_quantity_'.$lign->getId()));
+            $lign->setPackage($package);
+            $lign->setCreatedAt($date);
+
+            if($lign->getPackage() != NULL) {
+                $lign->setGlobalLignValue($package->getValue()*$request->get('package_quantity_'.$lign->getId()));
+                $totalBill += $lign->getGlobalLignValue();
+            }
+
+            if($lign->getOutPackage() != NULL) {
+                 $lign->getOutPackage()->setOutPackageName($request->get('outpackage_name_'.$lign->getId()));
+                 $lign->getOutPackage()->setValue($request->get('outpackage_value_'.$lign->getId()));
+                 $lign->setGlobalLignValue($request->get('outpackage_value_'.$lign->getId()));
+                 $totalBill += $lign->getGlobalLignValue();
+            }
+           
+            $entityManager->persist($lign);
+            $entityManager->flush();
+        }
+
+        $bill->setGlobalBillValue($totalBill);
+        $entityManager->persist($bill);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('bill_index');
+    }
+
     /**
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/{id}/edit", name="bill_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Bill $bill): Response
+    public function displayEditBill(Bill $bill,PackageRepository $packageRepo )
     {
-        $form = $this->createForm(BillTypeLight::class, $bill);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('bill_index');
-        }
-
+        $packages = $packageRepo->findAll();
         return $this->render('bill/editBillName.html.twig', [
             'bill' => $bill,
-            'form' => $form->createView(),
+            'packages' => $packages
         ]);
     }
+
+
+
+
+
 
     /**
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
      * @Route("/{id}/edit/bill/name", name="bill_edit_name", methods={"GET","POST"})
      */
-    public function DisplayEditBillName(Request $request, Bill $bill,BillRepository $billRepo,$id): Response
+    public function DisplayEditBillName(Request $request, Bill $bill,BillRepository $billRepo,$id,BillLignRepository $billLignRepo): Response
     {
         
         $bill = $billRepo->find($id);
-
+        
         return $this->render('bill/editBillName.html.twig', [
             'bill' => $bill,
         ]);
     }
 
     
-    /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
-     * @Route("/{id}/edit/bill/name", name="bill_edit_name", methods={"GET","POST"})
-     */
-    public function editBillName(Request $request, Bill $bill,BillRepository $billRepo,$id): Response
-    {
+    // /**
+    //  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA') or is_granted('ROLE_PROF')")
+    //  * @Route("/{id}/edit/bill/name", name="bill_edit_name", methods={"GET","POST"})
+    //  */
+    // public function editBillName(Request $request, Bill $bill,BillRepository $billRepo,$id): Response
+    // {
         
-        $bill = $billRepo->find($id);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+    //     $bill = $billRepo->find($id);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('bill_index');
-        }
+    //         return $this->redirectToRoute('bill_index');
+    //     }
 
-        return $this->render('bill/edit.html.twig', [
-            'bill' => $bill,
-            'form' => $form->createView(),
-        ]);
-    }
+    //     return $this->render('bill/edit.html.twig', [
+    //         'bill' => $bill,
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     /**
      * @IsGranted("ROLE_ADMIN",message="Accès réservé aux administrateurs !")

@@ -9,10 +9,75 @@
 			<span class="font-weight-bold text-white badge badge-{{ color }}">Modifier la facture
 				{{ bill.billProviderNum !="" ? bill.billProviderNum : "Pas encore de numéro" }} pour {{ bill.user.nom}} {{ bill.user.prenom}}</span>
 		</h2>
+		<form action="{{ path('bill_edit_save',{'id':bill.id}) }}">
+			<div class="card bg-gradient-{{ color }} mb-5 p-3">
+				<label for="num_bill" class="text-white font-weight-bold">Numero facture</label>
+				<input type="text" id="num_bill" name="num_bill" class="form-control border border-dark mb-2" value={{bill.billProviderNum}}>
+			</div>
 
-		<div class="card bg-gradient-{{ color }} m-3 p-4">
-			{{ include('bill/_form_light.html.twig', {'button_label': 'Modifier'}) }}
+		{% for lign in bill.billLigns %}
+
+			{% if lign.package.id is defined %}
+
+				<div class="card bg-success border border-dark p-3 mb-3 shadow">
+					<div class="row">
+						<div class="col">
+							<label for="package_quantity_{{ lign.id }}" class="text-white font-weight-bold">Quantité</label>
+							<input type="text" id="package_quantity_{{ lign.id }}" name="package_quantity_{{ lign.id }}" class="form-control border border-success mb-2" value={{lign.quantity}}>
+						</div>
+						<div class="col">
+							<label for="package_name_{{ lign.id }}" class="text-white font-weight-bold">Forfait</label>
+							<select name="package_name_{{ lign.id }}" id="package_name_{{ lign.id }}" class="form-control border border-success mb-2" >
+								{% for package in packages %}
+									{% if lign.package.id == package.id %}
+										<option value="{{ package.id }}" selected ="selected">{{ package.packageName }}</option>
+									{% else %}
+										<option value="{{ package.id }}">{{ package.packageName }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						
+						<div class="col">
+							<label for="package_date_{{ lign.id }}" class="text-white font-weight-bold">Date concernée ({{ lign.createdAt|date("d/m/Y") }})</label>
+							<input type="date" id="package_date_{{ lign.id }}" name="package_date_{{ lign.id }}" class="form-control border border-success mb-2" value="{{ lign.createdAt|date() }}">
+						</div>
+					</div>
+					<input type="hidden" name="bill_lign_id" value={{ lign.id }}/>
+				</div>
+			{% endif %}
+
+			{% if lign.outPackage.id is defined %}
+
+				<div class="card bg-warning border border-dark p-3 mb-3 shadow">
+					<div class="row">
+						<div class="col">
+							<label for="outpackage_name_{{ lign.id }}" class="text-white font-weight-bold">Libellé hors forfait</label>
+							<input type="text" id="outpackage_name_{{ lign.id }}" name="outpackage_name_{{ lign.id }}" class="form-control border border-warning mb-2" value={{ lign.outPackage.outPackageName }}>
+						</div>
+						<div class="col">
+							<label for="outpackage_value_{{ lign.id }}" class="text-white font-weight-bold">Libellé hors forfait</label>
+							<input type="text" id="outpackage_value_{{ lign.id }}" name="outpackage_value_{{ lign.id }}" class="form-control border border-warning mb-2" value={{ lign.outPackage.value }}>
+						</div>
+						<div class="col">
+							<label for="package_date_{{ lign.id }}" class="text-white font-weight-bold">Date concernée ({{ lign.createdAt|date("d/m/Y") }})</label>
+							<input type="date" id="package_date_{{ lign.id }}" name="package_date_{{ lign.id }}" class="form-control border border-success mb-2" value={{ lign.createdAt|date() }}>
+						</div>
+					</div>
+					<input type="hidden" name="bill_lign_id" value={{ lign.id }}/>
+					<input type="hidden" name="out_package_id" value={{ lign.outPackage.id }}>
+				</div>
+			{% endif %}
+
+		{% endfor %}
+		<div class="text-center">
+			<button  class="btn btn-{{ color }} border border-white text-white font-weight-bold">Modifier</button>
 		</div>
+
+		</form>
+		{# <div class="card bg-gradient-{{ color }} m-3 p-4">
+			{{ include('bill/_form_light.html.twig', {'button_label': 'Modifier'}) }}
+		</div> #}
 
 		<a title="retour à la liste" style="text-decoration:none;" href="{{ path('bill_index') }}" class=" mt-3 btn-circle btn-secondary">
 			<i class="fas fa-undo text-white"></i>
