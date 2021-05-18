@@ -47,10 +47,18 @@
 								Voir
 							</button>
 						</td>
-						<td title="{{ bill.id }}">{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}</td>
+						<td title="{{ bill.id }}">
+							<a data-toggle="collapse" class="text-decoration-none"data-target="#lign{{bill.id}}" aria-expanded="true" aria-controls="lign{{bill.id}}">
+								{{ bill.billProviderNum ? bill.billProviderNum : 'pas encore de numéro' }}
+							</a>
+						</td>
 						{% if is_granted('ROLE_ADMIN') %}
-							<td>{{ bill.user.nom }}
-								{{ bill.user.prenom }}</td>
+							<td>
+								<a data-toggle="collapse" class="text-decoration-none"data-target="#lign{{bill.id}}" aria-expanded="true" aria-controls="lign{{bill.id}}">
+									{{ bill.user.nom }}
+									{{ bill.user.prenom }}
+								</a>
+							</td>
 						{% elseif is_granted('ROLE_COMPTA') %}
 							<td>{{ bill.user.nom }}
 								{{ bill.user.prenom }}</td>
@@ -59,6 +67,7 @@
 						<td>{{ bill.updatedAt ? bill.updatedAt|date('d/m/Y') : '' }}</td>
 						<td>{{ bill.globalBillValue }}</td>
 						<td>
+
 							<span class="badge badge-{{ badgeColor }}">{{ bill.billState ? bill.billState.stateName : '' }}</span>
 						</td>
 
