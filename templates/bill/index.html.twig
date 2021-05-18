@@ -92,9 +92,15 @@
 
 						<td>
 							<div class="row">
-								<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
-									<i class="fas fa-edit text-white"></i>
-								</a>
+								{% if app.user == bill.user %}
+									<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+										<i class="fas fa-edit text-white"></i>
+									</a>
+								{% else %}
+									<a title="modifier" data-toggle="modal" data-target="#editImpossible" class="btn-circle btn-secondary btn-sm mr-2 ml-2">
+										<i class="fas fa-edit text-white"></i>
+									</a>		
+								{% endif %}
 								{% if not is_granted('ROLE_COMPTA') %}
 									<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
 										<i class="far fa-file"></i>
@@ -175,11 +181,15 @@
 												<div class="row">
 													{% if bill_lign.package.id is defined %}
 														{% if bill_lign.bill.billState.id == 1 %}
-															<a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+															{% if app.user == bill.user %}
+																<a title="modifier" href="{{ path('bill_lign_edit', {'id': bill_lign.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+															{% endif %}
 														{% endif %}
 													{% else %}
 														{% if bill_lign.bill.billState.id == 1 %}
-															<a title="modifier" href="{{ path('out_package_edit', {'id': bill_lign.outPackage.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+															{% if app.user == bill.user %}
+																<a title="modifier" href="{{ path('out_package_edit', {'id': bill_lign.outPackage.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2"><i class="fas fa-edit text-white"></i></a>
+															{% endif %}
 														{% endif %}
 														{% if bill_lign.outPackage.proof != null %}
 															<a class="btn btn-sm btn-outline-secondary" title="voir le justificatif" target="_blank" href="/uploads/proof/{{ bill_lign.outPackage.proof.proofFile }}"><i class="fas fa-folder-open text-primary" ></i>&nbsp;Justificatif</a>
@@ -211,7 +221,28 @@
 		</tr>
 	{% endfor %}
 
-</tbody></table></div>{% endblock %}
+</tbody></table></div>
+
+<div class="modal fade" id="editImpossible" tabindex="-1" aria-labelledby="editImpossibleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editImpossibleLabel">Modificication impossible</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Vous ne pouvez pas modifier une facture qui n'est pas la votre, <b>même en tant qu'administrateur</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-{{ color }}" data-dismiss="modal">fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
 
 {% block javascripts %}
 {% include "shared/shared_datatable/_datatable_main.html.twig" %}

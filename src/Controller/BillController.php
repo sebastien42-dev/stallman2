@@ -212,7 +212,8 @@ class BillController extends AbstractController
             $bill->setGlobalBillValue($totalBill);
             $entityManager->persist($bill);
             $entityManager->flush();
-            
+
+            $this->addFlash('success','la facture '.$bill->getBillProviderNum().' a bien été modifiée');
             return $this->redirectToRoute('bill_index');
         }
     }
@@ -241,10 +242,6 @@ class BillController extends AbstractController
             ]);
         }
     }
-
-
-
-
 
 
     /**
