@@ -15,7 +15,7 @@
             <a class="collapse-item" href={{ path('bill_lign_index') }}>Liste lignes</a>
             <a class="collapse-item" href={{ path('proof_index') }}>Liste justificatif</a>
             {% if is_granted('ROLE_ADMIN') %}
-              <a class="collapse-item" href={{ path('bill_state_index') }} title="getion des états de la factures">Gestion etat</a>
+              {# <a class="collapse-item" href={{ path('bill_state_index') }} title="getion des états de la factures">Gestion etat</a> #}
               <a class="collapse-item" href={{ path('package_index') }} title="getion des forfaits possibles">Forfaits</a>
             {% endif %}
         </div>

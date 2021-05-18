@@ -103,13 +103,13 @@
             <a class="collapse-item" href={{ path('message_index') }}>Liste</a>
             <a class="collapse-item" href={{ path('message_new') }}>Envoyer</a>
 
-            {% if is_granted('ROLE_ADMIN') %}
+            {# {% if is_granted('ROLE_ADMIN') %}
               <h6 class="collapse-header">Adminsitration</h6>
               <a class="collapse-item" href="#">Envoyer en liste</a>
             {% elseif is_granted('ROLE_PROF')%}
               <h6 class="collapse-header">Adminsitration</h6>
               <a class="collapse-item" href="#">Envoyer en liste</a>
-            {% endif %}
+            {% endif %} #}
 
           </div>
         </div>
