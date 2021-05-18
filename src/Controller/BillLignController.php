@@ -47,6 +47,7 @@ class BillLignController extends AbstractController
 
     /**
      * @Route("/new/{bill}", name="bill_lign_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')  or is_granted('ROLE_PROF')")
      */
     public function new(Request $request,$bill,BillRepository $billRepo): Response
     {
@@ -82,6 +83,7 @@ class BillLignController extends AbstractController
 
     /**
      * @Route("/{id}", name="bill_lign_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')  or is_granted('ROLE_PROF')")
      */
     public function show(BillLign $billLign): Response
     {
@@ -92,6 +94,7 @@ class BillLignController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="bill_lign_edit", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')  or is_granted('ROLE_PROF')")
      */
     public function edit(Request $request, BillLign $billLign,BillRepository $billRepo): Response
     {
@@ -128,6 +131,7 @@ class BillLignController extends AbstractController
 
     /**
      * @Route("/{id}", name="bill_lign_delete", methods={"DELETE"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_COMPTA')  or is_granted('ROLE_PROF')")
      */
     public function delete(Request $request, BillLign $billLign): Response
     {
