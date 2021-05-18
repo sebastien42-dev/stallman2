@@ -1,0 +1,45 @@
+<div class="card border-{{ color }} shadow-lg">
+	<div class="card-header text-uppercase text-left bg-{{ color }} text-white">
+		<span>ALERTE factures en attente de paiement
+		</span>
+	</div>
+	<div class="card-body ">
+		<table class="table table-borderless table-striped">
+            <tr>
+                <th>Période</th>    
+                <th>Num facture</th>    
+                <th>Destinataire</th>    
+                <th>Montant</th>    
+                <th>Etat</th>    
+            </tr>
+
+        {% for bill in bills %}
+
+			{% if bill.billState.id == 1 %}
+				{% set badgeColor = 'info' %}
+			{% elseif bill.billState.id == 2 %}
+				{% set badgeColor = 'danger' %}
+			{% elseif bill.billState.id == 3 %}
+				{% set badgeColor = 'warning' %}
+			{% elseif bill.billState.id == 4 %}
+				{% set badgeColor = 'success' %}
+			{% endif %}
+
+            {% if bill.billState.id != 1 and bill.billState.id != 4 %}
+                <tr>
+                    <td>{{ bill.createdAt | date("m/Y")}}</td>
+                    <td>
+                        <a href="{{ path('bill_show_all',{'id_bill':bill.id}) }}">
+                            {{ bill.billProviderNum ? bill.billProviderNum : "pas de numéro" }}</td>
+                        </a>
+                    <td><b>{{ bill.user.nom|upper }} {{ bill.user.prenom }}</b></td>
+                    <td>{{ bill.globalBillValue }} €</td>
+                    <td><span class="badge badge-{{ badgeColor }}">{{ bill.billState.stateName }}</span></td>
+                </tr>
+            {% endif %}
+
+        {% endfor %}
+
+		</table>
+	</div>
+</div>

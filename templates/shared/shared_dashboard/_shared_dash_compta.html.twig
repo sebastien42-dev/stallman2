@@ -4,7 +4,7 @@
 
                 <div class="card border-{{ color }} shadow-lg">
                     <div class="card-header text-uppercase text-left bg-{{ color }} text-white">
-                        <span>Situation des factures pour {{ 'now'|date('m') }} {{ 'now'|date('Y') }}</span>
+                        <span>Situation des factures pour {{ 'now'|date('m / Y') }}</span>
                     </div>
                     <div class="card-body">
                         <canvas id="SituationFacture" width="400" height="200"></canvas>
@@ -16,7 +16,7 @@
 
             <div class="col-lg-6 col-sm-12">
 
-                <div class="card border-{{ color }} shadow-lg">
+                {# <div class="card border-{{ color }} shadow-lg">
                     <div class="card-header text-uppercase text-left bg-{{ color }} text-white">
                         <span>factures a enregistrer </span>
                     </div>
@@ -44,7 +44,7 @@
                             </tr>
                         </table>
                     </div>
-                </div>
-
+                </div> #}
+                {% include "shared/shared_dashboard/chart/_chart_array_compta.html.twig" %}
             </div>
         </div>

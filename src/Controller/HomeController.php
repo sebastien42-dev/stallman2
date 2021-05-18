@@ -237,6 +237,7 @@ class HomeController extends AbstractController
         $total = 0;
                 
         $bills = $billRepo->findByCreatedAt(date("Y-m"));
+        $totalBills = $billRepo->findAll();
 
         foreach ($bills as $bill) {
 
@@ -253,10 +254,12 @@ class HomeController extends AbstractController
 
             $previousState = $bill->getBillState()->getStateName();
         }
+
             
         return $this->render('home/index.html.twig', [
             'billstates' => json_encode(array_keys($tab_bills_state)),
-            'totalBillState' => json_encode(array_values($tab_bills_state)) 
+            'totalBillState' => json_encode(array_values($tab_bills_state)),
+            'bills' => $totalBills
         ]);
     }
 

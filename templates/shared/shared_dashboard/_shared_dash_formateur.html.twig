@@ -4,9 +4,7 @@
 		<div class="card border-{{ color }} shadow-lg">
 			<div
 				class="card-header text-uppercase text-left bg-{{ color }} text-white font-weight-bold">
-				{# TODO mettre le mois en injection en lettre par le controller #}
-				<span>liste des montants facturables depuis Janvier
-					{{'now'|date('Y') }}</span>
+				<span>liste des montants facturables</span>
 			</div>
 			<div class="card-body">
 				<canvas id="MontantFactureChart" width="400" height="200"></canvas>
