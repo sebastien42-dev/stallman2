@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}erreur fcatures{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="card bg-danger text-center">
+        <h2 class="text-white font-weight-bold p-2">ERREUR MODIFICATION FACTURE</h2>
+    </div>
+    <br>
+    <span class="text-danger font-weight-bold p-2">Vous ne pouvez modifier votre facture que si elle est en état "créée" ou "en attente"</span>
+    <br>
+    
+    <div class="row">
+        <div class="text-center mt-5">
+            <a href="{{ path('home')}}" class="btn btn-secondary text-white font-weight-bold">Retour au dashboard</a>
+            <a href="{{ path('bill_index')}}" class="ml-2 btn btn-secondary text-white font-weight-bold">Retour liste des factures</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

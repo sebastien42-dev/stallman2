@@ -169,47 +169,52 @@ class BillController extends AbstractController
     public function edit(Request $request, Bill $bill,BillLignRepository $billLignRepo,PackageRepository $packageRepo): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        if ($bill->getUser() != $this->getUser()) {
+            return $this->redirectToRoute('bill_index');
+        } else {
 
-        if ($request->get('num_bill') != $bill->getBillProviderNum()) {
-            $bill->setBillProviderNum($request->get('num_bill'));
+
+            if ($request->get('num_bill') != $bill->getBillProviderNum()) {
+                $bill->setBillProviderNum($request->get('num_bill'));
+                $entityManager->persist($bill);
+                $entityManager->flush();
+            }
+            
+            $billLigns = $bill->getBillLigns();
+            
+            $totalBill = 0;
+            
+            foreach ($billLigns as $lign) {
+                
+                $package = $packageRepo->findOneById($request->get('package_name_'.$lign->getId()));
+                $date = new DateTime($request->get('package_date_'.$lign->getId()));
+                
+                $lign->setQuantity($request->get('package_quantity_'.$lign->getId()));
+                $lign->setPackage($package);
+                $lign->setCreatedAt($date);
+                
+                if($lign->getPackage() != NULL) {
+                    $lign->setGlobalLignValue($package->getValue()*$request->get('package_quantity_'.$lign->getId()));
+                    $totalBill += $lign->getGlobalLignValue();
+                }
+                
+                if($lign->getOutPackage() != NULL) {
+                    $lign->getOutPackage()->setOutPackageName($request->get('outpackage_name_'.$lign->getId()));
+                    $lign->getOutPackage()->setValue($request->get('outpackage_value_'.$lign->getId()));
+                    $lign->setGlobalLignValue($request->get('outpackage_value_'.$lign->getId()));
+                    $totalBill += $lign->getGlobalLignValue();
+                }
+                
+                $entityManager->persist($lign);
+                $entityManager->flush();
+            }
+            
+            $bill->setGlobalBillValue($totalBill);
             $entityManager->persist($bill);
             $entityManager->flush();
-        }
-
-        $billLigns = $bill->getBillLigns();
-        
-        $totalBill = 0;
-
-        foreach ($billLigns as $lign) {
-
-            $package = $packageRepo->findOneById($request->get('package_name_'.$lign->getId()));
-            $date = new DateTime($request->get('package_date_'.$lign->getId()));
             
-            $lign->setQuantity($request->get('package_quantity_'.$lign->getId()));
-            $lign->setPackage($package);
-            $lign->setCreatedAt($date);
-
-            if($lign->getPackage() != NULL) {
-                $lign->setGlobalLignValue($package->getValue()*$request->get('package_quantity_'.$lign->getId()));
-                $totalBill += $lign->getGlobalLignValue();
-            }
-
-            if($lign->getOutPackage() != NULL) {
-                 $lign->getOutPackage()->setOutPackageName($request->get('outpackage_name_'.$lign->getId()));
-                 $lign->getOutPackage()->setValue($request->get('outpackage_value_'.$lign->getId()));
-                 $lign->setGlobalLignValue($request->get('outpackage_value_'.$lign->getId()));
-                 $totalBill += $lign->getGlobalLignValue();
-            }
-           
-            $entityManager->persist($lign);
-            $entityManager->flush();
+            return $this->redirectToRoute('bill_index');
         }
-
-        $bill->setGlobalBillValue($totalBill);
-        $entityManager->persist($bill);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('bill_index');
     }
 
     /**
@@ -219,10 +224,22 @@ class BillController extends AbstractController
     public function displayEditBill(Bill $bill,PackageRepository $packageRepo )
     {
         $packages = $packageRepo->findAll();
-        return $this->render('bill/editBillName.html.twig', [
-            'bill' => $bill,
-            'packages' => $packages
-        ]);
+
+        if ($bill->getUser() != $this->getUser()) {
+
+            return $this->render('error/error_bill_edit_profil.html.twig');
+
+        } elseif(($bill->getBillState()->getStateName() != BillStateRepository::STR_STATE_CREATE) && ($bill->getBillState()->getStateName() != BillStateRepository::STR_STATE_WAIT)) {
+
+            return $this->render('error/error_bill_edit_state.html.twig');
+
+        } else {
+
+            return $this->render('bill/editBillName.html.twig', [
+                'bill' => $bill,
+                'packages' => $packages
+            ]);
+        }
     }
 
 
@@ -236,7 +253,6 @@ class BillController extends AbstractController
      */
     public function DisplayEditBillName(Request $request, Bill $bill,BillRepository $billRepo,$id,BillLignRepository $billLignRepo): Response
     {
-        
         $bill = $billRepo->find($id);
         
         return $this->render('bill/editBillName.html.twig', [
