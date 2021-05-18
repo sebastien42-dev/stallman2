@@ -101,15 +101,21 @@
 
 						<td>
 							<div class="row">
-								{% if app.user == bill.user %}
-									<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
-										<i class="fas fa-edit text-white"></i>
-									</a>
-								{% else %}
-									<a title="modifier" data-toggle="modal" data-target="#editImpossible" class="btn-circle btn-secondary btn-sm mr-2 ml-2">
+								{% if bill.billState.id == 1 %}
+									{% if app.user == bill.user %}
+										<a title="modifier" href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn-circle btn-info btn-sm mr-2 ml-2">
+											<i class="fas fa-edit text-white"></i>
+										</a>
+									{% else %}
+									<a title="modifier" data-toggle="modal" data-target="#editImpossibleUser" class="btn-circle btn-secondary btn-sm mr-2 ml-2">
 										<i class="fas fa-edit text-white"></i>
 									</a>		
-								{% endif %}
+									{% endif %}
+								{% else %}
+									<a title="modifier" data-toggle="modal" data-target="#editImpossibleState" class="btn-circle btn-secondary btn-sm mr-2 ml-2">
+										<i class="fas fa-edit text-white"></i>
+									</a>
+								{% endif %}	
 								{% if not is_granted('ROLE_COMPTA') %}
 									<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
 										<i class="far fa-file"></i>
@@ -122,11 +128,22 @@
 											<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
 												<i class="far fa-file"></i>
 											</a>
+											{% if modeCreation %}
+												<a type="button" class="btn btn-circle btn-danger m-1" href="{{ path('bill_wait',{'id_bill': bill.id }) }}" title="mettre en attente en avance cette facture">
+													<i class="far fa-pause-circle"></i>
+												</a>
+											{% endif %}
 											{% if modeWait %}
 												<a type="button" class="btn btn-circle btn-warning m-1" href="{{ path('bill_validate',{'id_bill': bill.id }) }}" title="Valider cette facture">
 													<i class="far fa-thumbs-up"></i>
 												</a>
 											{% endif %}
+											{% if modeValidate %}
+												<a type="button" class="btn btn-circle btn-success m-1" href="{{ path('bill_paid',{'id_bill': bill.id }) }}" title="Payer cette facture">
+													<i class="fas fa-money-bill-wave"></i>
+												</a>
+											{% endif %}
+											
 										</div>
 									</td>
 								{% endif %}
@@ -232,7 +249,7 @@
 
 </tbody></table></div>
 
-<div class="modal fade" id="editImpossible" tabindex="-1" aria-labelledby="editImpossibleLabel" aria-hidden="true">
+<div class="modal fade" id="editImpossibleUser" tabindex="-1" aria-labelledby="editImpossibleLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -243,6 +260,25 @@
       </div>
       <div class="modal-body">
         Vous ne pouvez pas modifier une facture qui n'est pas la votre, <b>même en tant qu'administrateur</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-{{ color }}" data-dismiss="modal">fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editImpossibleState" tabindex="-1" aria-labelledby="editImpossibleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editImpossibleLabel">Modificication impossible</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Votre facture doit être en status <b>"créée"</b> ou <b>"en attente"</b> pour etre modifiable
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-{{ color }}" data-dismiss="modal">fermer</button>
