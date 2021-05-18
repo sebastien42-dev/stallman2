@@ -20,19 +20,34 @@ class BillRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Bill[] Returns an array of Bill objects created for user with date in parameters
+     * @return Bill[] retuun un tableau de facture selon une periode trié pour un user
      */
     
     public function findByCreatedAtAndUser($YearMonth,$user)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.createdAt LIKE :yearMonth')
-            ->andWhere('b.user = :user')
-            ->setParameter('yearMonth', $YearMonth.'%')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getResult()
-        ;
+        ->andWhere('b.createdAt LIKE :yearMonth')
+        ->andWhere('b.user = :user')
+        ->setParameter('yearMonth', $YearMonth.'%')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+        
+    }
+
+    
+    /**
+     * @return Bill[] retuun un tableau de facture selon une periode trié par status
+     */
+    
+    public function findByCreatedAt($YearMonth)
+    {
+        return $this->createQueryBuilder('b')
+        ->andWhere('b.createdAt LIKE :yearMonth')
+        ->setParameter('yearMonth', $YearMonth.'%')
+        ->orderBy('b.billState', 'ASC')
+        ->getQuery()
+        ->getResult();
     }
 
     /**

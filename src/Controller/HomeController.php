@@ -136,7 +136,7 @@ class HomeController extends AbstractController
 
         $users = $userRepo->findAll();
         $tab_bills = array();
-        
+
         foreach ($users as $user) {
             $totalUser = 0;
             if (!in_array("ROLE_ELEVE",$user->getRoles())) {
@@ -230,21 +230,33 @@ class HomeController extends AbstractController
      * @Route("/home/compta", name="home_compta")
      */
 
-    public function indexCompta(UserRepository $userRepo,FonctionRepository $fonctionRepo): Response
+    public function indexCompta(UserRepository $userRepo,FonctionRepository $fonctionRepo,BillRepository $billRepo): Response
     {
+        $tab_bills_state = array();
+        $previousState = "";
+        $total = 0;
+                
+        $bills = $billRepo->findByCreatedAt(date("Y-m"));
 
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ELEVE;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_FORMATEUR;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_COMPTABLE;
-        $tab_nom_categorie[]=$fonctionRepo::STR_FONCTION_ADMIN;
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ELEVE));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_FORMATEUR));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_COMPTABLE));
-        $tab_nb_user[]=count($userRepo->findByFunction($fonctionRepo::FONCTION_ADMIN));
-         
+        foreach ($bills as $bill) {
+
+            if ($bill->getBillState()->getStateName() === $previousState) {
+
+                $total += $bill->getGlobalBillValue();
+
+            } else {
+
+                $total = $bill->getGlobalBillValue();
+
+            }
+            $tab_bills_state[$bill->getBillState()->getStateName()] = $total;
+
+            $previousState = $bill->getBillState()->getStateName();
+        }
+            
         return $this->render('home/index.html.twig', [
-            'nbUser' => json_encode($tab_nb_user),
-            'labelCatgorie' => json_encode($tab_nom_categorie)
+            'billstates' => json_encode(array_keys($tab_bills_state)),
+            'totalBillState' => json_encode(array_values($tab_bills_state)) 
         ]);
     }
 
