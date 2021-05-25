@@ -74,27 +74,42 @@
 						{% if is_granted('ROLE_ADMIN') %}
 							<td>
 								{% if modeCreation %}
+									{% if app.user == bill.user %}
 
-									<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
-										<span class="text-white font-weight-bold">forfait</span>
-									</a>
-									<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
-										<span class="text-white font-weight-bold">Hors forfait</span>
-									</a>
-
+										<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">forfait</span>
+										</a>
+										<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">Hors forfait</span>
+										</a>
+									{% endif %}
 								{% endif %}
 							</td>
 						{% elseif is_granted('ROLE_PROF') %}
 							<td>
 								{% if modeCreation %}
+									{% if app.user == bill.user %}
 
-									<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
-										<span class="text-white font-weight-bold">forfait</span>
-									</a>
-									<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
-										<span class="text-white font-weight-bold">Hors forfait</span>
-									</a>
-
+										<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">forfait</span>
+										</a>
+										<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">Hors forfait</span>
+										</a>
+									{% endif %}
+								{% endif %}
+							</td>
+						{% elseif is_granted('ROLE_COMPTA') %}
+							<td>
+								{% if modeCreation %}
+									{% if app.user == bill.user %}
+										<a title="ajouter une ligne sur la facture FORFAIT" href="{{ path('bill_lign_new', {'bill': bill.id}) }}" class="btn btn-success btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">forfait</span>
+										</a>
+										<a title="ajouter une ligne sur la facture HORS FORFAIT" href="{{ path('out_package_new', {'bill': bill.id}) }}" class="btn btn-warning btn-sm mr-2 ml-2">
+											<span class="text-white font-weight-bold">Hors forfait</span>
+										</a>
+									{% endif %}
 								{% endif %}
 							</td>
 						{% endif %}
@@ -123,8 +138,8 @@
 								{% endif %}
 
 								{% if is_granted('ROLE_COMPTA') %}
-									<td>
-										<div class="row">
+									
+										<div class="row ml-1">
 											<a type="button" class="btn btn-circle btn-info m-1" href="{{ path('bill_show_all',{'id_bill': bill.id }) }}" title="Voir toute cette facture">
 												<i class="far fa-file"></i>
 											</a>
@@ -145,7 +160,7 @@
 											{% endif %}
 											
 										</div>
-									</td>
+									
 								{% endif %}
 							</td>
 						</td>
