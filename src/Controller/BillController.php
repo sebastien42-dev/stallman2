@@ -94,29 +94,32 @@ class BillController extends AbstractController
             }
 
             if($nbOutPackage>0) {
-                for ($i=0; $i < $nbOutPackage; $i++) { 
-                    $date = new DateTime($request->request->get("outpackageDate".$i));
-                    $outPackage = new OutPackage();
-                    $outPackage->setOutPackageName( $request->request->get("outPackageName".$i));
-                    $outPackage->setValue($request->request->get("outpackageValue".$i));
-                    $entityManager->persist($outPackage);
-                    $billLignOut = new BillLign();
-                    $billLignOut->setOutPackage($outPackage);
-                    $billLignOut->setCreatedAt($date);
-                    $billLignOut->setGlobalLignValue($outPackage->getValue());
-                    $billLignOut->setBill($bill);
-                    $entityManager->persist($billLignOut);
-                    $total += $outPackage->getValue();
-    
+                for ($i=0; $i < $nbOutPackage; $i++) {
+
+                    if($request->request->get("outpackageDate".$i) != "" && $request->request->get("outpackageValue".$i) != "" && $request->request->get("outPackageName".$i) !="" ) {
+
+                        $date = new DateTime($request->request->get("outpackageDate".$i));
+                        $outPackage = new OutPackage();
+                        $outPackage->setOutPackageName( $request->request->get("outPackageName".$i));
+                        $outPackage->setValue($request->request->get("outpackageValue".$i));
+                        $entityManager->persist($outPackage);
+                        $billLignOut = new BillLign();
+                        $billLignOut->setOutPackage($outPackage);
+                        $billLignOut->setCreatedAt($date);
+                        $billLignOut->setGlobalLignValue($outPackage->getValue());
+                        $billLignOut->setBill($bill);
+                        $entityManager->persist($billLignOut);
+                        $total += $outPackage->getValue();
+                        
+                    } else {
+                        $this->addFlash('danger','une ou des lignes hors forfait n\'ont pas pu être ajoutées car une des 3 champs demandés était vide. Vous pouvez le / les rajouter ci dessous ');
+                    }
+                        
                 }
             }
-            
-
 
             $bill->setGlobalBillValue($total);
             $entityManager->flush();
-
-
 
             $this->addFlash('success','La nouvelle facture a bien été créée');
             return $this->redirectToRoute('bill_index');
