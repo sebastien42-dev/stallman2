@@ -1,6 +1,6 @@
 
         {% for message in messages %}
-            {% if message.isImportant %}
+            {% if message.isImportant and message.isArchivedUserTo == 0  %}
                 {% if message.isRead %}
                     {% set read = 'message-read' %}
                     {% set read_icone = 'far fa-envelope-open text-white' %}
@@ -27,7 +27,7 @@
                                     <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
                                 {% endif %}
                     </a>
-                    {% if message.isArchivedUserTo == null and message.isArchivedUserTo == 0 %}
+                    {% if message.isArchivedUserTo == null or message.isArchivedUserTo == 0 %}
                         <a href="{{ path('mail_archived_user_to',{id:message.id,to_from:"to"}) }}"<i class="fas fa-trash fa-2x text-danger ml-4"></i></a>
                     {% endif %}
 
