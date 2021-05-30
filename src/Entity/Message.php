@@ -64,6 +64,16 @@ class Message
      */
     private $isRead;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_archived_user_from;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_archived_user_to;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +159,30 @@ class Message
     public function setIsRead(bool $isRead): self
     {
         $this->isRead = $isRead;
+
+        return $this;
+    }
+
+    public function getIsArchivedUserFrom(): ?bool
+    {
+        return $this->is_archived_user_from;
+    }
+
+    public function setIsArchivedUserFrom(?bool $is_archived_user_from): self
+    {
+        $this->is_archived_user_from = $is_archived_user_from;
+
+        return $this;
+    }
+
+    public function getIsArchivedUserTo(): ?bool
+    {
+        return $this->is_archived_user_to;
+    }
+
+    public function setIsArchivedUserTo(?bool $is_archived_user_to): self
+    {
+        $this->is_archived_user_to = $is_archived_user_to;
 
         return $this;
     }
