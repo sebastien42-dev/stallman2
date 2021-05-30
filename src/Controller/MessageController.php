@@ -28,6 +28,7 @@ class MessageController extends AbstractController
     {
         return $this->render('message/index.html.twig', [
             'messages' => $messageRepository->findByUserTo($this->getUser()->getId()),
+            'messagesFrom' => $messageRepository->findByUserFrom($this->getUser()->getId()),
             'messagesSend' => $messageRepository->findByUserFrom($this->getUser()->getId()),
         ]);
     }
@@ -44,6 +45,8 @@ class MessageController extends AbstractController
         $form->handleRequest($request);
         
         $message->setUserFrom($user);
+        $message->setIsArchivedUserFrom(0);
+        $message->setIsArchivedUserTo(0);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // on sette la date du moment de l'envoie par défaut
@@ -80,6 +83,8 @@ class MessageController extends AbstractController
         
         $message->setUserFrom($user);
         $message->setUserTo($userTo);
+        $message->setIsArchivedUserFrom(0);
+        $message->setIsArchivedUserTo(0);
         if($send_back) {
             $message->setTitle("Réponse : ".$messageFrom->getTitle());
             $send_back = true;
@@ -214,5 +219,23 @@ class MessageController extends AbstractController
 
         return $this->redirectToRoute('message_index');
 
+    }
+    /**
+     * marque les message comme lu
+     * @Route("/{id}/archived/message/{to_from}", name="mail_archived_user_to",methods={"GET","POST"})
+     */
+    public function mail_archived_user_to(Message $message,$to_from)
+    {
+        if ($to_from == "to") {
+            $message->setIsArchivedUserTo(1);
+            $message->setIsRead(1);
+        } else {
+            $message->setIsArchivedUserFrom(1);
+        }
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($message);
+        $entityManager->flush();
+       return $this->redirectToRoute('message_index');
     }
 }

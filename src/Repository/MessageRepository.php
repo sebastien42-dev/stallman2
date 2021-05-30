@@ -36,6 +36,22 @@ class MessageRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param tinyint $user id de l'utilisateur
+     * @return Message[] Returns an array of Message objects
+     */
+    public function getMessagesUnarchived($user) 
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.is_archived_user_to = 0')
+            ->andWhere('m.userTo = :user')
+            ->setParameter('user', $user)
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Message[] Returns an array of Message objects
     //  */

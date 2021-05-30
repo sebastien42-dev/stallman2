@@ -1,0 +1,48 @@
+
+        {% for message in messages %}
+            {% if  message.userTo.id == app.user.id and message.isArchivedUserTo == 1 %}
+                    <a onclick="display(this)" data-messageid="{{ message.id }}" href="#" class="card-message-link">
+                        <div class="card card-message ">
+                                <div class="card-header bg-dark text-white font-weight-bold">
+                                    {{ message.title }}
+                                    &emsp;<span id="read_inform"></span>
+                                </div>
+                            
+                            <div class="card-body border border-dark">
+                                <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }}</span>
+                                <br/>
+                                <span id="message_user_to">Pour {{ message.userTo.nom }}&ensp;{{ message.userTo.prenom }}</span>&ensp;
+                                <span id="message_user">de {{ message.userFrom.nom }}&ensp;{{ message.userFrom.prenom }}</span>&ensp;
+                                {% if message.isImportant %}
+                                    <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
+                                {% endif %}
+                    </a>
+                        </div>
+                    </div>
+            {% endif %}
+        {% endfor %}
+
+        {% for message in messagesFrom %}
+            {% if  message.userFrom.id == app.user.id and message.isArchivedUserFrom == 1 %}
+                    <a onclick="display(this)" data-messageid="{{ message.id }}" href="#" class="card-message-link">
+                        <div class="card card-message ">
+                                <div class="card-header bg-dark text-white font-weight-bold">
+                                    {{ message.title }}
+                                    &emsp;<span id="read_inform"></span>
+                                </div>
+                            
+                            <div class="card-body border border-dark">
+                                <span id="message_date">{{ message.dateSend ? message.dateSend|date('d/m/Y H:i') : '' }} <i class="text-muted">Message envoyé</i></span>
+                                <br/>
+                                <span id="message_user">Pour {{ message.userTo.nom }}&ensp;{{ message.userTo.prenom }}</span>&ensp;
+                                <span id="message_user_to">de {{ message.userFrom.nom }}&ensp;{{ message.userFrom.prenom }}</span>&ensp;
+                                {% if message.isImportant %}
+                                    <i class="fas fa-exclamation-triangle fa-1x text-danger"></i>
+                                {% endif %}
+                    </a>
+                        </div>
+                    </div>
+            {% endif %}
+        {% endfor %}
+        
+        

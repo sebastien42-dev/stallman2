@@ -9,13 +9,14 @@
     <a style="text-decoration:none;" title="nouveau message" href="{{ path('message_new') }}" class="btn-circle btn-{{ color }} mb-3 mt-3"><i class="far fa-envelope text-white fa-1x"></i></a>
     <div class="row">
         {# nav des onglets de gestion des messages #}
-        <div class="col-4">
+        <div class="col-5">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-link active text-{{ color }}" id="nav-unread-tab" data-toggle="tab" href="#nav-unread" role="tab" aria-controls="nav-unread" aria-selected="true">Non lu</a>
                     <a class="nav-link text-{{ color }}" id="nav-read-tab" data-toggle="tab" href="#nav-read" role="tab" aria-controls="nav-read" aria-selected="false">lu</a>
                     <a class="nav-link text-{{ color }}" id="nav-important-tab" data-toggle="tab" href="#nav-important" role="tab" aria-controls="nav-important" aria-selected="false">Important</a>
                     <a class="nav-link text-{{ color }}" id="nav-send-tab" data-toggle="tab" href="#nav-send" role="tab" aria-controls="nav-send" aria-selected="false">Envoyé</a>
+                    <a class="nav-link text-{{ color }}" id="nav-archived-tab" data-toggle="tab" href="#nav-archived" role="tab" aria-controls="nav-archived" aria-selected="false">Archivé</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -31,11 +32,14 @@
                 <div class="tab-pane fade" id="nav-send" role="tabpanel" aria-labelledby="nav-send-tab" style="height:500px;overflow:auto;">
                     {% include "/message/shared_message/_message_send.html.twig" %}
                 </div>
+                <div class="tab-pane fade" id="nav-archived" role="tabpanel" aria-labelledby="nav-archived-tab" style="height:500px;overflow:auto;">
+                    {% include "/message/shared_message/_message_archived.html.twig" %}
+                </div>
             </div>
         </div>
 
         {# affichage des messages par ajax #}
-        <div class="col-8">
+        <div class="col-7">
             <div class="card card-message-content border border-{{ color }} p-2">
                 <div >
                     <h3 id="title_mail" class="font-weight-bold text-{{ color }}"></h3>

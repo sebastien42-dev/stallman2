@@ -93,7 +93,10 @@ class JavaApiController extends AbstractController
      */
     public function apiGetListMessage(MessageRepository $messageRepo,$user_id)
     {
-        $data = $messageRepo->findByUserTo($user_id);
+        //je récupère tous les messages du user
+        //$data = $messageRepo->findByUserTo($user_id);
+        //je ne récupere que les messages qui ne sont pas archivé
+        $data = $messageRepo->getMessagesUnarchived($user_id);
         return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json',SerializationContext::create()->enableMaxDepthChecks()));
 
     }
@@ -163,6 +166,23 @@ class JavaApiController extends AbstractController
         $message->setIsImportant($datas->is_important);
         $message->setIsRead(0);
 
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        return JsonResponse::fromJsonString($this->serializer->serialize($message, 'json',SerializationContext::create()->enableMaxDepthChecks()));
+
+    }
+
+    /**
+     * mettre un message en archivé_user_to
+     *
+     * @Route("/message/archived/{id}", name="api_mesage_archived",methods={"PATCH","POST"})
+     * @return JSON
+     */
+    public function apiArchivedMessage(Message $message)
+    {
+        $message->setIsArchivedUserTo(1);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($message);
         $entityManager->flush();
