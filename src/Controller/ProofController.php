@@ -95,7 +95,7 @@ class ProofController extends AbstractController
                             $newFilename
                         );
                     } catch (FileException $e) {
-                         echo'toto';
+                         echo'failed !';
                     }
             
                     // updates the 'brochureFilename' property to store the PDF file name
